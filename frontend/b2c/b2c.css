@@ -468,6 +468,12 @@
   }
   .quick-tags::-webkit-scrollbar { display: none; }
 
+  .quick-tag-label {
+    flex-shrink: 0;
+    font-size: 11px;
+    align-self: center;
+  }
+
   .quick-chip {
     padding: 5px 12px;
     font-size: 11.5px;

@@ -200,13 +200,13 @@ async function lookup(q) {
       const offers = r.offers || [];
 
       modalBody.innerHTML = `
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;border-bottom:1px solid #e2e8f0;padding-bottom:16px">
+        <div class="detail-header-row" style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;border-bottom:1px solid #e2e8f0;padding-bottom:16px">
           <div>
             <div style="display:flex;gap:6px;margin-bottom:8px">
               ${originBadge(c.local)}
               <span class="badge badge-otc">Davlat reestr: ${esc(c.number || 'Mavjud')}</span>
             </div>
-            <h2 style="font-size:22px;font-weight:800;color:var(--text-primary)">${esc(c.name || q)}</h2>
+            <h2 style="font-size:20px;font-weight:800;color:var(--text-primary)">${esc(c.name || q)}</h2>
             <p style="font-size:13.5px;color:var(--primary);margin-top:2px">XPN: <b>${esc(c.inn || '—')}</b> · Shakli: ${esc(c.form || '—')}</p>
           </div>
           <div style="text-align:right">
@@ -216,7 +216,7 @@ async function lookup(q) {
           </div>
         </div>
 
-        <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:20px">
+        <div class="detail-grid-layout" style="display:grid;grid-template-columns:1.2fr 1fr;gap:20px">
           <div>
             <div style="background:#f8fafc;padding:14px;border-radius:12px;border:1px solid #e2e8f0;font-size:13px;line-height:1.7;margin-bottom:16px">
               <div>🏢 Ishlab chiqaruvchi: <b>${esc(c.producer || '—')}</b> (${esc(c.country || '—')})</div>
