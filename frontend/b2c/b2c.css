@@ -1286,3 +1286,290 @@
   cursor: pointer; transition: all 0.15s ease; line-height: 1.45;
 }
 .amb-item:hover { border-color: var(--primary); background: var(--primary-light); }
+/* Card Sevimlilar tugmasi (barcha qurilmalarda) */
+.product-card {
+  position: relative;
+}
+
+.card-fav-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(226, 232, 240, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 5;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  color: #94a3b8;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.card-fav-btn:hover {
+  transform: scale(1.1);
+  color: #ef4444;
+}
+
+.card-fav-btn:active {
+  transform: scale(0.92);
+}
+
+.card-fav-btn.active {
+  color: #ef4444;
+  border-color: #fca5a5;
+  background: #ffffff;
+}
+
+.card-fav-btn.active svg {
+  fill: #ef4444;
+}
+
+/* Desktopda ko'rinmasligi kerak bo'lgan mobil elementlar */
+@media (min-width: 641px) {
+  .mob-drugs-header,
+  .mob-home-drugs-grid,
+  .all-drugs-screen {
+    display: none !important;
+  }
+}
+
+/* Mobilda bosh sahifadagi ortiqcha desktop toolbarini yashirish va To'liq Dorilar bo'limi */
+@media (max-width: 640px) {
+  .stats-strip,
+  .catalog-toolbar,
+  #sec-b2c > .pagination-wrap,
+  #sec-b2c > #drug-cards-container {
+    display: none !important;
+  }
+
+  .mob-drugs-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 22px 0 12px 0;
+  }
+
+  .mob-drugs-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .mob-drugs-icon-badge {
+    width: 30px;
+    height: 30px;
+    border-radius: 9px;
+    background: #eff6ff;
+    color: #0b69ed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mob-drugs-title {
+    font-size: 17px;
+    font-weight: 800;
+    color: #0f172a;
+    letter-spacing: -0.2px;
+  }
+
+  .mob-see-all-btn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #0b69ed;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px 0;
+    transition: opacity 0.15s ease;
+  }
+
+  .mob-see-all-btn:active {
+    opacity: 0.7;
+  }
+
+  .mob-home-drugs-grid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+    margin-bottom: 24px !important;
+  }
+
+  /* Dedicated Full Screen Mobile Dorilar View */
+  .all-drugs-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #f8fafc;
+    z-index: 150;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: calc(10px + env(safe-area-inset-top, 0px)) 16px calc(24px + env(safe-area-inset-bottom, 0px)) 16px;
+    animation: slideInUp 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .all-drugs-screen.hidden {
+    display: none !important;
+  }
+
+  .drugs-view-header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    margin: -10px -16px 12px -16px;
+    padding: calc(8px + env(safe-area-inset-top, 0px)) 16px 10px 16px;
+    border-bottom: 1px solid rgba(226, 232, 240, 0.85);
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
+  }
+
+  .btn-drugs-back {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid rgba(226, 232, 240, 0.9);
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #1e293b;
+    cursor: pointer;
+    flex-shrink: 0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  }
+
+  .btn-drugs-back:active {
+    transform: scale(0.92);
+    background: #f1f5f9;
+  }
+
+  .drugs-search-box {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .drugs-search-box svg {
+    position: absolute;
+    left: 13px;
+    pointer-events: none;
+  }
+
+  .drugs-search-box input {
+    width: 100%;
+    padding: 10px 34px 10px 38px;
+    border-radius: var(--radius-full);
+    border: 1px solid rgba(226, 232, 240, 0.95);
+    background: #f1f5f9;
+    font-size: 13.5px;
+    color: #0f172a;
+    outline: none;
+    transition: all 0.2s ease;
+  }
+
+  .drugs-search-box input:focus {
+    background: #ffffff;
+    border-color: #0b69ed;
+    box-shadow: 0 0 0 3px rgba(11, 105, 237, 0.12);
+  }
+
+  .btn-drugs-fav {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid rgba(226, 232, 240, 0.9);
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #64748b;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  }
+
+  .btn-drugs-fav:active {
+    transform: scale(0.92);
+  }
+
+  .btn-drugs-fav.active {
+    background: #fef2f2;
+    border-color: #fecaca;
+    color: #ef4444;
+  }
+
+  .btn-drugs-fav.active svg {
+    fill: #ef4444;
+  }
+
+  .fav-count-dot {
+    position: absolute;
+    top: 7px;
+    right: 7px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #ef4444;
+    border: 2px solid #ffffff;
+  }
+
+  .drugs-view-cats {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    margin-bottom: 12px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .drugs-view-cats::-webkit-scrollbar {
+    display: none;
+  }
+
+  .cat-pill-mob {
+    padding: 7px 14px;
+    border-radius: 20px;
+    border: 1px solid rgba(226, 232, 240, 0.9);
+    background: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+    color: #475569;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .cat-pill-mob.active {
+    background: #0b69ed;
+    color: #ffffff;
+    border-color: #0b69ed;
+    box-shadow: 0 2px 8px rgba(11, 105, 237, 0.25);
+  }
+
+  .drugs-view-meta {
+    font-size: 12px;
+    font-weight: 600;
+    color: #64748b;
+    margin-bottom: 12px;
+    padding: 0 2px;
+  }
+}

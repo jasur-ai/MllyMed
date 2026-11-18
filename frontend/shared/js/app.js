@@ -36,11 +36,12 @@ function switchMode(mode) {
 function mobileNavTab(tab) {
   document.querySelectorAll('.dock-item, .island-tab-btn, .nav-item-btn').forEach(b => b.classList.remove('active'));
   
-  if (tab === 'drugs' || tab === 'home') {
-    const btn = $('tab-mob-drugs') || $('tab-mob-home');
+  if (tab === 'home') {
+    const btn = $('tab-mob-home');
     if (btn) btn.classList.add('active');
     
     // Boshqa ochiq oynalarni yopish
+    if (typeof closeAllDrugsView === 'function') closeAllDrugsView();
     closeCalendarModal();
     if (typeof closePatientModal === 'function') closePatientModal();
     closeNotificationModal();
@@ -48,18 +49,17 @@ function mobileNavTab(tab) {
     if (popup && !popup.classList.contains('hidden')) {
       popup.classList.add('hidden');
     }
-    
-    // Katalogga silliq o'tish
-    const catalog = $('drug-cards-container') || $('sec-b2c');
-    if (catalog) {
-      catalog.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    } else {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } else if (tab === 'drugs') {
+    if (typeof closePatientModal === 'function') closePatientModal();
+    closeCalendarModal();
+    closeNotificationModal();
+    if (typeof openAllDrugsView === 'function') openAllDrugsView();
   } else if (tab === 'rxs' || tab === 'calendar') {
     const btn = $('tab-mob-rxs');
     if (btn) btn.classList.add('active');
     
+    if (typeof closeAllDrugsView === 'function') closeAllDrugsView();
     if (typeof closePatientModal === 'function') closePatientModal();
     closeNotificationModal();
     const popup = $('agent-popup');
