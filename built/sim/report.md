@@ -1,6 +1,6 @@
 # Virtual tajriba — natijalar
 
-Yaratilgan: 2026-11-18T16:56:01 · **12/12 stsenariy o'tdi**
+Yaratilgan: 2026-11-18T17:24:52 · **12/12 stsenariy o'tdi**
 
 | # | Stsenariy | Persona | Natija | Bosqich |
 |---|---|---|---|---|

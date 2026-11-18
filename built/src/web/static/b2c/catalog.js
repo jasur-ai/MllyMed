@@ -6,10 +6,65 @@ let currentCategory = '';
 // Haqiqiy mahsulot fotolari manifesti (frontend/assets/img/manifest.json) —
 // bo'lmasa generativ "pack shot" ko'rsatiladi (oflayn-tez, har doim yaxlit).
 window.PACK_IMG = window.PACK_IMG || {};
+
+function getDrugPhotoUrl(p) {
+  if (!p || !window.PACK_IMG) return null;
+  const pid = p.id != null ? String(p.id).replace(/[^a-zA-Z0-9_-]/g, '') : '';
+  if (pid && window.PACK_IMG[pid]) return window.PACK_IMG[pid];
+  if (p.image_id && window.PACK_IMG[p.image_id]) return window.PACK_IMG[p.image_id];
+  const name = (p.name || '').trim();
+  if (name && window.PACK_IMG[name]) return window.PACK_IMG[name];
+  const nLow = name.toLowerCase();
+  if (nLow && window.PACK_IMG[nLow]) return window.PACK_IMG[nLow];
+  if (p.canon_inn && window.PACK_IMG[p.canon_inn]) return window.PACK_IMG[p.canon_inn];
+  if (p.inn && window.PACK_IMG[p.inn]) return window.PACK_IMG[p.inn];
+  // Taniqli brend va mahsulot kalit so'zlari
+  const brands = [
+    'nurofen', 'нурофен', 'arbidol', 'арбидол', 'kanefron', 'канефрон',
+    'orlip', 'орлип', 'enterojermina', 'энтерожермина', 'aprid', 'априд',
+    'adaptol', 'адаптол', 'inflyuvak', 'инфлювак', 'korteksin', 'кортексин',
+    'semavik', 'семавик', 'tirzetta', 'тирзетта', 'sorbifer', 'сорбифер',
+    'sedjaro', 'седжаро', 'fenistil', 'фенистил', 'dufaston', 'дюфастон', 'dyufaston'
+  ];
+  for (const b of brands) {
+    if (nLow.includes(b) && window.PACK_IMG[b]) {
+      return window.PACK_IMG[b];
+    }
+  }
+  return null;
+}
+
+function refreshRenderedPhotos() {
+  try {
+    document.querySelectorAll('.product-card').forEach(card => {
+      const q = card.getAttribute('data-q') || '';
+      const mediaEl = card.querySelector('.card-media');
+      if (!mediaEl || mediaEl.querySelector('.pack-photo')) return;
+      const photoUrl = getDrugPhotoUrl({ name: q });
+      if (photoUrl) {
+        const svgEl = mediaEl.querySelector('svg.pack-art');
+        if (svgEl) {
+          const img = document.createElement('img');
+          img.className = 'pack-photo';
+          img.src = photoUrl;
+          img.alt = q;
+          img.loading = 'lazy';
+          img.dataset.name = q;
+          img.onerror = function () { window.__packFallback(this); };
+          svgEl.replaceWith(img);
+        }
+      }
+    });
+  } catch (e) {}
+}
+
 try {
   fetch('assets/img/manifest.json')
     .then(r => (r.ok ? r.json() : {}))
-    .then(m => { window.PACK_IMG = (m && typeof m === 'object') ? m : {}; })
+    .then(m => {
+      window.PACK_IMG = (m && typeof m === 'object') ? m : {};
+      refreshRenderedPhotos();
+    })
     .catch(() => {});
 } catch (e) { /* e'tiborsiz */ }
 
@@ -404,11 +459,10 @@ function renderDrugCardHtml(p, idx) {
   const favActive = isFavorite(name);
   const hue = (typeof hashStr === 'function' ? hashStr(name) : 215) % 360;
   const delay = (typeof idx === 'number' ? Math.min(idx, 12) : 0) * 45;
-  const pid = p.id != null ? String(p.id).replace(/[^a-zA-Z0-9_-]/g, '') : '';
-  const hasRealPhoto = pid && window.PACK_IMG && window.PACK_IMG[pid];
+  const photoUrl = getDrugPhotoUrl(p);
   const localAttr = p.local === true ? '1' : (p.local === false ? '0' : '');
-  const media = hasRealPhoto
-    ? `<img class="pack-photo" src="${esc(window.PACK_IMG[pid])}" alt="${esc(name)}" loading="lazy" data-name="${esc(name)}" data-local="${localAttr}" onerror="window.__packFallback(this)">`
+  const media = photoUrl
+    ? `<img class="pack-photo" src="${esc(photoUrl)}" alt="${esc(name)}" loading="lazy" data-name="${esc(name)}" data-local="${localAttr}" onerror="window.__packFallback(this)">`
     : renderDrugPackSvg(name, p.local);
   return `
     <div class="product-card" role="button" tabindex="0" data-q="${esc(name)}" style="--d:${delay}ms"
@@ -578,6 +632,11 @@ async function lookup(q) {
           <div class="kpi"><div class="kpi-v">${money(grp.local_min)}</div><div class="kpi-l">Mahalliy eng arzon</div></div>
         </div>` : '';
 
+      const detailPhotoUrl = getDrugPhotoUrl({ id: c.id, name: c.name || q, inn: c.inn });
+      const detailShot = detailPhotoUrl
+        ? `<img class="pack-photo" src="${esc(detailPhotoUrl)}" alt="${esc(c.name || q)}" style="max-height:100px;object-fit:contain" onerror="this.outerHTML=renderDrugPackSvg('${esc(c.name || q)}', ${c.local})">`
+        : renderDrugPackSvg(c.name || q, c.local);
+
       modalBody.innerHTML = `
         <div class="detail-head">
           <div class="detail-head-tx">
@@ -585,7 +644,7 @@ async function lookup(q) {
             <h2 class="detail-title">${esc(c.name || q)}</h2>
             <p class="detail-inn">XPN: <b>${esc(c.inn_display || c.inn || '—')}</b>${c.form_uz ? ` · ${esc(c.form_uz)}` : ''}${c.strength ? ` · ${esc(c.strength)}` : ''}</p>
           </div>
-          <div class="detail-shot" aria-hidden="true">${renderDrugPackSvg(c.name || q, c.local)}</div>
+          <div class="detail-shot" aria-hidden="true">${detailShot}</div>
         </div>
         <div class="detail-grid">
           <div class="detail-col">

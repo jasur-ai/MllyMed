@@ -1,1 +1,320 @@
-[{"name":"Парацетамол, 200 мг, таб. №10","manufacturer":"Merrymed Farm, ООО","price_from_som":2000,"rx":false,"image_id":null,"seen_langs":["uz","uz","ru","ru","en","en"],"source_url":"https://arzonapteka.uz/uz"},{"name":"Арбидол, 50 мг, таб. №10","manufacturer":"Фармстандарт, АО","price_from_som":120000,"rx":false,"image_id":null,"seen_langs":["uz","uz","ru","ru","en","en"],"source_url":"https://arzonapteka.uz/uz"},{"name":"Нурофен, 200 мг, таб. №24","manufacturer":"Reckitt Benckiser Healthcare International Ltd","price_from_som":23000,"rx":false,"image_id":null,"seen_langs":["uz","uz","ru","ru","en","en"],"source_url":"https://arzonapteka.uz/uz"},{"name":"Нурофен, 200 мг, таб. №12","manufacturer":"Reckitt Benckiser Healthcare International Ltd","price_from_som":25000,"rx":false,"image_id":null,"seen_langs":["uz","uz","ru","ru","en","en"],"source_url":"https://arzonapteka.uz/uz"},{"name":"Канефрон Н, драже №120","manufacturer":"Bionorica SE","price_from_som":null,"rx":false,"image_id":null,"seen_langs":["uz","ru","en"],"source_url":"https://arzonapteka.uz/uz"},{"name":"Орлип, 120 мг, капс. №30","manufacturer":"GM Pharmaceuticals Ltd, OOO","price_from_som":150000,"rx":true,"image_id":null,"seen_langs":["uz","ru","en"],"source_url":"https://arzonapteka.uz/uz"},{"name":"Энтерожермина, 2 млрд спор, капс. №12","manufacturer":"Sanofi-Aventis S.p.A.","price_from_som":57500,"rx":false,"image_id":null,"seen_langs":["uz","ru","en"],"source_url":"https://arzonapteka.uz/uz"},{"name":"Априд, 375 мг, таб. №10","manufacturer":"Nobel-Pharmsanoat, ИП ООО","price_from_som":40600,"rx":true,"image_id":null,"seen_langs":["uz","ru","en"],"source_url":"https://arzonapteka.uz/uz"},{"name":"Адаптол, 500 мг, таб. №20","manufacturer":"OlainFarm, AS","price_from_som":85000,"rx":true,"image_id":null,"seen_langs":["uz","ru","en"],"source_url":"https://arzonapteka.uz/uz"},{"name":"Яффа, 2 мг/мл, 100 мл, флак.","manufacturer":"ИСТ-ФАРМ, ООО","price_from_som":41000,"rx":true,"image_id":null,"seen_langs":["uz","ru","en"],"source_url":"https://arzonapteka.uz/uz"},{"name":"Инфлювак Тетра, 0,5 мл, шприц, №1","manufacturer":"Abbott Biologicals, B.V.","price_from_som":132000,"rx":true,"image_id":null,"seen_langs":["uz","uz","ru","ru","en","en"],"source_url":"https://arzonapteka.uz/uz"},{"name":"Кортексин, 10 мг, флак. №10","manufacturer":"Герофарм, ООО","price_from_som":290000,"rx":true,"image_id":null,"seen_langs":["uz","uz","ru","ru","en","en"],"source_url":"https://arzonapteka.uz/uz"},{"name":"Кортексин, 5 мг, флак. №10","manufacturer":"Герофарм, ООО","price_from_som":194000,"rx":true,"image_id":null,"seen_langs":["uz","uz","ru","ru","en","en"],"source_url":"https://arzonapteka.uz/uz"},{"name":"Семавик, 1,34 мг/мл, 0,25/0,5/1 мг/доза, шприц-ручке, №1","manufacturer":"Герофарм, ООО","price_from_som":474999,"rx":true,"image_id":null,"seen_langs":["uz","uz","ru","ru","en","en"],"source_url":"https://arzonapteka.uz/uz"},{"name":"Тирзетта, 2,5 мг/0,5 мл, шприц ручка, №4","manufacturer":"Биохимик, ПАО","price_from_som":824500,"rx":true,"image_id":null,"seen_langs":["uz","ru","en"],"source_url":"https://arzonapteka.uz/uz"},{"name":"Сорбифер Дурулес, таб. №50","manufacturer":"Egis Pharmaceuticals PLC","price_from_som":67000,"rx":true,"image_id":null,"seen_langs":["uz","ru","en"],"source_url":"https://arzonapteka.uz/uz"},{"name":"Седжаро, 2,5 мг/0,6 мл, шприц ручка, №1","manufacturer":"Герофарм, ООО","price_from_som":609700,"rx":true,"image_id":null,"seen_langs":["uz","ru","en"],"source_url":"https://arzonapteka.uz/uz"},{"name":"Фенистил Нью, 0,1%, 20 мл, капли","manufacturer":"GSK Consumer Healthcare S.A.","price_from_som":54000,"rx":false,"image_id":null,"seen_langs":["uz","ru","en"],"source_url":"https://arzonapteka.uz/uz"},{"name":"Тирзетта, 5 мг-0,5 мл, шприц ручка, №4","manufacturer":"Биохимик, ПАО","price_from_som":1393500,"rx":true,"image_id":null,"seen_langs":["uz","ru","en"],"source_url":"https://arzonapteka.uz/uz"},{"name":"Дюфастон, 10 мг, таб. №20","manufacturer":"Abbott Biologicals, B.V.","price_from_som":83890,"rx":true,"image_id":null,"seen_langs":["uz","ru","en"],"source_url":"https://arzonapteka.uz/uz"}]
+[
+  {
+    "name": "Парацетамол, 200 мг, таб. №10",
+    "manufacturer": "Merrymed Farm, ООО",
+    "price_from_som": 2000,
+    "rx": false,
+    "image_id": null,
+    "seen_langs": [
+      "uz",
+      "uz",
+      "ru",
+      "ru",
+      "en",
+      "en"
+    ],
+    "source_url": "https://arzonapteka.uz/uz"
+  },
+  {
+    "name": "Арбидол, 50 мг, таб. №10",
+    "manufacturer": "Фармстандарт, АО",
+    "price_from_som": 120000,
+    "rx": false,
+    "image_id": "9c4f642212a19d5ec552f8e39f03db74",
+    "seen_langs": [
+      "uz",
+      "uz",
+      "ru",
+      "ru",
+      "en",
+      "en"
+    ],
+    "source_url": "https://arzonapteka.uz/uz"
+  },
+  {
+    "name": "Нурофен, 200 мг, таб. №24",
+    "manufacturer": "Reckitt Benckiser Healthcare International Ltd",
+    "price_from_som": 23000,
+    "rx": false,
+    "image_id": "c8c71ca1c540b95cf1dc82f8d270205a",
+    "seen_langs": [
+      "uz",
+      "uz",
+      "ru",
+      "ru",
+      "en",
+      "en"
+    ],
+    "source_url": "https://arzonapteka.uz/uz",
+    "country": "Buyuk Britaniya",
+    "country_code": "GB"
+  },
+  {
+    "name": "Нурофен, 200 мг, таб. №12",
+    "manufacturer": "Reckitt Benckiser Healthcare International Ltd",
+    "price_from_som": 25000,
+    "rx": false,
+    "image_id": "fd4b67295b6fb3194c1d60e90b730a5d",
+    "seen_langs": [
+      "uz",
+      "uz",
+      "ru",
+      "ru",
+      "en",
+      "en"
+    ],
+    "source_url": "https://arzonapteka.uz/uz",
+    "country": "Buyuk Britaniya",
+    "country_code": "GB"
+  },
+  {
+    "name": "Канефрон Н, драже №120",
+    "manufacturer": "Bionorica SE",
+    "price_from_som": null,
+    "rx": false,
+    "image_id": "328f7231de8fadf8822d023a507e8e70",
+    "seen_langs": [
+      "uz",
+      "ru",
+      "en"
+    ],
+    "source_url": "https://arzonapteka.uz/uz",
+    "country": "Germaniya",
+    "country_code": "DE"
+  },
+  {
+    "name": "Орлип, 120 мг, капс. №30",
+    "manufacturer": "GM Pharmaceuticals Ltd, OOO",
+    "price_from_som": 150000,
+    "rx": true,
+    "image_id": "2a73c20710b5b83bc44c7d13fb4f8324",
+    "seen_langs": [
+      "uz",
+      "ru",
+      "en"
+    ],
+    "source_url": "https://arzonapteka.uz/uz",
+    "country": "Gruziya",
+    "country_code": "GE"
+  },
+  {
+    "name": "Энтерожермина, 2 млрд спор, капс. №12",
+    "manufacturer": "Sanofi-Aventis S.p.A.",
+    "price_from_som": 57500,
+    "rx": false,
+    "image_id": "d6c7844eca6d2d07d39ef9da356a3aac",
+    "seen_langs": [
+      "uz",
+      "ru",
+      "en"
+    ],
+    "source_url": "https://arzonapteka.uz/uz",
+    "country": "Italiya",
+    "country_code": "IT"
+  },
+  {
+    "name": "Априд, 375 мг, таб. №10",
+    "manufacturer": "Nobel-Pharmsanoat, ИП ООО",
+    "price_from_som": 40600,
+    "rx": true,
+    "image_id": "979d4287921f4fd3567c8b40ce2bbfb4",
+    "seen_langs": [
+      "uz",
+      "ru",
+      "en"
+    ],
+    "source_url": "https://arzonapteka.uz/uz",
+    "country": "O`zbekiston",
+    "country_code": "UZ"
+  },
+  {
+    "name": "Адаптол, 500 мг, таб. №20",
+    "manufacturer": "OlainFarm, AS",
+    "price_from_som": 85000,
+    "rx": true,
+    "image_id": "290383804fb4a6244f3de17ce115cce5",
+    "seen_langs": [
+      "uz",
+      "ru",
+      "en"
+    ],
+    "source_url": "https://arzonapteka.uz/uz",
+    "country": "Latviya",
+    "country_code": "LV"
+  },
+  {
+    "name": "Яффа, 2 мг/мл, 100 мл, флак.",
+    "manufacturer": "ИСТ-ФАРМ, ООО",
+    "price_from_som": 41000,
+    "rx": true,
+    "image_id": null,
+    "seen_langs": [
+      "uz",
+      "ru",
+      "en"
+    ],
+    "source_url": "https://arzonapteka.uz/uz"
+  },
+  {
+    "name": "Инфлювак Тетра, 0,5 мл, шприц, №1",
+    "manufacturer": "Abbott Biologicals, B.V.",
+    "price_from_som": 132000,
+    "rx": true,
+    "image_id": "bf45cfe86a2a3b35a2ca75245b2c534d",
+    "seen_langs": [
+      "uz",
+      "uz",
+      "ru",
+      "ru",
+      "en",
+      "en"
+    ],
+    "source_url": "https://arzonapteka.uz/uz",
+    "country": "Niderlandiya",
+    "country_code": "NL"
+  },
+  {
+    "name": "Кортексин, 10 мг, флак. №10",
+    "manufacturer": "Герофарм, ООО",
+    "price_from_som": 290000,
+    "rx": true,
+    "image_id": "409f53977d701b32dcd90ffd27d90c26",
+    "seen_langs": [
+      "uz",
+      "uz",
+      "ru",
+      "ru",
+      "en",
+      "en"
+    ],
+    "source_url": "https://arzonapteka.uz/uz",
+    "country": "Rossiya",
+    "country_code": "RU"
+  },
+  {
+    "name": "Кортексин, 5 мг, флак. №10",
+    "manufacturer": "Герофарм, ООО",
+    "price_from_som": 194000,
+    "rx": true,
+    "image_id": "f49cf248d21240762de26ab41627d9fc",
+    "seen_langs": [
+      "uz",
+      "uz",
+      "ru",
+      "ru",
+      "en",
+      "en"
+    ],
+    "source_url": "https://arzonapteka.uz/uz",
+    "country": "Rossiya",
+    "country_code": "RU"
+  },
+  {
+    "name": "Семавик, 1,34 мг/мл, 0,25/0,5/1 мг/доза, шприц-ручке, №1",
+    "manufacturer": "Герофарм, ООО",
+    "price_from_som": 474999,
+    "rx": true,
+    "image_id": "82e8ee89d6647c7559c3a034e5305a5f",
+    "seen_langs": [
+      "uz",
+      "uz",
+      "ru",
+      "ru",
+      "en",
+      "en"
+    ],
+    "source_url": "https://arzonapteka.uz/uz",
+    "country": "Rossiya",
+    "country_code": "RU"
+  },
+  {
+    "name": "Тирзетта, 2,5 мг/0,5 мл, шприц ручка, №4",
+    "manufacturer": "Биохимик, ПАО",
+    "price_from_som": 824500,
+    "rx": true,
+    "image_id": "a38049a345348c769688a011e5ded17e",
+    "seen_langs": [
+      "uz",
+      "ru",
+      "en"
+    ],
+    "source_url": "https://arzonapteka.uz/uz",
+    "country": "Rossiya",
+    "country_code": "RU"
+  },
+  {
+    "name": "Сорбифер Дурулес, таб. №50",
+    "manufacturer": "Egis Pharmaceuticals PLC",
+    "price_from_som": 67000,
+    "rx": true,
+    "image_id": "92c7a7222a32d59ec8b4d92d1d118179",
+    "seen_langs": [
+      "uz",
+      "ru",
+      "en"
+    ],
+    "source_url": "https://arzonapteka.uz/uz",
+    "country": "Vengriya",
+    "country_code": "HU"
+  },
+  {
+    "name": "Седжаро, 2,5 мг/0,6 мл, шприц ручка, №1",
+    "manufacturer": "Герофарм, ООО",
+    "price_from_som": 609700,
+    "rx": true,
+    "image_id": "0a97162bc90e3c8b620530b83c4cbf71",
+    "seen_langs": [
+      "uz",
+      "ru",
+      "en"
+    ],
+    "source_url": "https://arzonapteka.uz/uz",
+    "country": "Rossiya",
+    "country_code": "RU"
+  },
+  {
+    "name": "Фенистил Нью, 0,1%, 20 мл, капли",
+    "manufacturer": "GSK Consumer Healthcare S.A.",
+    "price_from_som": 54000,
+    "rx": false,
+    "image_id": "3c46c742e94dea2875a9f72b1d58483e",
+    "seen_langs": [
+      "uz",
+      "ru",
+      "en"
+    ],
+    "source_url": "https://arzonapteka.uz/uz",
+    "country": "Shveytsariya",
+    "country_code": "CH"
+  },
+  {
+    "name": "Тирзетта, 5 мг-0,5 мл, шприц ручка, №4",
+    "manufacturer": "Биохимик, ПАО",
+    "price_from_som": 1393500,
+    "rx": true,
+    "image_id": "ef173b3ebfade9f9ea7867a335174f28",
+    "seen_langs": [
+      "uz",
+      "ru",
+      "en"
+    ],
+    "source_url": "https://arzonapteka.uz/uz",
+    "country": "Rossiya",
+    "country_code": "RU"
+  },
+  {
+    "name": "Дюфастон, 10 мг, таб. №20",
+    "manufacturer": "Abbott Biologicals, B.V.",
+    "price_from_som": 83890,
+    "rx": true,
+    "image_id": "a39c0f4721ec194035a1a61de7a39e91",
+    "seen_langs": [
+      "uz",
+      "ru",
+      "en"
+    ],
+    "source_url": "https://arzonapteka.uz/uz",
+    "country": "Niderlandiya",
+    "country_code": "NL"
+  }
+]
