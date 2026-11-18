@@ -1,29 +1,68 @@
-/* ── MllyMed Shared Base CSS ────────────────────────────── */
+/* ═════════════════════════════════════════════════════════════════════
+   MllyMed — Dizayn tizimi (v4 "Silliq", qo'l bilan ishlangan darajada)
+   Glassmorphism · yumshoq mesh fon · rangli soya · 1px hairline
+   ════════════════════════════════════════════════════════════════════ */
 :root {
-  --primary: #0066ff;
-  --primary-hover: #0052cc;
-  --primary-light: #eff6ff;
-  --primary-glow: rgba(0, 102, 255, 0.18);
-  --dark: #0f172a;
-  --dark-soft: #1e293b;
-  --text-primary: #0f172a;
-  --text-secondary: #64748b;
-  --text-muted: #94a3b8;
-  --bg-app: #f8fafc;
-  --bg-card: #ffffff;
-  --border-light: #e2e8f0;
-  --border-hover: #cbd5e1;
-  --success: #10b981;
-  --success-bg: #ecfdf5;
-  --warning: #f59e0b;
+  /* Brand */
+  --brand: #0b69ed;
+  --brand-deep: #0a4fb8;
+  --brand-ink: #083a7a;
+  --primary: #0b69ed;
+  --primary-hover: #0a5bd0;
+  --primary-light: #eef4ff;
+  --primary-glow: rgba(11, 105, 237, 0.22);
+
+  /* Accents */
+  --green: #05b584;          /* mahalliy / GMP */
+  --green-deep: #047857;
+  --green-soft: #e9faf1;
+  --amber: #f4b63f;
+  --red: #ef4444;
+  --red-deep: #b91c1c;
+  --violet: #7c3aed;
+
+  /* Neutrals (issiq qora) */
+  --dark: #0f1c2e;
+  --dark-soft: #1e2b3f;
+  --text-primary: #0f1c2e;
+  --text-secondary: #54637a;
+  --text-muted: #8b99ad;
+
+  /* Surfaces */
+  --bg-app: #eef2f8;
+  --bg-card: rgba(255, 255, 255, 0.86);
+  --bg-solid: #ffffff;
+  --glass: rgba(255, 255, 255, 0.72);
+  --glass-strong: rgba(255, 255, 255, 0.9);
+  --glass-border: rgba(255, 255, 255, 0.75);
+  --hairline: rgba(15, 28, 46, 0.08);
+  --border-light: rgba(15, 28, 46, 0.09);
+  --border-hover: rgba(15, 28, 46, 0.16);
+
+  --success: #05b584;
+  --success-bg: #e9faf1;
+  --warning: #f4b63f;
   --danger: #ef4444;
-  --radius-sm: 8px;
-  --radius-md: 14px;
-  --radius-lg: 20px;
+
+  /* Radius */
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 22px;
+  --radius-xl: 28px;
   --radius-full: 9999px;
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 12px 28px rgba(0, 0, 0, 0.08);
+
+  /* Soya — rangli, yumshoq, qavatli */
+  --shadow-xs: 0 1px 2px rgba(15, 28, 46, 0.06);
+  --shadow-sm: 0 1px 2px rgba(15, 28, 46, 0.05), 0 6px 18px rgba(15, 28, 46, 0.07);
+  --shadow-md: 0 2px 4px rgba(15, 28, 46, 0.05), 0 14px 34px rgba(11, 105, 237, 0.13);
+  --shadow-lg: 0 4px 8px rgba(15, 28, 46, 0.06), 0 26px 60px rgba(11, 105, 237, 0.18);
+  --shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  --glow-brand: 0 8px 32px rgba(11, 105, 237, 0.35);
+  --glow-green: 0 8px 28px rgba(5, 181, 132, 0.32);
+
+  /* Motion */
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.44, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 *, *::before, *::after {
@@ -39,76 +78,103 @@ html {
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  background-color: #eef3fb;
-  /* Silliq "mesh" fon — brand ko'ki + yashil + binafsha nurlar, oq yuzada */
-  background-image:
-    radial-gradient(1100px 520px at 8% -12%, rgba(11, 105, 237, 0.16), transparent 60%),
-    radial-gradient(900px 560px at 108% 2%, rgba(16, 185, 129, 0.14), transparent 55%),
-    radial-gradient(760px 720px at 50% 128%, rgba(124, 58, 237, 0.12), transparent 60%);
-  background-attachment: fixed;
   color: var(--text-primary);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "cv11", "ss01";
   min-height: 100vh;
   overflow-x: hidden;
+  background-color: var(--bg-app);
+  /* Boy mesh: brand ko'k + yashil + binafsha + iliq oq, fixed */
+  background-image:
+    radial-gradient(1050px 620px at -8% -14%, rgba(11, 105, 237, 0.20), transparent 58%),
+    radial-gradient(880px 620px at 112% 6%, rgba(5, 181, 132, 0.17), transparent 55%),
+    radial-gradient(720px 640px at 50% 118%, rgba(124, 58, 237, 0.15), transparent 58%),
+    radial-gradient(520px 380px at 78% 34%, rgba(11, 105, 237, 0.07), transparent 60%);
+  background-attachment: fixed;
+  position: relative;
 }
+
+/* Nozik shovqin qatlami — "qo'lda ishlangan" tekstura */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+::selection { background: rgba(11, 105, 237, 0.2); }
+
+/* Fokus — klaviatura foydalanuvchilari uchun ko'rinadigan halqa */
+:focus-visible {
+  outline: 3px solid rgba(11, 105, 237, 0.34);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* Yupqa nozik scrollbar */
+*::-webkit-scrollbar { width: 9px; height: 9px; }
+*::-webkit-scrollbar-thumb { background: rgba(15, 28, 46, 0.18); border-radius: 8px; }
+*::-webkit-scrollbar-track { background: transparent; }
 
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px 20px 80px;
+  padding: 18px 20px 84px;
+  position: relative;
+  z-index: 1;
 }
 
-.hidden {
-  display: none !important;
-}
+.hidden { display: none !important; }
 
-input, select, textarea, button {
-  font-family: inherit;
-  font-size: 14px;
-}
+.tnum { font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+
+input, select, textarea, button { font-family: inherit; font-size: 14px; }
 
 button {
   cursor: pointer;
   border: none;
   background: none;
-  transition: all 0.2s ease;
+  transition: transform 0.18s var(--ease-out), background 0.18s ease, color 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
   user-select: none;
   -webkit-user-select: none;
 }
 
+/* ── Badge'lar (icon + matn, rangli hairline) ── */
 .badge {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  padding: 4px 10px;
+  gap: 6px;
+  padding: 4px 11px;
   border-radius: var(--radius-full);
   font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.2px;
+  font-weight: 700;
+  letter-spacing: 0.15px;
+  line-height: 1.35;
+  white-space: nowrap;
 }
-.badge-local {
-  background: #ecfdf5;
-  color: #059669;
-  border: 1px solid #a7f3d0;
-}
-.badge-import {
-  background: #f1f5f9;
-  color: #475569;
-  border: 1px solid #cbd5e1;
-}
-.badge-rx {
-  background: #fef2f2;
-  color: #b91c1c;
-  border: 1px solid #fecaca;
-}
-.badge-otc {
-  background: #eff6ff;
-  color: #1d4ed8;
-  border: 1px solid #bfdbfe;
+.badge svg { width: 12px; height: 12px; flex: 0 0 auto; }
+
+.badge-local { background: var(--green-soft); color: var(--green-deep); border: 1px solid rgba(5, 181, 132, 0.35); }
+.badge-import { background: #f2f5f9; color: #475569; border: 1px solid rgba(15, 28, 46, 0.14); }
+.badge-rx { background: #fef2f2; color: var(--red-deep); border: 1px solid rgba(239, 68, 68, 0.3); }
+.badge-otc { background: #eef4ff; color: #1d4ed8; border: 1px solid rgba(11, 105, 237, 0.22); }
+
+/* ── Umumiy glass kartasi ── */
+.glass-card {
+  background: var(--glass-strong);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  backdrop-filter: blur(14px) saturate(140%);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm), var(--shadow-inset);
 }
 
-/* Real Mobile App Screen Adjustments */
+/* ── Mobilda ── */
 @media (max-width: 640px) {
   html, body {
     background-color: #f8fafc !important;
@@ -130,9 +196,65 @@ button {
     box-sizing: border-box !important;
   }
 
-  /* Input maydonlarida matn kiritish va tanlashga ruxsat */
-  input, textarea {
-    user-select: text !important;
-    -webkit-user-select: text !important;
+  /* Mrstxt v4.1: mobil "patchy mesh" tuzatishi — noise qatlami ham o'chiriladi */
+  body::before { display: none !important; }
+
+  input, textarea { user-select: text !important; -webkit-user-select: text !important; }
+}
+
+/* ── Kamaytirilgan harakat — accessibility ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
+
+/* ══════════ v4 «Silliq» — toast bildirishnomalar & zarralar ══════════ */
+.toast-root {
+  position: fixed;
+  left: 50%;
+  bottom: 108px;
+  transform: translateX(-50%);
+  z-index: 1200;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: max-content;
+  max-width: min(92vw, 430px);
+  pointer-events: none;
+}
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  background: rgba(15, 28, 46, 0.92);
+  color: #eaf2ff;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.1px;
+  padding: 10px 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 14px 36px rgba(8, 20, 38, 0.4);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  animation: toastIn 0.32s var(--ease-spring);
+}
+.toast svg { color: #4ade80; flex: 0 0 auto; }
+@keyframes toastIn {
+  from { opacity: 0; transform: translateY(16px) scale(0.9); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.toast-out { opacity: 0; transform: translateY(8px); transition: all 0.3s ease; }
+
+@media (max-width: 640px) {
+  .toast-root { bottom: 158px; }
+}
+
+/* v4 — interaktiv elementlar umumiy mikro-motion */
+.btn-primary:active, .btn-page:active, .btn-secondary:active { transform: scale(0.97); }
+a { -webkit-tap-highlight-color: transparent; }

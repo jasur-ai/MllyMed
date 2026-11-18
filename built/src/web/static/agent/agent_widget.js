@@ -1,6 +1,10 @@
 /**
  * MllyMed AI — Suzuvchi Triaj va Tibbiy Skrining Agenti
+ * Xalqaro daraja (ChatGPT/Siri-klass): oqim (typewriter) javob,
+ * jonli taymerli "o'ylayapti" holati, qizil bayroq → 103 tez yordam.
  */
+
+const AI_TIMER_START = () => Date.now();
 
 function toggleAgentPopup() {
   const popup = $('agent-popup');
@@ -20,6 +24,33 @@ function sendPrompt(text) {
   }
 }
 
+/**
+ * Matnni "oqim" effekti bilan chiqaradi — foydalanuvchi javobni
+ * bir zumda emas, silliq yozilayotgandek ko'radi.
+ */
+function streamTextInto(el, fullText, done) {
+  const text = String(fullText || '');
+  const total = text.length;
+  // Uzoq javoblar tezroq, qisqalari tabiiy sur'atda
+  const perTick = Math.max(1, Math.round(total / 110));
+  let i = 0;
+  el.textContent = '';
+  const cursor = document.createElement('span');
+  cursor.className = 'stream-cursor';
+  const tick = setInterval(() => {
+    i = Math.min(total, i + perTick);
+    el.textContent = text.slice(0, i);
+    el.appendChild(cursor.cloneNode());
+    const log = $('chat-log');
+    if (log) log.scrollTop = log.scrollHeight;
+    if (i >= total) {
+      clearInterval(tick);
+      el.textContent = text;
+      if (typeof done === 'function') done();
+    }
+  }, 16);
+}
+
 async function chatSend() {
   const inp = $('chat-in');
   const text = (inp?.value || '').trim();
@@ -32,9 +63,9 @@ async function chatSend() {
   log.insertAdjacentHTML('beforeend', `<div class="bubble user">${esc(text)}</div>`);
   log.scrollTop = log.scrollHeight;
 
-  // "O'ylamoqda" (AI Thinking) holati — fon yo'q, nurli shimmer + jonli soniyalik taymer
+  // "O'ylamoqda" (AI Thinking) holati — fonsiz, nurli shimmer + jonli soniyalik taymer (v4.1)
   const typingId = 'typing-' + Date.now();
-  const t0 = Date.now();
+  const t0 = AI_TIMER_START();
   log.insertAdjacentHTML('beforeend', `
     <div class="bubble bot typing" id="${typingId}" role="status" aria-live="polite">
       <span class="think-spark" aria-hidden="true">
@@ -50,8 +81,7 @@ async function chatSend() {
       </span>
       <span class="think-label">O'ylamoqda…</span>
       <b class="think-s">0s</b>
-    </div>
-  `);
+    </div>`);
   log.scrollTop = log.scrollHeight;
 
   const thinkTimer = setInterval(() => {
@@ -68,32 +98,43 @@ async function chatSend() {
     const res = await api('/api/chat', { text: text, sid: AppState.sid }, 'patient');
     stopThinking();
 
-    let botHtml = `<div class="bubble bot">${esc(res.reply)}`;
+    // QIZIL BAYROQ — darhol, to'liq, katta 103 tugmasi bilan
+    const cleanReply = (typeof stripEmoji === 'function') ? stripEmoji(res.reply || '') : String(res.reply || '');
     if (res.stage === 'emergency') {
-      botHtml = `
-        <div class="bubble warning">
-          <div style="font-weight:800;color:#b91c1c;margin-bottom:4px">🚨 QIZIL BAYROQ — 103 GA QO'NG'IROQ QILING</div>
-          ${esc(res.reply)}
-          <div style="margin-top:10px">
-            <a href="tel:103" class="btn-primary" style="background:#dc2626;display:inline-block;padding:6px 16px;font-size:12px;text-decoration:none">103 ga qo'ng'iroq qilish</a>
-          </div>
-        </div>
-      `;
-    } else if (res.triage && res.triage.specialist) {
-      botHtml += `
-        <div style="margin-top:10px;padding-top:8px;border-top:1px dashed var(--border-light)">
-          <span class="badge badge-otc" style="cursor:pointer" onclick="quickSearch('${esc(res.triage.specialist)}')">
-            🩺 Yo'naltirish: ${esc(res.triage.specialist)}
-          </span>
-        </div>
-      `;
+      log.insertAdjacentHTML('beforeend', `
+        <div class="bubble emergency" role="alert">
+          <div class="emg-band">${icon('alert-triangle', 16, 2.4)} QIZIL BAYROQ — SHOSHILINCH HOLAT</div>
+          <div class="emg-reply">${esc(cleanReply)}</div>
+          <a class="emg-call-btn" href="tel:103">${icon('phone', 26, 2.2)}<span><small>Tez yordam</small><b>103 — qo'ng'iroq qiling</b></span></a>
+          <div class="emg-note">${icon('info', 12, 2.2)} Operator bilan gaplashing va manzilni aniq ayting. Telefonni o'chirmang.</div>
+        </div>`);
+      log.scrollTop = log.scrollHeight;
+      return;
     }
-    botHtml += `</div>`;
-    log.insertAdjacentHTML('beforeend', botHtml);
-    log.scrollTop = log.scrollHeight;
+
+    // Oddiy javob — oqim (typewriter) effekti bilan
+    const bubble = document.createElement('div');
+    bubble.className = 'bubble bot streaming';
+    const body = document.createElement('span');
+    body.className = 'stream-text';
+    bubble.appendChild(body);
+    log.appendChild(bubble);
+
+    streamTextInto(body, cleanReply, () => {
+      bubble.classList.remove('streaming');
+      const specialist = res.triage && res.triage.specialist ? ((typeof stripEmoji === 'function') ? stripEmoji(res.triage.specialist) : res.triage.specialist) : '';
+      if (specialist) {
+        const foot = document.createElement('div');
+        foot.className = 'bubble-foot';
+        foot.innerHTML = `<button type="button" class="badge badge-otc triage-chip" onclick="quickSearch('${esc(specialist)}')">${icon('stethoscope', 13, 2.1)} Yo'naltirish: ${esc(specialist)}</button>`;
+        bubble.appendChild(foot);
+        log.scrollTop = log.scrollHeight;
+      }
+    });
   } catch (e) {
     stopThinking();
     log.insertAdjacentHTML('beforeend', `<div class="bubble bot" style="color:#ef4444">${esc(e.message)}</div>`);
+    log.scrollTop = log.scrollHeight;
   }
 }
 

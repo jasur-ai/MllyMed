@@ -1,89 +1,150 @@
-/* ── Floating MllyMed AI Agent (Mobile-First) ────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════════
+   MllyMed AI — Suzuvchi tibbiy agent widget (v4 "Silliq")
+   Orb: conic gradient ring + radial glow · rangiq, iliq, shaffof
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ── Orb core ── */
+.orb {
+  position: relative;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 34% 32%, #ffffff 0%, #bfe0ff 14%, #4da3ff 38%, #0b69ed 66%, #083a7a 100%);
+  box-shadow:
+    inset -4px -6px 12px rgba(8, 58, 122, 0.55),
+    inset 3px 4px 8px rgba(255, 255, 255, 0.9),
+    0 6px 22px rgba(11, 105, 237, 0.45);
+  overflow: hidden;
+  flex: 0 0 auto;
+}
+.orb::after {
+  /* yaltiroq nuqta */
+  content: "";
+  position: absolute;
+  top: 18%; left: 22%;
+  width: 32%; height: 22%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(255,255,255,0.95), transparent 70%);
+}
+.orb-ring {
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  padding: 3px;
+  background: conic-gradient(from 0deg, #38d6ff, #0b69ed, #7c3aed, #05b584, #38d6ff);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  animation: orbSpin 3.2s linear infinite;
+}
+@keyframes orbSpin { to { transform: rotate(360deg); } }
+.orb-halo {
+  position: absolute;
+  inset: -14px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(56, 214, 255, 0.4), rgba(11, 105, 237, 0.18) 45%, transparent 70%);
+  filter: blur(2px);
+  z-index: -1;
+  animation: haloPulse 2.6s ease-in-out infinite;
+}
+@keyframes haloPulse {
+  0%, 100% { opacity: 0.75; transform: scale(0.94); }
+  50% { opacity: 1; transform: scale(1.1); }
+}
+
+/* ── Suzuvchi tugma (FAB) ── */
 .floating-agent-btn {
   position: fixed;
-  bottom: 28px;
-  right: 28px;
+  bottom: 26px;
+  right: 26px;
   z-index: 100;
   display: flex;
   align-items: center;
-  gap: 10px;
-  background: var(--primary);
-  color: #ffffff;
-  padding: 10px 22px 10px 14px;
+  gap: 12px;
+  padding: 10px 22px 10px 12px;
   border-radius: var(--radius-full);
-  box-shadow: 0 8px 28px rgba(0, 102, 255, 0.4);
+  background: linear-gradient(160deg, #10233c 0%, #0b1a2e 100%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #eaf2ff;
   cursor: pointer;
-  border: none;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 10px 34px rgba(5, 20, 40, 0.45), 0 0 0 1px rgba(56, 214, 255, 0.08) inset, var(--shadow-inset);
+  transition: transform 0.28s var(--ease-spring), box-shadow 0.28s ease;
   -webkit-tap-highlight-color: transparent;
 }
-
 .floating-agent-btn:hover {
-  background: var(--primary-hover);
-  transform: translateY(-3px) scale(1.02);
+  transform: translateY(-3px);
+  box-shadow: 0 16px 44px rgba(5, 20, 40, 0.5), 0 0 26px rgba(11, 105, 237, 0.35), var(--shadow-inset);
 }
+.floating-agent-btn:active { transform: translateY(0) scale(0.96); }
 
-.agent-icon-circle {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+.floating-agent-btn .orb { width: 40px; height: 40px; }
+.fab-tx { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.15; }
+.fab-tx b { font-size: 14px; font-weight: 800; letter-spacing: 0.2px; }
+.fab-tx small { font-size: 10px; color: #7fe0b2; font-weight: 700; letter-spacing: 0.6px; display: flex; align-items: center; gap: 4px; }
+.fab-tx small::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: #2ee6a8; box-shadow: 0 0 6px #2ee6a8; }
 
+/* ── Popup panel ── */
 .agent-popup {
   position: fixed;
   bottom: 96px;
-  right: 28px;
-  width: 400px;
+  right: 26px;
+  width: 402px;
   max-width: calc(100vw - 32px);
   height: 560px;
   max-height: calc(100vh - 120px);
-  background: #ffffff;
-  border-radius: var(--radius-lg);
-  box-shadow: 0 20px 48px rgba(15, 23, 42, 0.2);
-  border: 1px solid var(--border-light);
+  background: rgba(255, 255, 255, 0.82);
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
+  backdrop-filter: blur(22px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 24px 64px rgba(8, 30, 60, 0.32), var(--shadow-inset);
   display: flex;
   flex-direction: column;
   z-index: 300;
   overflow: hidden;
-  animation: popupFade 0.25s ease forwards;
+  animation: popupSpring 0.42s var(--ease-spring) forwards;
 }
-
-@keyframes popupFade {
-  from { opacity: 0; transform: translateY(16px) scale(0.96); }
+@keyframes popupSpring {
+  from { opacity: 0; transform: translateY(26px) scale(0.92); }
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
+.sheet-handle {
+  display: none;
+  width: 44px;
+  height: 5px;
+  border-radius: 99px;
+  background: rgba(15, 28, 46, 0.18);
+  margin: 10px auto 0;
+}
+
 .popup-header {
-  background: #f8fafc;
-  padding: 16px 20px;
-  border-bottom: 1px solid var(--border-light);
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0));
+  border-bottom: 1px solid var(--hairline);
 }
+.popup-id { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.popup-id .orb { width: 44px; height: 44px; }
+.popup-id b { font-size: 15px; color: var(--text-primary); letter-spacing: -0.01em; }
+.popup-status { font-size: 10.5px; color: #059669; font-weight: 700; display: flex; align-items: center; gap: 5px; margin-top: 1px; }
+.pulse-dot { width: 6px; height: 6px; border-radius: 50%; background: #10b981; animation: dotPulse 1.8s ease-in-out infinite; }
+@keyframes dotPulse { 0%,100% { box-shadow: 0 0 0 0 rgba(16,185,129,0.5); } 60% { box-shadow: 0 0 0 5px rgba(16,185,129,0); } }
 
 .btn-close-popup {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: #e2e8f0;
+  width: 34px; height: 34px;
+  border-radius: 12px;
+  background: rgba(15, 28, 46, 0.06);
   color: var(--text-secondary);
   font-size: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.18s ease, transform 0.18s ease;
 }
+.btn-close-popup:hover { background: rgba(15, 28, 46, 0.12); transform: scale(1.06); }
 
-.btn-close-popup:hover {
-  background: #cbd5e1;
-  color: var(--text-primary);
-}
-
+/* ── Chat oqimi ── */
 .chat-stream {
   flex-grow: 1;
   overflow-y: auto;
@@ -91,100 +152,161 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  background: #f8fafc;
+  background: linear-gradient(180deg, rgba(238, 244, 255, 0.5), rgba(255,255,255,0) 30%);
   -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
 }
 
 .bubble {
-  max-width: 84%;
-  padding: 12px 16px;
+  max-width: 86%;
+  padding: 11px 15px;
   border-radius: 18px;
   font-size: 13.5px;
-  line-height: 1.45;
+  line-height: 1.5;
   word-break: break-word;
+  white-space: pre-line;
+  animation: bubbleIn 0.32s var(--ease-spring);
+}
+@keyframes bubbleIn {
+  from { opacity: 0; transform: translateY(10px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .bubble.bot {
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.95);
   color: var(--text-primary);
-  border-bottom-left-radius: 4px;
+  border-bottom-left-radius: 6px;
   align-self: flex-start;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
-  border: 1px solid var(--border-light);
+  border: 1px solid var(--hairline);
+  box-shadow: var(--shadow-xs);
 }
 
 .bubble.user {
-  background: var(--primary);
-  color: #ffffff;
-  border-bottom-right-radius: 4px;
+  background: linear-gradient(150deg, #1a7af5, #0b5bd6);
+  color: #fff;
+  border-bottom-right-radius: 6px;
   align-self: flex-end;
+  box-shadow: 0 6px 18px rgba(11, 105, 237, 0.35);
 }
 
-.bubble.warning {
-  background: #fef2f2;
-  color: #991b1b;
-  border: 1px solid #fecaca;
-  font-weight: 500;
+.stream-cursor {
+  display: inline-block;
+  width: 8px;
+  height: 1.05em;
+  vertical-align: -0.14em;
+  margin-left: 2px;
+  border-radius: 2px;
+  background: var(--brand);
+  animation: cursorBlink 0.9s steps(1) infinite;
+}
+@keyframes cursorBlink { 50% { opacity: 0; } }
+
+.bubble-foot { margin-top: 10px; padding-top: 9px; border-top: 1px dashed var(--hairline); }
+.triage-chip { cursor: pointer; transition: transform 0.18s var(--ease-out), box-shadow 0.18s ease; }
+.triage-chip:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(29, 78, 216, 0.25); }
+
+/* ── Qizil bayroq: shoshilinch holat ── */
+.bubble.emergency {
+  background: #fff5f5;
+  border: 1.5px solid rgba(239, 68, 68, 0.4);
+  color: #7f1d1d;
+  max-width: 92%;
+  box-shadow: 0 10px 30px rgba(239, 68, 68, 0.18);
+}
+.emg-band {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 800;
+  font-size: 12px;
+  letter-spacing: 0.4px;
+  color: #dc2626;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+.emg-reply { font-size: 13px; line-height: 1.5; margin-bottom: 12px; }
+.emg-call-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: linear-gradient(160deg, #ef4444, #b91c1c);
+  color: #fff;
+  text-decoration: none;
+  padding: 13px 16px;
+  border-radius: 16px;
+  box-shadow: 0 10px 26px rgba(220, 38, 38, 0.42);
+  animation: callPulse 1.5s ease-in-out infinite;
+}
+@keyframes callPulse {
+  0%, 100% { box-shadow: 0 10px 26px rgba(220, 38, 38, 0.42), 0 0 0 0 rgba(239, 68, 68, 0.5); }
+  50% { box-shadow: 0 12px 32px rgba(220, 38, 38, 0.5), 0 0 0 6px rgba(239, 68, 68, 0.14); }
+}
+.emg-call-btn small { display: block; font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; opacity: 0.85; font-weight: 700; }
+.emg-call-btn b { display: block; font-size: 17px; letter-spacing: -0.01em; }
+.emg-note { display: flex; gap: 5px; align-items: center; font-size: 10.5px; color: #991b1b; margin-top: 9px; opacity: 0.85; }
+
+/* ── Tezkor chiplar ── */
+.quick-chip {
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid var(--hairline);
+  color: var(--brand-deep);
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 7px 12px;
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-xs);
+  transition: all 0.2s var(--ease-out);
+}
+.quick-chip:hover {
+  border-color: rgba(11, 105, 237, 0.35);
+  background: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(11, 105, 237, 0.18);
 }
 
+/* ── Pastki kiritish paneli ── */
 .chat-bottom {
-  padding: 12px 16px;
-  background: #ffffff;
-  border-top: 1px solid var(--border-light);
+  padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.9);
+  border-top: 1px solid var(--hairline);
   display: flex;
   gap: 8px;
+  align-items: center;
 }
-
 .chat-bottom input {
   flex-grow: 1;
-  padding: 11px 16px;
-  border: 1px solid var(--border-light);
+  padding: 12px 17px;
+  border: 1.5px solid transparent;
+  background: rgba(15, 28, 46, 0.05);
   border-radius: var(--radius-full);
   outline: none;
   font-size: 14px;
+  transition: all 0.22s ease;
 }
-
 .chat-bottom input:focus {
-  border-color: var(--primary);
+  border-color: rgba(11, 105, 237, 0.45);
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(11, 105, 237, 0.1);
 }
-
 .btn-send {
-  background: var(--primary);
-  color: #ffffff;
-  padding: 10px 18px;
+  background: linear-gradient(160deg, #1a7af5, #0b5bd6);
+  color: #fff;
+  padding: 11px 20px;
   border-radius: var(--radius-full);
-  font-weight: 600;
+  font-weight: 700;
   font-size: 13px;
-  flex-shrink: 0;
+  letter-spacing: 0.2px;
+  box-shadow: 0 6px 18px rgba(11, 105, 237, 0.4);
 }
+.btn-send:hover { transform: translateY(-1px); box-shadow: 0 10px 24px rgba(11, 105, 237, 0.45); }
+.btn-send:active { transform: scale(0.95); }
 
-.btn-send:hover {
-  background: var(--primary-hover);
-}
-
-/* ── Mobile App Bottom Sheet Presentation ────────────────── */
+/* ── Mobil: bottom sheet ── */
 @media (max-width: 640px) {
-  .floating-agent-btn {
-    bottom: 20px;
-    right: 14px;
-    padding: 8px 16px 8px 10px;
-    gap: 8px;
-    box-shadow: 0 6px 20px rgba(0, 102, 255, 0.35);
-  }
-
-  .agent-icon-circle {
-    width: 32px;
-    height: 32px;
-  }
-
-  .agent-icon-circle svg {
-    width: 18px;
-    height: 18px;
-  }
-
-  .floating-agent-btn span {
-    font-size: 13px;
-  }
+  .floating-agent-btn { bottom: 88px; right: 14px; padding: 8px 15px 8px 9px; gap: 9px; }
+  .floating-agent-btn .orb { width: 36px; height: 36px; }
+  .fab-tx small { display: none; }
+  .fab-tx b { font-size: 13px; }
 
   .agent-popup {
     width: 100%;
@@ -201,23 +323,12 @@
     box-sizing: border-box;
     animation: agentSheetUp 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
+  .sheet-handle { display: block; }
+  @keyframes agentSheetUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
 
-  @keyframes agentSheetUp {
-    from { transform: translateY(100%); }
-    to { transform: translateY(0); }
-  }
-
-  .popup-header {
-    padding: 14px 18px;
-  }
-
-  .chat-bottom {
-    padding: 10px 14px 28px 14px; /* safe bottom inset */
-  }
-
-  .chat-bottom input {
-    font-size: 16px; /* Prevents auto-zoom in iOS Safari */
-  }
+  .popup-header { padding: 14px 18px; }
+  .chat-bottom { padding: 10px 14px calc(16px + env(safe-area-inset-bottom, 12px)); }
+  .chat-bottom input { font-size: 16px; }
 }
 
 /* ══════════ "O'ylamoqda" (AI Thinking) holati: Fon yo'q, Nurli Shimmer + Soniyalik taymer ═════════ */

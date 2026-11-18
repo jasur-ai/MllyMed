@@ -1616,3 +1616,202 @@
     padding: 0 2px;
   }
 }
+
+/* ════════════════════════════════════════════════════════════════
+   v4 «Silliq» — Dizayn tizimi: studiya kartalari, rangli soya, motion
+   ════════════════════════════════════════════════════════════════ */
+
+/* Statistik karta — shisha effekt */
+.stat-card {
+  background: rgba(255, 255, 255, 0.8) !important;
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.9) !important;
+  border-radius: 18px !important;
+  box-shadow: var(--shadow-sm), var(--shadow-inset) !important;
+  transition: transform 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out);
+}
+.stat-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md), var(--shadow-inset) !important; }
+.stat-val { letter-spacing: -0.03em; }
+
+/* Ecotizim kartalari — ikonkalarga rang */
+.eco-card {
+  background: rgba(255, 255, 255, 0.82) !important;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-radius: var(--radius-lg) !important;
+}
+.eco-apteka .eco-ic { color: #047857; }
+.eco-dmed .eco-ic { color: #0b69ed; }
+.eco-ic { border: 1px solid var(--hairline); }
+
+/* ── Mahsulot kartasi: "studiya" stend ── */
+.product-card {
+  background: rgba(255, 255, 255, 0.9) !important;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--hairline) !important;
+  box-shadow: var(--shadow-sm) !important;
+  overflow: hidden;
+  animation: cardIn 0.6s var(--ease-out) both;
+  animation-delay: var(--d, 0ms);
+  transition: transform 0.28s var(--ease-out), box-shadow 0.28s var(--ease-out), border-color 0.28s ease;
+}
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(26px) scale(0.96); filter: blur(5px); }
+  to { opacity: 1; transform: translateY(0) scale(1); filter: none; }
+}
+.product-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(11, 105, 237, 0.3) !important;
+  box-shadow: 0 22px 48px rgba(11, 105, 237, 0.2), var(--shadow-inset) !important;
+}
+
+.card-media {
+  height: 184px !important;
+  background: linear-gradient(165deg, hsl(var(--ph, 215) 78% 97%) 0%, hsl(var(--ph, 215) 58% 91%) 100%) !important;
+  border-bottom: 1px solid var(--hairline) !important;
+  isolation: isolate;
+  overflow: hidden;
+}
+.card-media::before {
+  content: "";
+  position: absolute; inset: 0; z-index: 0;
+  background-image: radial-gradient(rgba(15, 28, 46, 0.1) 1.05px, transparent 1.35px);
+  background-size: 15px 15px;
+}
+.card-media::after {
+  content: "";
+  position: absolute; z-index: 2;
+  top: -35%; left: 0; width: 46%; height: 175%;
+  background: linear-gradient(100deg, transparent 8%, rgba(255, 255, 255, 0.9) 50%, transparent 92%);
+  transform: translateX(-130%) rotate(20deg);
+  animation: mediaSheen 4.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  pointer-events: none;
+}
+@keyframes mediaSheen {
+  0%, 62% { transform: translateX(-130%) rotate(20deg); }
+  100% { transform: translateX(330%) rotate(20deg); }
+}
+
+.pack-art {
+  width: 148px !important;
+  height: 130px !important;
+  position: relative;
+  z-index: 1;
+  filter: drop-shadow(0 18px 15px rgba(15, 28, 46, 0.3)) !important;
+  transition: transform 0.38s var(--ease-spring);
+}
+.pack-photo {
+  max-width: 80%;
+  max-height: 86%;
+  object-fit: contain;
+  position: relative;
+  z-index: 1;
+  filter: drop-shadow(0 18px 15px rgba(15, 28, 46, 0.3));
+  transition: transform 0.38s var(--ease-spring);
+}
+.product-card:hover .pack-art,
+.product-card:hover .pack-photo { transform: translateY(-7px) scale(1.06) rotate(-1.4deg); }
+
+.card-media-sellers {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 5px;
+  background: rgba(15, 28, 46, 0.84) !important;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  color: #ffffff !important;
+  font-size: 10.5px !important;
+  letter-spacing: 0.25px;
+  padding: 4px 10px !important;
+  border-radius: var(--radius-full) !important;
+  z-index: 3;
+}
+
+.card-inn { color: var(--brand-deep) !important; }
+.price-val { font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+
+.btn-card-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(15, 28, 46, 0.05) !important;
+  border: 1px solid var(--hairline);
+  color: var(--text-primary) !important;
+}
+.btn-card-action:hover {
+  background: var(--brand) !important;
+  color: #fff !important;
+  border-color: transparent;
+  box-shadow: var(--glow-brand);
+}
+.btn-card-action:active { transform: scale(0.93); }
+
+/* Sevimlilar zarralari */
+.fx-particle {
+  position: fixed;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  z-index: 9999;
+  pointer-events: none;
+  animation: particleFly 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes particleFly {
+  0% { transform: translate(0, 0) scale(1); opacity: 1; }
+  100% { transform: translate(var(--tx), var(--ty)) scale(0.15); opacity: 0; }
+}
+.fav-empty-ic { color: #fda4af; margin: 4px auto 10px; display: flex; justify-content: center; }
+
+/* Bo'sh holat — yumshoq belgi plitasi */
+.empty-art {
+  width: 84px;
+  height: 84px;
+  border-radius: 26px;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 14px !important;
+  color: var(--brand);
+  background: linear-gradient(160deg, rgba(11, 105, 237, 0.12), rgba(11, 105, 237, 0.04));
+  border: 1px solid rgba(11, 105, 237, 0.16);
+  box-shadow: var(--shadow-inset);
+}
+
+/* Detail modal — pack shot plitasi */
+.detail-head { display: flex !important; gap: 18px; align-items: flex-start; justify-content: space-between; }
+.detail-head-tx { min-width: 0; }
+.detail-shot {
+  flex: 0 0 auto;
+  width: 96px;
+  height: 106px;
+  border-radius: 18px;
+  background: linear-gradient(165deg, hsl(215 72% 97%), hsl(215 55% 89%));
+  border: 1px solid var(--hairline);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-inset);
+}
+.detail-shot .pack-art { width: 76px !important; height: 70px !important; filter: drop-shadow(0 8px 8px rgba(15, 28, 46, 0.25)) !important; }
+
+/* Info qatorlar (bino/teg/quti ikonkalari bilan) */
+.info-row { display: flex; gap: 8px; align-items: flex-start; font-size: 12.5px; line-height: 1.5; }
+.info-row svg { flex: 0 0 auto; margin-top: 2px; color: var(--text-secondary); }
+.kpi-l { display: flex !important; align-items: center; justify-content: center; gap: 5px; }
+
+/* Mobil moslashuv */
+@media (max-width: 640px) {
+  .card-media { height: 136px !important; }
+  .pack-art { width: 100px !important; height: 88px !important; }
+  .product-card { border-radius: 18px !important; }
+  .detail-shot { width: 82px; height: 92px; }
+  .detail-shot .pack-art { width: 64px !important; height: 60px !important; }
+}
+
+/* v4 — tugma/chiplarda SVG + matn hizalanishi */
+.cat-pill-mob { display: inline-flex; align-items: center; gap: 6px; }
+.b2b-tab { display: inline-flex; align-items: center; gap: 7px; }
+.b2b-tab svg { flex: 0 0 auto; }
+.btn-card-action svg { flex: 0 0 auto; }

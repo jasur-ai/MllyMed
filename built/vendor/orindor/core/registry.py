@@ -51,10 +51,10 @@ class Candidate:
     has_price: bool
 
     def line(self) -> str:
-        mark = "🇺🇿" if self.local else "🌍"
+        mark = "mahalliy" if self.local else "import"
         price = " · narx bor" if self.has_price else ""
-        return (f"{mark} {self.name} — {self.strength or '—'}, "
-                f"{form_uz(self.form)}{price}")
+        return (f"{self.name} — {self.strength or '—'}, "
+                f"{form_uz(self.form)} · {mark}{price}")
 
 
 def form_uz(form: str) -> str:
