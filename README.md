@@ -1,7 +1,9 @@
 # MllyMed — Milliy dori vositalariga ishonch ekotizimi
 
 **Track №17:** *Milliy dori vositalariga ishonch*  
-**Mahsulot nomi:** **MllyMed**
+**Mahsulot nomi:** **MllyMed**  
+**Jonli demo (Production):** [https://mllymed.onrender.com/](https://mllymed.onrender.com/)  
+**Mobil va Web versiya:** Moslashuvchan (Responsive Web App)
 
 Loyihaning to'liq kod strukturasi professional darajada **Frontend**, **Backend**, **Agent** va **Data** qismlariga ajratildi. Har bir qatlamda **B2C (Bemorlar va aholi)** va **B2B (Biznes, Shifokor, Dorixona, Zavod)** yo'nalishlari aniq modullarga bo'lingan.
 
