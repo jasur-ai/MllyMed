@@ -63,13 +63,23 @@ async function chatSend() {
   log.insertAdjacentHTML('beforeend', `<div class="bubble user">${esc(text)}</div>`);
   log.scrollTop = log.scrollHeight;
 
-  // "O'ylayapti" holati — jonli taymer + to'lqin bar animatsiyasi
+  // "O'ylamoqda" (AI Thinking) holati — fonsiz, nurli shimmer + jonli soniyalik taymer (v4.1)
   const typingId = 'typing-' + Date.now();
   const t0 = AI_TIMER_START();
   log.insertAdjacentHTML('beforeend', `
     <div class="bubble bot typing" id="${typingId}" role="status" aria-live="polite">
-      <span class="think-wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
-      <span class="think-label">MllyMed AI o'ylayapti</span><span class="think-dots" aria-hidden="true"><i>.</i><i>.</i><i>.</i></span>
+      <span class="think-spark" aria-hidden="true">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+          <path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z" fill="url(#sparkGrad)"/>
+          <defs>
+            <linearGradient id="sparkGrad" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#0b69ed"/>
+              <stop offset="1" stop-color="#38bdf8"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </span>
+      <span class="think-label">O'ylamoqda…</span>
       <b class="think-s">0s</b>
     </div>`);
   log.scrollTop = log.scrollHeight;
