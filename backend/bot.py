@@ -31,7 +31,7 @@ except ImportError:
 from agent.agent import Agent, Session
 
 # Konfiguratsiya
-BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "9273249390:AAEujrRl8b_4WUtO0VA2RyhF1NH40m8gXTI")
+BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "").strip()
 WEBAPP_URL = os.getenv("WEBAPP_URL", "https://jasur-ai.github.io/MllyMed/")
 API_BASE = f"https://api.telegram.org/bot{BOT_TOKEN}"
 
@@ -53,11 +53,11 @@ class MllyMedTelegramBot:
 
     def get_session(self, chat_id: int) -> Session:
         if chat_id not in self.sessions:
-            self.sessions[chat_id] = Session(f"tg_{chat_id}")
+            self.sessions[chat_id] = Session()
         return self.sessions[chat_id]
 
     def reset_session(self, chat_id: int) -> Session:
-        self.sessions[chat_id] = Session(f"tg_{chat_id}")
+        self.sessions[chat_id] = Session()
         return self.sessions[chat_id]
 
     def _call(self, method: str, data: dict = None, timeout: int = 40) -> dict:
@@ -327,6 +327,9 @@ def main():
     parser.add_argument("--webapp-url", default=WEBAPP_URL, help="Telegram Mini App URL (HTTPS)")
     args = parser.parse_args()
 
+    if not args.token:
+        parser.error("TELEGRAM_BOT_TOKEN muhit o'zgaruvchisi o'rnatilmagan. "
+                     "Masalan: export TELEGRAM_BOT_TOKEN=... (BotFather → /token)")
     bot = MllyMedTelegramBot(args.token, args.webapp_url)
     bot.run_polling()
 

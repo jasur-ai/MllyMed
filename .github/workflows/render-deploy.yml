@@ -1,0 +1,192 @@
+name: render-deploy
+# MllyMed'ni Render.com'ga deploy qiluvchi ish oqimi.
+# Sandbox'dan api.render.com yopiq bo'lgani uchun deploy shu runner orqali bajariladi.
+# Maxfiyliklar: faqat GitHub Secrets (repo Settings → Secrets and variables → Actions).
+
+on:
+  push:
+    branches: [develop]
+    paths:
+      - '.github/workflows/render-deploy.yml'
+      - 'deploy/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  RENDER_API: https://api.render.com/v1
+  REPO_URL: https://github.com/jasur-ai/MllyMed
+  BRANCH: develop
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Render — workspace (owner) ID
+        env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+        run: |
+          set -euo pipefail
+          R=$(curl -sS -H "Authorization: Bearer $RENDER_API_KEY" "$RENDER_API/owners?limit=5")
+          OID=$(echo "$R" | jq -r '.[0].owner.id // .[0].id // empty' || true)
+          if [ -z "$OID" ]; then
+            echo "::error::ownerId olinmadi. Render token yaroqlimi? Javob: $(echo "$R" | head -c 200)"
+            exit 1
+          fi
+          echo "Owner ID: $OID"
+          echo "OWNER_ID=$OID" >> "$GITHUB_ENV"
+
+      # ── 1) WEB SERVIS: https://<name>.onrender.com — frontend + API + agent ──
+      - name: Render — web servis (create yoki deploy trigger)
+        env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+        run: |
+          set -euo pipefail
+          NAME=mllymed
+          LIST=$(curl -sS -H "Authorization: Bearer $RENDER_API_KEY" "$RENDER_API/services?name=$NAME&limit=20")
+          SID=$(echo "$LIST" | jq -r '[.[].service | select(.name=="'$NAME'")][0].id // empty')
+          if [ -z "$SID" ]; then
+            echo "Web servis yaratilmoqda: $NAME (docker, free, frankfurt)"
+            PAYLOAD=$(jq -nc --arg owner "$OWNER_ID" --arg repo "$REPO_URL" --arg branch "$BRANCH" '
+              {type:"web_service", name:"mllymed", ownerId:$owner, repo:$repo, branch:$branch,
+               autoDeploy:"yes",
+               serviceDetails:{runtime:"docker", plan:"free", region:"frankfurt",
+                               envSpecificDetails:{dockerfilePath:"./deploy/Dockerfile", dockerContext:"."}}}')
+            CODE=$(curl -sS -o /tmp/web_create.json -w '%{http_code}' -X POST \
+                   -H "Authorization: Bearer $RENDER_API_KEY" -H 'Content-Type: application/json' \
+                   -d "$PAYLOAD" "$RENDER_API/services")
+            if [ "$CODE" -ge 300 ]; then
+              echo "::error::Web servis yaratilmadi (HTTP $CODE): $(jq -c '{message:.message, error:.error}' /tmp/web_create.json 2>/dev/null || head -c 300 /tmp/web_create.json)"
+              exit 1
+            fi
+            SID=$(jq -r '.service.id // .id // empty' /tmp/web_create.json)
+            echo "Yaratildi: $SID (autoDeploy=yes, ilk deploy boshlandi)"
+          else
+            echo "Mavjud servis: $SID — yangi deploy trigger qilinmoqda"
+            curl -sS -X POST -H "Authorization: Bearer $RENDER_API_KEY" -H 'Content-Type: application/json' \
+                 -d '{}' "$RENDER_API/services/$SID/deploys" \
+                 | jq -c '{deploy:(.deploy.id // .id), status:(.deploy.status // .status // "triggered")}'
+          fi
+          curl -sS -H "Authorization: Bearer $RENDER_API_KEY" "$RENDER_API/services/$SID" > /tmp/web_service.json
+          WURL=$(jq -r '.service.serviceDetails.url // .serviceDetails.url // empty' /tmp/web_service.json)
+          [ -z "$WURL" ] && WURL="https://$NAME.onrender.com"
+          echo "WEB_ID=$SID" >> "$GITHUB_ENV"
+          echo "WEB_URL=$WURL" >> "$GITHUB_ENV"
+          echo "Web URL: $WURL"
+
+      # ── 2) TELEGRAM BOT SERVIS: free web + /health sahifa + long polling ──
+      - name: Render — Telegram bot servis (create yoki deploy trigger)
+        id: bot
+        env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        run: |
+          set -euo pipefail
+          NAME=mllymed-bot
+          LIST=$(curl -sS -H "Authorization: Bearer $RENDER_API_KEY" "$RENDER_API/services?name=$NAME&limit=20")
+          BID=$(echo "$LIST" | jq -r '[.[].service | select(.name=="'$NAME'")][0].id // empty')
+          if [ -z "$BID" ]; then
+            echo "Bot servisi yaratilmoqda: $NAME (docker, free, dockerCommand=run_bot.sh)"
+            PAYLOAD=$(jq -nc --arg owner "$OWNER_ID" --arg repo "$REPO_URL" --arg branch "$BRANCH" '
+              {type:"web_service", name:"mllymed-bot", ownerId:$owner, repo:$repo, branch:$branch,
+               autoDeploy:"no",
+               serviceDetails:{runtime:"docker", plan:"free", region:"frankfurt",
+                               envSpecificDetails:{dockerfilePath:"./deploy/Dockerfile", dockerContext:".",
+                                                   dockerCommand:"bash /app/deploy/run_bot.sh"}}}')
+            CODE=$(curl -sS -o /tmp/bot_create.json -w '%{http_code}' -X POST \
+                   -H "Authorization: Bearer $RENDER_API_KEY" -H 'Content-Type: application/json' \
+                   -d "$PAYLOAD" "$RENDER_API/services")
+            if [ "$CODE" -ge 300 ]; then
+              echo "::error::Bot servisi yaratilmadi (HTTP $CODE): $(jq -c '{message:.message, error:.error}' /tmp/bot_create.json 2>/dev/null || echo 'javobni o‘qib bo‘lmadi')"
+              exit 1
+            fi
+            BID=$(jq -r '.service.id // .id // empty' /tmp/bot_create.json)
+            echo "Yaratildi: $BID"
+          else
+            echo "Mavjud bot servisi: $BID"
+          fi
+          # Env var: faqat TELEGRAM_BOT_TOKEN (qiymat logga CHIQARILMAYDI)
+          ENVPAYLOAD=$(jq -nc --arg t "$TELEGRAM_BOT_TOKEN" \
+            '[{key:"TELEGRAM_BOT_TOKEN", value:$t}]')
+          CODE=$(curl -sS -o /tmp/env_resp.json -w '%{http_code}' -X PUT \
+                 -H "Authorization: Bearer $RENDER_API_KEY" -H 'Content-Type: application/json' \
+                 -d "$ENVPAYLOAD" "$RENDER_API/services/$BID/env-vars")
+          if [ "$CODE" -ge 300 ]; then
+            echo "::error::Bot env-vars o‘rnatilmadi (HTTP $CODE)"
+            exit 1
+          fi
+          echo "Env var o‘rnatildi: TELEGRAM_BOT_TOKEN"
+          curl -sS -X POST -H "Authorization: Bearer $RENDER_API_KEY" -H 'Content-Type: application/json' \
+               -d '{}' "$RENDER_API/services/$BID/deploys" | jq -c '{deploy:(.deploy.id // .id), status:(.deploy.status // .status // "triggered")}'
+          curl -sS -H "Authorization: Bearer $RENDER_API_KEY" "$RENDER_API/services/$BID" > /tmp/bot_service.json
+          BURL=$(jq -r '.service.serviceDetails.url // .serviceDetails.url // empty' /tmp/bot_service.json)
+          [ -z "$BURL" ] && BURL="https://mllymed-bot.onrender.com"
+          echo "BOT_ID=$BID" >> "$GITHUB_ENV"
+          echo "BOT_URL=$BURL" >> "$GITHUB_ENV"
+          echo "Bot URL: $BURL"
+
+      # ── 3) HEALTH: web servis jonli bo'lguncha kutish (build ~3–8 daqiqa) ──
+      - name: Jonli health tekshiruvi
+        run: |
+          set -euo pipefail
+          OK=0
+          for i in $(seq 1 48); do
+            code=$(curl -s -o /dev/null -w '%{http_code}' "$WEB_URL/api/health" || true)
+            echo "urinish $i/48: HTTP $code"
+            if [ "$code" = "200" ]; then OK=1; break; fi
+            sleep 15
+          done
+          if [ "$OK" != "1" ]; then
+            echo "::error::$WEB_URL/api/health 12 daqiqada 200 bo‘lmadi — Render Dashboard → Logs"
+            exit 1
+          fi
+          echo "✅ Web jonli: $WEB_URL"
+
+      # ── 4) SMOKE: frontend + agent xavfsizlik yo'li ──
+      - name: Smoke test (frontend, health, chat)
+        run: |
+          set -euo pipefail
+          curl -sS -o /dev/null -w 'GET /            → %{http_code}\n' "$WEB_URL/"
+          curl -sS -o /dev/null -w 'GET /api/health  → %{http_code}\n' "$WEB_URL/api/health"
+          BODY=$(curl -sS -X POST "$WEB_URL/api/b2c/chat" -H 'Content-Type: application/json' \
+                       -d '{"sid":"ci-smoke","text":"Qon qusdim"}')
+          echo "chat(emergency) → $BODY"
+          echo "$BODY" | jq -e '.reply | contains("103")' >/dev/null
+          echo "✅ Agent favqulodda yo‘li ishlayapti (103)"
+
+      # ── 5) R2 BACKUP: data/ (46 079 dori) → mllymed-backup bucket ──
+      - name: R2 — ma'lumot zaxirasi
+        continue-on-error: true
+        env:
+          CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+          CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+        run: |
+          set -euo pipefail
+          CODE=$(curl -sS -o /tmp/r2_bucket.json -w '%{http_code}' -X POST \
+                 -H "Authorization: Bearer $CF_API_TOKEN" -H 'Content-Type: application/json' \
+                 -d '{"name":"mllymed-backup"}' \
+                 "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT_ID/r2/buckets")
+          echo "bucket create HTTP $CODE (mavjud bo‘lsa — muammo emas)"
+          jq -c '{success, errors}' /tmp/r2_bucket.json || true
+          pip install -q awscli
+          export AWS_ACCESS_KEY_ID="$R2_ACCESS_KEY_ID" AWS_SECRET_ACCESS_KEY="$R2_SECRET_ACCESS_KEY"
+          export AWS_DEFAULT_REGION=auto
+          EP="https://$CF_ACCOUNT_ID.r2.cloudflarestorage.com"
+          aws s3 sync ./data "s3://mllymed-backup/data" --endpoint-url "$EP" --only-show-errors
+          aws s3 sync ./orindor/data "s3://mllymed-backup/orindor-data" --endpoint-url "$EP" --only-show-errors
+          echo "✅ R2 backup tugadi: s3://mllymed-backup/{data,orindor-data}"
+
+      - name: Yakuniy xulosa
+        if: always()
+        run: |
+          echo "==============================================="
+          echo "  Web (frontend+API+agent): ${WEB_URL:-?}"
+          echo "  Health:                   ${WEB_URL:-?}/api/health"
+          echo "  Telegram bot:             https://t.me/MllyMed_bot  (${BOT_URL:-?})"
+          echo "  R2 backup:                s3://mllymed-backup/data"
+          echo "==============================================="

@@ -1,0 +1,24 @@
+# Git va IDE
+.git
+.gitignore
+.idea/
+.vscode/
+
+# Deploy maxfiyliklari — HECH QACHON image ichiga kirmasin
+.env
+**/.env
+deploy/.env
+*.log
+
+# Katta/runtime bo'lmagan materiallar (mahsulot uchun kerak emas)
+Workprocess.zip
+workprocess/
+arxiv/
+manba/
+tadqiqot/
+built/data/runtime/dmed.db-journal
+
+# Python texnik qoldiqlari
+**/__pycache__/
+**/*.pyc
+**/*.pyo

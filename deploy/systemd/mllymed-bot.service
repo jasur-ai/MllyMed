@@ -1,0 +1,17 @@
+[Unit]
+Description=MllyMed Telegram bot (develop: bot.py)
+After=network.target
+
+[Service]
+Type=simple
+User=mllymed
+WorkingDirectory=/opt/mllymed
+EnvironmentFile=/opt/mllymed/deploy/.env
+ExecStart=/usr/bin/python3 bot.py
+Restart=always
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

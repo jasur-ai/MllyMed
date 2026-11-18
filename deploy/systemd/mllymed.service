@@ -1,0 +1,20 @@
+[Unit]
+Description=MllyMed web (frontend + API)
+After=network.target
+
+[Service]
+Type=simple
+User=mllymed
+WorkingDirectory=/opt/mllymed
+Environment=PYTHONIOENCODING=utf-8
+ExecStart=/usr/bin/python3 -m backend.server --port 8200
+Restart=always
+RestartSec=3
+# Qattiqlashtirish
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ReadWritePaths=/opt/mllymed/built/data/runtime /opt/mllymed/orindor/data/runtime
+
+[Install]
+WantedBy=multi-user.target
