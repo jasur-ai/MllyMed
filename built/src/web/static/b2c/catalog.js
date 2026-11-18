@@ -44,10 +44,54 @@ function updateFavBadge() {
 }
 
 function setCategory(cat, el) {
-  currentCategory = cat;
-  document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
-  if (el) el.classList.add('active');
+  currentCategory = cat || '';
+  document.querySelectorAll('.category-btn').forEach(b => {
+    b.classList.toggle('active', b.getAttribute('data-cat') === currentCategory);
+  });
   loadCatalog(true);
+}
+
+// «Qidirish» tugmasi — darhol qidirish (debounce'ni kutmasdan)
+function doSearchNow() {
+  const inp = $('q');
+  const mob = $('mob-search-input');
+  if (inp && mob && mob.value !== inp.value) {
+    // qaysi input aktiv bo'lsa — shuni asos qilib olamiz
+    if (document.activeElement === mob) inp.value = mob.value;
+    else mob.value = inp.value;
+  }
+  clearTimeout(window.searchTimer);
+  loadCatalog(true);
+}
+
+// «Mahalliy GMP» servis kartasi — faqat mahalliy takliflarni ko'rsatadi
+function filterLocalProducts() {
+  const sel = $('cat-local');
+  if (sel) sel.value = 'local';
+  loadCatalog(true);
+  const toolbar = document.querySelector('.catalog-toolbar');
+  if (toolbar) toolbar.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function emptyStateHtml(q, category) {
+  const what = q ? `«${esc(q)}»` : (category ? `«${esc(category)}»` : 'Tanlangan filtr');
+  return `
+    <div class="empty-state">
+      <div class="empty-art">🔍</div>
+      <h3 class="empty-title">${what} bo'yicha dori topilmadi</h3>
+      <p class="empty-sub">Boshqa nom, XPN (INN) yoki ishlab chiqaruvchi bo'yicha urinib ko'ring. Qisqartma yoki imlo xatosini tekshiring.</p>
+      <button class="btn-primary btn-empty-clear" onclick="clearSearch()">Qidiruvni tozalash</button>
+    </div>`;
+}
+
+function skeletonHtml() {
+  return Array(6).fill(`
+    <div class="skeleton-card" aria-hidden="true">
+      <div class="sk-media"></div>
+      <div class="sk-line sk-w70"></div>
+      <div class="sk-line sk-w50"></div>
+      <div class="sk-line sk-w90"></div>
+    </div>`).join('');
 }
 
 function quickSearch(term) {
@@ -164,32 +208,36 @@ function renderDrugPackSvg(title, isLocal) {
 }
 
 function renderDrugCardHtml(p) {
-  const favActive = isFavorite(p.title);
+  const name = p.name || '';
+  const favActive = isFavorite(name);
   return `
-    <div class="product-card" onclick="lookup('${esc(p.title)}')">
-      <button type="button" class="card-fav-btn ${favActive ? 'active' : ''}" data-title="${esc(p.title)}" onclick="toggleFavorite('${esc(p.title)}', event)" title="Sevimlilar">
+    <div class="product-card" role="button" tabindex="0" data-q="${esc(name)}"
+         onclick="lookup(this.dataset.q)" onkeydown="if(event.key==='Enter'){lookup(this.dataset.q)}">
+      <button type="button" class="card-fav-btn ${favActive ? 'active' : ''}" data-title="${esc(name)}" aria-pressed="${favActive}"
+              onclick="toggleFavorite(this.dataset.title, event)" title="Sevimlilar">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="${favActive ? '#ef4444' : 'none'}" stroke="${favActive ? '#ef4444' : '#94a3b8'}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
         </svg>
       </button>
       <div class="card-media">
-        <span class="card-media-sellers">${p.sellers_count || 1} dorixona</span>
-        ${renderDrugPackSvg(p.title, p.local)}
+        <span class="card-media-sellers">${p.pharmacies || 1} dorixona</span>
+        ${renderDrugPackSvg(name, p.local)}
       </div>
       <div class="card-body">
         <div class="card-badges">
           ${originBadge(p.local)}
-          <span class="badge badge-otc">Retsept: Erkin</span>
+          <span class="badge badge-otc">${p.rx ? 'Retseptli' : 'Retsept: Erkin'}</span>
         </div>
-        <div class="card-title">${esc(p.title)}</div>
+        <div class="card-title">${esc(name)}</div>
         ${p.canon_inn ? `<div class="card-inn">XPN: ${esc(p.canon_inn)}</div>` : ''}
-        <div class="card-manufacturer">Ishlab chiqaruvchi: <b>${esc(p.manufacturer || 'O\'zbekiston')}</b></div>
+        <div class="card-manufacturer">Ishlab chiqaruvchi: <b>${esc(p.manufacturer || '—')}</b></div>
         <div class="card-footer">
           <div class="price-box">
             <span class="price-label">Eng past narx</span>
             <span class="price-val">${money(p.price_from_som)}</span>
           </div>
-          <button class="btn-card-action" onclick="event.stopPropagation();lookup('${esc(p.title)}')">
+          <button class="btn-card-action" data-q="${esc(name)}"
+                  onclick="event.stopPropagation();lookup(this.dataset.q)">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
               <path d="M21 21l-4.35-4.35"/>
               <circle cx="11" cy="11" r="7"/>
@@ -212,23 +260,54 @@ async function loadCatalog(reset = false) {
 
   if (!container) return;
 
+  // Yuklash holati: skeleton shimmer (reset'da), aks holda "Yuklanmoqda…"
+  if (reset) {
+    container.innerHTML = skeletonHtml();
+  } else if (countEl) {
+    countEl.textContent = 'Yuklanmoqda…';
+  }
+
   try {
-    let url = `/api/catalog?q=${encodeURIComponent(q)}&local=${loc}&page=${AppState.catPage}&size=12`;
+    let url = `/api/catalog?q=${encodeURIComponent(q)}&local=${encodeURIComponent(loc)}&page=${AppState.catPage}&size=12`;
     if (currentCategory) {
       url += `&category=${encodeURIComponent(currentCategory)}`;
     }
     const res = await api(url);
-    if (countEl) countEl.textContent = `${res.total} ta mahsulot topildi`;
-    if (moreBtn) moreBtn.style.display = (res.page >= res.pages) ? 'none' : 'inline-block';
+    const items = res.items || [];
+    const total = res.total || 0;
+    const size = res.size || 12;
+    const pages = Math.max(1, Math.ceil(total / size));
 
-    const html = res.items.map(p => renderDrugCardHtml(p)).join('');
+    // Kategoriya chiplariga haqiqiy sonlarni yozish (backend facets)
+    if (res.facets && res.facets.categories) {
+      document.querySelectorAll('#category-chips .category-btn').forEach(btn => {
+        const key = btn.getAttribute('data-cat');
+        const span = btn.querySelector('.chip-n');
+        if (span) span.textContent = key ? ` (${res.facets.categories[key] || 0})` : '';
+      });
+    }
+
+    if (countEl) {
+      countEl.textContent = currentCategory
+        ? `${total} ta — «${currentCategory}»`
+        : `${total} ta mahsulot topildi`;
+    }
+    if (moreBtn) moreBtn.style.display = (res.page >= pages) ? 'none' : 'inline-block';
+
+    // — Bo'sh holat: har doim chiroyli "topilmadi" paneli —
+    if (total === 0 && reset) {
+      container.innerHTML = emptyStateHtml(q, currentCategory);
+      return;
+    }
+
+    const html = items.map(p => renderDrugCardHtml(p)).join('');
 
     if (reset) {
       container.innerHTML = html;
       // Mobilda Bosh sahifadagi 4 ta dori prevyusi
       const mobHomeContainer = $('mob-home-drugs');
       if (mobHomeContainer) {
-        const previewItems = res.items.slice(0, 4);
+        const previewItems = items.slice(0, 4);
         mobHomeContainer.innerHTML = previewItems.map(p => renderDrugCardHtml(p)).join('');
       }
     } else {
@@ -236,12 +315,13 @@ async function loadCatalog(reset = false) {
     }
     AppState.catPage++;
   } catch (err) {
-    container.innerHTML = `<p style="color:#ef4444;padding:20px">Xatolik: ${esc(err.message)}</p>`;
-  }
-}
-    AppState.catPage++;
-  } catch (err) {
-    container.innerHTML = `<p style="color:#ef4444;padding:20px">Xatolik: ${esc(err.message)}</p>`;
+    container.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-art">⚠️</div>
+        <h3 class="empty-title">Katalogni yuklab bo'lmadi</h3>
+        <p class="empty-sub">${esc(err.message)}</p>
+        <button class="btn-primary btn-empty-clear" onclick="loadCatalog(true)">Qayta urinish</button>
+      </div>`;
   }
 }
 
@@ -252,76 +332,91 @@ async function lookup(q) {
   if (!modal || !modalBody) return;
 
   modal.classList.remove('hidden');
-  modalBody.innerHTML = `<div style="text-align:center;padding:40px;color:var(--text-secondary)">Dori tahlil qilinmoqda...</div>`;
+  modalBody.innerHTML = `
+    <div class="detail-loading">
+      <div class="spinner" aria-hidden="true"></div>
+      <div class="detail-loading-text">MllyMed AI «${esc(q)}» tahlil qilmoqda…</div>
+    </div>`;
 
   try {
     const r = await api(`/api/card?q=${encodeURIComponent(q)}`);
-    if (r.status === 'card') {
-      const c = r.card || {};
-      const pchk = r.price_check || {};
-      const locals = r.local_alternatives || [];
-      const offers = r.offers || [];
+
+    if (r.status === 'ok' && r.card) {
+      const c = r.card;
+      const apteka = r.apteka || {};
+      const offers = apteka.offers || [];
+      const chk = apteka.check || {};
+      const grp = c.group || {};
+      const localBadge = originBadge(c.local);
+      const rxBadge = `<span class="badge badge-otc">${c.rx ? 'Retseptli' : 'Retseptsiz'}</span>`;
+      const regBadge = c.reg ? `<span class="badge badge-otc">${esc(c.reg)}</span>` : '';
+
+      // 80% tekshiruvi — 3735-son F09 proxy
+      let priceCheck;
+      if (chk.holat === 'mos') {
+        priceCheck = `<div class="chk chk-ok"><b>✓ 80% tekshiruvi: mos</b><span>Mahalliy eng arzon ${money(chk.mahalliy_eng_arzon)} ≤ chegara ${money(chk.chegara_80)}${chk.farq_foiz != null ? ` · farq ${esc(chk.farq_foiz)}%` : ''}</span></div>`;
+      } else if (chk.holat && chk.holat !== "tekshirib bo'lmadi") {
+        priceCheck = `<div class="chk chk-warn"><b>⚠ 80% tekshiruvi: ${esc(chk.holat)}</b><span>Mahalliy ${money(chk.mahalliy_eng_arzon)} · import ${money(chk.import_eng_arzon)} · chegara ${money(chk.chegara_80)}</span></div>`;
+      } else {
+        priceCheck = `<div class="chk chk-na"><b>80% tekshiruvi: aniqlanmadi</b><span>${esc(chk.sabab || "dorixona katalogida ma'lumot yetarli emas")}</span></div>`;
+      }
+
+      const offersHtml = offers.length ? offers.map(o => `
+        <a class="offer-row" ${o.url ? `href="${esc(o.url)}" target="_blank" rel="noopener"` : ''}>
+          <span class="offer-main"><b>${esc(o.name || '—')}</b><span class="offer-meta">${esc(o.seller || 'Dorixona')} · ${o.pharmacies || 1} ta dorixona${o.local === true ? ' · 🇺🇿 mahalliy' : ''}</span></span>
+          <span class="offer-price">${money(o.price_from_som)}</span>
+        </a>`).join('') : `<p class="muted-note">Dorixona takliflari topilmadi — faqat reyestr ma&#8217;lumoti mavjud.</p>`;
+
+      const groupHtml = (grp.n != null) ? `
+        <div class="kpi-grid">
+          <div class="kpi"><div class="kpi-v">${grp.n}</div><div class="kpi-l">XPN guruhida jami</div></div>
+          <div class="kpi"><div class="kpi-v">${grp.local ?? 0}</div><div class="kpi-l">🇺🇿 Mahalliy</div></div>
+          <div class="kpi"><div class="kpi-v">${grp.import ?? 0}</div><div class="kpi-l">🌍 Import</div></div>
+          <div class="kpi"><div class="kpi-v">${money(grp.local_min)}</div><div class="kpi-l">Mahalliy eng arzon</div></div>
+        </div>` : '';
 
       modalBody.innerHTML = `
-        <div class="detail-header-row" style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;border-bottom:1px solid #e2e8f0;padding-bottom:16px">
-          <div>
-            <div style="display:flex;gap:6px;margin-bottom:8px">
-              ${originBadge(c.local)}
-              <span class="badge badge-otc">Davlat reestr: ${esc(c.number || 'Mavjud')}</span>
-            </div>
-            <h2 style="font-size:20px;font-weight:800;color:var(--text-primary)">${esc(c.name || q)}</h2>
-            <p style="font-size:13.5px;color:var(--primary);margin-top:2px">XPN: <b>${esc(c.inn || '—')}</b> · Shakli: ${esc(c.form || '—')}</p>
-          </div>
-          <div style="text-align:right">
-            <span style="font-size:11px;color:var(--text-muted);text-transform:uppercase;font-weight:600">Referent Narx</span>
-            <div style="font-size:22px;font-weight:800;color:var(--primary)">${money(c.price_ref_som)}</div>
-            <span style="font-size:11.5px;color:var(--text-muted)">Chegara narx: ${money(c.price_limit_som)}</span>
-          </div>
+        <div class="detail-head">
+          <div class="detail-badges">${localBadge}${rxBadge}${regBadge}</div>
+          <h2 class="detail-title">${esc(c.name || q)}</h2>
+          <p class="detail-inn">XPN: <b>${esc(c.inn_display || c.inn || '—')}</b>${c.form_uz ? ` · ${esc(c.form_uz)}` : ''}${c.strength ? ` · ${esc(c.strength)}` : ''}</p>
         </div>
-
-        <div class="detail-grid-layout" style="display:grid;grid-template-columns:1.2fr 1fr;gap:20px">
-          <div>
-            <div style="background:#f8fafc;padding:14px;border-radius:12px;border:1px solid #e2e8f0;font-size:13px;line-height:1.7;margin-bottom:16px">
-              <div>🏢 Ishlab chiqaruvchi: <b>${esc(c.producer || '—')}</b> (${esc(c.country || '—')})</div>
-              <div>🏷️ ATX kodi: <code>${esc(c.atc || '—')}</code></div>
-              <div>⏳ Yaroqlilik: ${esc(c.expire || '—')}</div>
+        <div class="detail-grid">
+          <div class="detail-col">
+            <div class="info-box">
+              <div>🏢 <b>${esc(c.manufacturer || '—')}</b> · ${esc(c.country || '—')}</div>
+              <div>🏷️ ATX <code>${esc(c.atc || '—')}</code> · Reyestr <code>${esc(c.reg || '—')}</code></div>
+              <div>📦 ${esc(c.full || c.name || '')}</div>
             </div>
-
-            <h4 style="font-size:14px;font-weight:700;margin-bottom:10px">Tavsiya etilgan mahalliy analoglar:</h4>
-            ${!locals.length ? '<p style="font-size:12.5px;color:var(--text-muted)">Mahalliy analoglar topilmadi.</p>' : locals.map(l => `
-              <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #f1f5f9;font-size:13px">
-                <div><b>${esc(l.title)}</b><br><span style="font-size:11.5px;color:var(--text-muted)">${esc(l.manufacturer || 'Mahalliy')}</span></div>
-                <div style="font-weight:700;color:var(--primary)">${money(l.price_from_som)}</div>
-              </div>
-            `).join('')}
+            ${groupHtml}
           </div>
-
-          <div>
-            <div style="background:#ecfdf5;padding:14px;border-radius:12px;border:1px solid #a7f3d0;margin-bottom:16px">
-              <span class="badge badge-local">${esc(pchk.holat || 'Tekshirildi')}</span>
-              <p style="font-size:12.5px;margin-top:6px;color:#065f46">${esc(pchk.izoh || '80% mahalliy ekvivalent narx talablari asosida tekshirildi.')}</p>
-            </div>
-
-            <h4 style="font-size:14px;font-weight:700;margin-bottom:10px">Dorixonalardagi narxlar:</h4>
-            ${!offers.length ? '<p style="font-size:12.5px;color:var(--text-muted)">Dorixona takliflari topilmadi.</p>' : offers.map(o => `
-              <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #f1f5f9;font-size:13px">
-                <div><b>${esc(o.title)}</b><br><span style="font-size:11px;color:var(--text-muted)">${o.sellers_count || 1} ta dorixona</span></div>
-                <div style="font-weight:700;color:var(--text-primary)">${money(o.price_from_som)}</div>
-              </div>
-            `).join('')}
+          <div class="detail-col">
+            ${priceCheck}
+            <h4 class="offers-title">Dorixonalardagi narxlar <span class="offers-n">${apteka.count ?? offers.length} ta taklif</span></h4>
+            <div class="offers-list">${offersHtml}</div>
+            <p class="muted-note" style="margin-top:8px">${esc(apteka.note || "Narx — eng past taklif (dorixona narxi emas).")}</p>
           </div>
-        </div>
-      `;
-    } else if (r.status === 'emergency') {
+        </div>`;
+    } else if (r.status === 'ambiguous') {
+      const cands = r.candidates || [];
       modalBody.innerHTML = `
-        <div style="background:#fef2f2;border:2px solid #fecaca;padding:22px;border-radius:16px">
-          <h3 style="color:#b91c1c;font-size:17px;margin-bottom:8px">🚨 DIQQAT: FAVQULODDA HOLAT (103)</h3>
-          <p style="color:#7f1d1d;font-size:14px;line-height:1.6">${esc(r.reply)}</p>
-          <div style="margin-top:16px"><a href="tel:103" class="btn-primary" style="background:#dc2626">Darhol 103 ga qo'ng'iroq qilish</a></div>
-        </div>
-      `;
+        <div class="amb-wrap">
+          <div class="amb-icon">💊</div>
+          <h3 class="amb-title">«${esc(q)}» — bir necha variant topiladi</h3>
+          <p class="empty-sub">Quyidan aniq mahsulotni tanlang:</p>
+          <div class="amb-list">
+            ${cands.map(cd => `<button class="amb-item" data-q="${esc(cd.name)}" onclick="lookup(this.dataset.q)">${esc(cd.line || cd.name)}</button>`).join('')}
+          </div>
+        </div>`;
     } else {
-      modalBody.innerHTML = `<div style="padding:20px;text-align:center;color:var(--text-secondary)">${esc(r.reply || 'Bu so\'rov bo\'yicha dori topilmadi.')}</div>`;
+      // status: 'none' (topilmadi) va boshqa kutilmagan holatlar
+      modalBody.innerHTML = `
+        <div class="empty-state" style="border:none;background:transparent;box-shadow:none">
+          <div class="empty-art">🔍</div>
+          <h3 class="empty-title">«${esc(q)}» topilmadi</h3>
+          <p class="empty-sub">Davlat reyestrida va dorixona katalogida bunday nom yo'q. Boshqa nom yoki XPN (INN) bilan urinib ko'ring.</p>
+          <button class="btn-primary btn-empty-clear" onclick="closeDetailModal();clearSearch()">Katalogga qaytish</button>
+        </div>`;
     }
   } catch (err) {
     modalBody.innerHTML = `<div style="padding:20px;color:#ef4444">Xatolik: ${esc(err.message)}</div>`;
@@ -334,6 +429,8 @@ function closeDetailModal() {
 }
 
 window.setCategory = setCategory;
+window.doSearchNow = doSearchNow;
+window.filterLocalProducts = filterLocalProducts;
 window.quickSearch = quickSearch;
 window.originBadge = originBadge;
 window.renderDrugPackSvg = renderDrugPackSvg;
@@ -411,7 +508,7 @@ async function loadDrugsView(reset = false) {
   if (!grid) return;
 
   const q = ($('drugs-view-search')?.value || '').trim();
-  const loc = drugsViewCategory === 'local' ? 'true' : '';
+  const loc = drugsViewCategory === 'local' ? 'local' : '';
   const cat = drugsViewCategory === 'local' ? '' : drugsViewCategory;
 
   try {
@@ -421,7 +518,7 @@ async function loadDrugsView(reset = false) {
 
     let items = res.items || [];
     if (isFavoritesFilterActive) {
-      items = items.filter(p => favoritesList.includes(p.title));
+      items = items.filter(p => favoritesList.includes(p.name));
       if (countEl) countEl.textContent = `Sevimlilar: ${items.length} ta dori`;
       if (moreBtn) moreBtn.style.display = 'none';
 
@@ -437,7 +534,8 @@ async function loadDrugsView(reset = false) {
       }
     } else {
       if (countEl) countEl.textContent = `${res.total} ta dori vositasi mavjud`;
-      if (moreBtn) moreBtn.style.display = (res.page >= res.pages) ? 'none' : 'inline-block';
+      const pages = Math.max(1, Math.ceil((res.total || 0) / (res.size || 12)));
+      if (moreBtn) moreBtn.style.display = (res.page >= pages) ? 'none' : 'inline-block';
     }
 
     const html = items.map(p => renderDrugCardHtml(p)).join('');

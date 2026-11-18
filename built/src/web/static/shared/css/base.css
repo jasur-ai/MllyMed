@@ -39,7 +39,13 @@ html {
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  background-color: var(--bg-app);
+  background-color: #eef3fb;
+  /* Silliq "mesh" fon — brand ko'ki + yashil + binafsha nurlar, oq yuzada */
+  background-image:
+    radial-gradient(1100px 520px at 8% -12%, rgba(11, 105, 237, 0.16), transparent 60%),
+    radial-gradient(900px 560px at 108% 2%, rgba(16, 185, 129, 0.14), transparent 55%),
+    radial-gradient(760px 720px at 50% 128%, rgba(124, 58, 237, 0.12), transparent 60%);
+  background-attachment: fixed;
   color: var(--text-primary);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;

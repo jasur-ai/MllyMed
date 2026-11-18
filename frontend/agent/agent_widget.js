@@ -32,15 +32,25 @@ async function chatSend() {
   log.insertAdjacentHTML('beforeend', `<div class="bubble user">${esc(text)}</div>`);
   log.scrollTop = log.scrollHeight;
 
-  // Typing holati
+  // "O'ylayapti" holati — jonli soniyalik taymer + animatsiyali nuqtalar
   const typingId = 'typing-' + Date.now();
-  log.insertAdjacentHTML('beforeend', `<div class="bubble bot" id="${typingId}" style="color:var(--text-muted);font-style:italic">MllyMed AI tahlil qilmoqda...</div>`);
+  const t0 = Date.now();
+  log.insertAdjacentHTML('beforeend', `<div class="bubble bot typing" id="${typingId}" role="status" aria-live="polite"><span class="think-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="think-label">MllyMed AI o'ylayapti…</span> <b class="think-s">0s</b></div>`);
   log.scrollTop = log.scrollHeight;
+
+  const thinkTimer = setInterval(() => {
+    const secEl = document.querySelector('#' + typingId + ' .think-s');
+    if (secEl) secEl.textContent = Math.floor((Date.now() - t0) / 1000) + 's';
+  }, 1000);
+  const stopThinking = () => {
+    clearInterval(thinkTimer);
+    const typingEl = $(typingId);
+    if (typingEl) typingEl.remove();
+  };
 
   try {
     const res = await api('/api/chat', { text: text, sid: AppState.sid }, 'patient');
-    const typingEl = $(typingId);
-    if (typingEl) typingEl.remove();
+    stopThinking();
 
     let botHtml = `<div class="bubble bot">${esc(res.reply)}`;
     if (res.stage === 'emergency') {
@@ -66,8 +76,7 @@ async function chatSend() {
     log.insertAdjacentHTML('beforeend', botHtml);
     log.scrollTop = log.scrollHeight;
   } catch (e) {
-    const typingEl = $(typingId);
-    if (typingEl) typingEl.remove();
+    stopThinking();
     log.insertAdjacentHTML('beforeend', `<div class="bubble bot" style="color:#ef4444">${esc(e.message)}</div>`);
   }
 }
