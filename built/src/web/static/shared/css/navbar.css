@@ -401,3 +401,65 @@
     display: none !important;
   }
 }
+
+/* ══════════ v4 «Silliq» — suzuvchi navbar & dock ══════════ */
+.nav-header {
+  background: rgba(255, 255, 255, 0.72) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  backdrop-filter: blur(20px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.85) !important;
+  box-shadow: 0 14px 40px rgba(15, 28, 46, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.8) !important;
+}
+.pill-item.active {
+  background: linear-gradient(155deg, #1a7af5, #0b5bd6) !important;
+  box-shadow: 0 6px 18px rgba(11, 105, 237, 0.4) !important;
+}
+.btn-notification {
+  background: rgba(255, 255, 255, 0.78) !important;
+  border: 1px solid var(--hairline) !important;
+  box-shadow: var(--shadow-xs) !important;
+}
+.btn-notification:hover { box-shadow: 0 6px 16px rgba(11, 105, 237, 0.2) !important; }
+.btn-login {
+  background: linear-gradient(155deg, #1a7af5, #0b5bd6) !important;
+  box-shadow: 0 8px 22px rgba(11, 105, 237, 0.4) !important;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+.btn-login:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(11, 105, 237, 0.46) !important; }
+.btn-login:active { transform: scale(0.96); }
+
+@media (max-width: 640px) {
+  .nav-header {
+    background: rgba(255, 255, 255, 0.82) !important;
+    -webkit-backdrop-filter: blur(22px) saturate(160%);
+    backdrop-filter: blur(22px) saturate(160%);
+    box-shadow: 0 8px 30px rgba(15, 28, 46, 0.12) !important;
+  }
+
+  /* Dock — sirg'aluvchi ko'rsatkichli kapsula */
+  .mob-dock-pill { position: relative !important; overflow: hidden; }
+  .dock-item { position: relative; z-index: 1; }
+  .dock-indicator {
+    position: absolute;
+    top: 7px;
+    bottom: 7px;
+    left: 0;
+    width: 0;
+    border-radius: 22px;
+    background: linear-gradient(160deg, rgba(11, 105, 237, 0.14), rgba(11, 105, 237, 0.08));
+    border: 1px solid rgba(11, 105, 237, 0.22);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
+    transition: left 0.38s var(--ease-spring), width 0.38s var(--ease-spring), opacity 0.25s ease;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .dock-item.active { color: var(--brand-deep); }
+
+  /* Support doirasi — "orb" dizayni */
+  .mob-dock-support {
+    background: radial-gradient(circle at 35% 32%, #37a8ff 0%, #0b69ed 55%, #083a7a 100%) !important;
+    border: 2px solid rgba(255, 255, 255, 0.9) !important;
+    box-shadow: 0 10px 26px rgba(11, 105, 237, 0.45), inset 0 2px 4px rgba(255, 255, 255, 0.5) !important;
+  }
+  .mob-dock-support:active { transform: scale(0.88); }
+}

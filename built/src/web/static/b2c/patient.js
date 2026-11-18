@@ -5,6 +5,24 @@
 let isUserLoggedIn = false;
 let loggedInUser = null;
 
+// Ismlarning bosh harflaridan deterministik monogramli avatar (tashqi servis shart emas)
+function monogramAvatarDataUri(name) {
+  let h = 0;
+  const str = String(name || 'M');
+  for (let i = 0; i < str.length; i++) { h = (Math.imul(h, 31) + str.charCodeAt(i)) | 0; }
+  const hue = Math.abs(h) % 360;
+  const words = str.trim().split(/\s+/).filter(Boolean);
+  const initials = ((words[0] ? words[0][0] : 'M') + (words[1] ? words[1][0] : '')).toUpperCase();
+  const svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">'
+    + '<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">'
+    + '<stop offset="0" stop-color="hsl(' + hue + ',78%,52%)"/><stop offset="1" stop-color="hsl(' + hue + ',72%,38%)"/>'
+    + '</linearGradient></defs>'
+    + '<rect width="100" height="100" rx="50" fill="url(#g)"/>'
+    + '<text x="50" y="64" text-anchor="middle" font-family="-apple-system,Segoe UI,Roboto,sans-serif" font-size="38" font-weight="800" fill="#ffffff">' + initials + '</text>'
+    + '</svg>';
+  return 'data:image/svg+xml,' + encodeURIComponent(svg);
+}
+
 function openAuthModal() {
   const modal = $('patient-modal');
   if (!modal) return;
@@ -130,7 +148,7 @@ function updateNavLoginState() {
 
   const mobAvatar = $('mob-nav-avatar');
   if (mobAvatar && isUserLoggedIn && loggedInUser?.name) {
-    mobAvatar.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(loggedInUser.name)}&background=0b69ed&color=fff&size=100`;
+    mobAvatar.src = monogramAvatarDataUri(loggedInUser.name);
   }
 }
 

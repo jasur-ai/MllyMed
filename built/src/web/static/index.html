@@ -9,16 +9,16 @@
   <title>MllyMed — Milliy dori vositalariga ishonch ekotizimi</title>
   
   <!-- Shared Design Tokens & Layout -->
-  <link rel="stylesheet" href="shared/css/base.css?v=3.1">
-  <link rel="stylesheet" href="shared/css/navbar.css?v=3.1">
-  <link rel="stylesheet" href="shared/css/modal.css?v=3.1">
+  <link rel="stylesheet" href="shared/css/base.css?v=4.0">
+  <link rel="stylesheet" href="shared/css/navbar.css?v=4.0">
+  <link rel="stylesheet" href="shared/css/modal.css?v=4.0">
 
   <!-- B2C & B2B Styles -->
-  <link rel="stylesheet" href="b2c/b2c.css?v=3.1">
-  <link rel="stylesheet" href="b2b/b2b.css?v=3.1">
+  <link rel="stylesheet" href="b2c/b2c.css?v=4.0">
+  <link rel="stylesheet" href="b2b/b2b.css?v=4.0">
 
   <!-- MllyMed AI Agent Widget -->
-  <link rel="stylesheet" href="agent/agent_widget.css?v=3.1">
+  <link rel="stylesheet" href="agent/agent_widget.css?v=4.0">
 
   <!-- Telegram Web App SDK (Mini App rejimida ochilganda native rejimni yoqish) -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -59,7 +59,7 @@
       <!-- Mobil Tepa Bar: Chap tarafda User Icon va Ism (Profil) -->
       <div class="mob-nav-profile" onclick="openAuthModal()" title="Mening profilim">
         <div class="mob-nav-avatar-wrap">
-          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" class="mob-nav-avatar" id="mob-nav-avatar" alt="Avatar" onerror="this.src='https://ui-avatars.com/api/?name=Sohibjon&background=0b69ed&color=fff&size=100'">
+          <img src="data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22%3E%3Cdefs%3E%3ClinearGradient%20id=%22g%22%20x1=%220%22%20y1=%220%22%20x2=%221%22%20y2=%221%22%3E%3Cstop%20offset=%220%22%20stop-color=%22#0b69ed%22/%3E%3Cstop%20offset=%221%22%20stop-color=%22#0a4fb8%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect%20width=%22100%22%20height=%22100%22%20rx=%2250%22%20fill=%22url%28#g%29%22/%3E%3Ccircle%20cx=%2250%22%20cy=%2237%22%20r=%2216.5%22%20fill=%22#ffffff%22%20opacity=%220.96%22/%3E%3Cpath%20d=%22M17%2092c4-19.5%2017.5-29%2033-29s29%209.5%2033%2029Z%22%20fill=%22#ffffff%22%20opacity=%220.96%22/%3E%3C/svg%3E" class="mob-nav-avatar" id="mob-nav-avatar" alt="Foydalanuvchi avatar">
           <span class="mob-avatar-badge"></span>
         </div>
         <div class="mob-nav-user-text">
@@ -96,13 +96,13 @@
   <!-- ══════════ ECOTIZIM: Arzon Apteka & DMED — o'zaro integratsiya ══════════ -->
   <div class="eco-strip" aria-label="MllyMed ekotizimi">
     <a class="eco-card eco-apteka" href="https://orindor.pages.dev/#/asosiy" target="_blank" rel="noopener">
-      <span class="eco-ic">💊</span>
-      <span class="eco-tx"><b>Arzon Apteka <span class="eco-out">↗</span></b><span>2 500+ dorixona narxlari — eng arzon taklifni solishtiring</span></span>
+      <span class="eco-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 20.5a7.07 7.07 0 0 1-10-10l6-6a7.07 7.07 0 0 1 10 10l-6 6Z"/><path d="m8.5 8.5 7 7"/></svg></span>
+      <span class="eco-tx"><b>Arzon Apteka </b><span>2 500+ dorixona narxlari — eng arzon taklifni solishtiring</span></span>
       <svg class="eco-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M7 17 17 7"/><path d="M9 7h8v8"/></svg>
     </a>
     <a class="eco-card eco-dmed" href="https://orindor.pages.dev/dmed#/bosh" target="_blank" rel="noopener">
-      <span class="eco-ic">🏥</span>
-      <span class="eco-tx"><b>DMED qabul <span class="eco-out">↗</span></b><span>Elektron navbat, e-retsept va chegara narx — DMED mini</span></span>
+      <span class="eco-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M12 10h.01"/></svg></span>
+      <span class="eco-tx"><b>DMED qabul </b><span>Elektron navbat, e-retsept va chegara narx — DMED mini</span></span>
       <svg class="eco-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M7 17 17 7"/><path d="M9 7h8v8"/></svg>
     </a>
   </div>
@@ -173,7 +173,7 @@
 
       <div class="mob-upcoming-card">
         <div class="mob-upcoming-header">
-          <img src="https://images.unsplash.com/photo-1594824813587-08e64c239327?w=150&auto=format&fit=crop&q=80" class="mob-upcoming-avatar" alt="Dr. Swift">
+          <img src="data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20120%20120%22%3E%3Cdefs%3E%3ClinearGradient%20id=%22g%22%20x1=%220%22%20y1=%220%22%20x2=%221%22%20y2=%221%22%3E%3Cstop%20offset=%220%22%20stop-color=%22#5eead4%22/%3E%3Cstop%20offset=%221%22%20stop-color=%22#0e7490%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect%20width=%22120%22%20height=%22120%22%20rx=%2260%22%20fill=%22url%28#g%29%22/%3E%3Ccircle%20cx=%2260%22%20cy=%2244%22%20r=%2217%22%20fill=%22#ffffff%22%20opacity=%220.96%22/%3E%3Cpath%20d=%22M23%20112c5-25%2021-36%2037-36s32%2011%2037%2036Z%22%20fill=%22#ffffff%22%20opacity=%220.96%22/%3E%3Crect%20x=%2252.5%22%20y=%2278%22%20width=%2215%22%20height=%225.4%22%20rx=%222.7%22%20fill=%22#0e7490%22%20opacity=%220.85%22/%3E%3C/svg%3E" class="mob-upcoming-avatar" alt="Shifokor avatari">
           <div class="mob-upcoming-meta">
             <div class="mob-upcoming-name-row">
               <b class="mob-upcoming-name">Dr. Catriona Swift</b>
@@ -230,30 +230,30 @@
     <!-- Top Market Stats Strip (Desktopda ko'rinadi) -->
     <div class="stats-strip">
       <div class="stat-card">
-        <div class="stat-icon" style="background:#eff6ff;color:#0066ff">💊</div>
+        <div class="stat-icon" style="background:#eff6ff;color:#0b69ed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 20.5a7.07 7.07 0 0 1-10-10l6-6a7.07 7.07 0 0 1 10 10l-6 6Z"/><path d="m8.5 8.5 7 7"/></svg></div>
         <div>
-          <div class="stat-val">46 079</div>
+          <div class="stat-val tnum" data-count="46079">46 079</div>
           <div class="stat-label">Davlat Ro'yxati Dorilari</div>
         </div>
       </div>
       <div class="stat-card">
-        <div class="stat-icon" style="background:#ecfdf5;color:#059669">🇺🇿</div>
+        <div class="stat-icon" style="background:#ecfdf5;color:#059669"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V4"/><path d="M4 5c2-1.4 4.2-1.8 6.5-.8L14 6.4a9 9 0 0 0 6-1V13a9 9 0 0 1-6 1l-3.5-2.2A12 12 0 0 0 4 14"/></svg></div>
         <div>
-          <div class="stat-val">80%</div>
+          <div class="stat-val tnum" data-count="80" data-suffix="%">80%</div>
           <div class="stat-label">Mahalliy Paritet Kafolati</div>
         </div>
       </div>
       <div class="stat-card">
-        <div class="stat-icon" style="background:#fef3c7;color:#d97706">📑</div>
+        <div class="stat-icon" style="background:#fef3c7;color:#d97706"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6Z"/><path d="M14 2v6h6"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg></div>
         <div>
-          <div class="stat-val">2 941</div>
+          <div class="stat-val tnum" data-count="2941">2 941</div>
           <div class="stat-label">Xalqaro XPN Guruhlari</div>
         </div>
       </div>
       <div class="stat-card">
-        <div class="stat-icon" style="background:#f1f5f9;color:#475569">🏪</div>
+        <div class="stat-icon" style="background:#f1f5f9;color:#475569"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1.7-5.2A1.6 1.6 0 0 1 6.2 2.7h11.6a1.6 1.6 0 0 1 1.5 1.1L21 9"/><path d="M4 9v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9"/><path d="M9 21v-6h6v6"/><path d="M3 9h18"/></svg></div>
         <div>
-          <div class="stat-val">308+</div>
+          <div class="stat-val tnum" data-count="308" data-suffix="+">308+</div>
           <div class="stat-label">Ochiq Dorixona Takliflari</div>
         </div>
       </div>
@@ -307,8 +307,8 @@
         <div style="display:flex;align-items:center;gap:12px">
           <select id="cat-local" class="filter-select">
             <option value="">Barcha ishlab chiqaruvchilar</option>
-            <option value="local">🇺🇿 Faqat Mahalliy (GMP)</option>
-            <option value="import">🌍 Faqat Import</option>
+            <option value="local">Faqat Mahalliy (GMP)</option>
+            <option value="import">Faqat Import</option>
           </select>
           <div class="meta-stats" id="cat-count">Yuklanmoqda...</div>
         </div>
@@ -328,7 +328,7 @@
 
   <!-- ══════════ REAL MOBILE APP: TO'LIQ DORILAR BO'LIMI SCREEN ══════════ -->
   <div id="all-drugs-view" class="all-drugs-screen hidden">
-    <!-- Top Sticky Header: [← Orqaga] [ 🔍 Qidiruv... ] [ ❤️ Sevimlilar ] -->
+    <!-- Top Sticky Header: [Orqaga] [ Qidiruv ] [ Sevimlilar ] -->
     <div class="drugs-view-header">
       <button type="button" class="btn-drugs-back" onclick="closeAllDrugsView()" aria-label="Orqaga" title="Orqaga">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
@@ -360,7 +360,7 @@
       <button type="button" class="cat-pill-mob" onclick="setCategoryMob('ogriq', this)">Og'riq qoldiruvchi</button>
       <button type="button" class="cat-pill-mob" onclick="setCategoryMob('antibiotik', this)">Antibiotiklar</button>
       <button type="button" class="cat-pill-mob" onclick="setCategoryMob('vitamin', this)">Vitaminlar</button>
-      <button type="button" class="cat-pill-mob" onclick="setCategoryMob('local', this)">🇺🇿 Faqat Mahalliy</button>
+      <button type="button" class="cat-pill-mob" onclick="setCategoryMob('local', this)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V4"/><path d="M4 5c2-1.4 4.2-1.8 6.5-.8L14 6.4a9 9 0 0 0 6-1V13a9 9 0 0 1-6 1l-3.5-2.2A12 12 0 0 0 4 14"/></svg> Faqat Mahalliy</button>
     </div>
 
     <!-- Dorilar soni va holati -->
@@ -383,9 +383,9 @@
   <section id="sec-b2b" class="hidden">
     <div class="b2b-wrapper">
       <div class="b2b-nav">
-        <button class="b2b-tab active" id="tab-b2b-dr" onclick="switchB2BTab('doctor')">🩺 Shifokor (XPN e-Retsept)</button>
-        <button class="b2b-tab" id="tab-b2b-ph" onclick="switchB2BTab('pharmacist')">💊 Dorixona (Berish navbati)</button>
-        <button class="b2b-tab" id="tab-b2b-mfg" onclick="switchB2BTab('factory')">🏭 Zavod & Admin (Audit / Tahlil)</button>
+        <button class="b2b-tab active" id="tab-b2b-dr" onclick="switchB2BTab('doctor')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.8 2.3A.3.3 0 1 0 5.3 4H5a7 7 0 0 0 7 7 7 7 0 0 0 7-7h-.3A.3.3 0 1 0 19.2 2.3"/><path d="M8 4v6a4 4 0 0 0 8 0V4"/><path d="M12 14v2a6 6 0 0 0 6 6 6 6 0 0 0 6-6v-1.5"/><circle cx="22" cy="12.5" r="1.6"/></svg> Shifokor (XPN e-Retsept)</button>
+        <button class="b2b-tab" id="tab-b2b-ph" onclick="switchB2BTab('pharmacist')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 20.5a7.07 7.07 0 0 1-10-10l6-6a7.07 7.07 0 0 1 10 10l-6 6Z"/><path d="m8.5 8.5 7 7"/></svg> Dorixona (Berish navbati)</button>
+        <button class="b2b-tab" id="tab-b2b-mfg" onclick="switchB2BTab('factory')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M17 18h1M12 18h1M7 18h1"/></svg> Zavod & Admin (Audit / Tahlil)</button>
       </div>
 
       <!-- Doctor Portal Tab -->
@@ -433,28 +433,23 @@
 </div>
 
 <!-- ══════════ FLOATING MLLYMED AI AGENT ══════════ -->
-<div class="floating-agent-btn" onclick="toggleAgentPopup()" id="agent-fab" title="MllyMed AI tibbiy maslahatchi">
-  <div class="agent-icon-circle">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.3">
-      <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/>
-      <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
-      <line x1="12" y1="19" x2="12" y2="22"/>
-    </svg>
-  </div>
-  <span style="font-weight:700;letter-spacing:0.2px">MllyMed AI</span>
-</div>
+<button type="button" class="floating-agent-btn" onclick="toggleAgentPopup()" id="agent-fab" title="MllyMed AI tibbiy maslahatchi" aria-label="MllyMed AI tibbiy maslahatchi">
+  <span class="orb" aria-hidden="true"><span class="orb-ring"></span><span class="orb-halo"></span></span>
+  <span class="fab-tx"><b>MllyMed AI</b><small>ONLINE</small></span>
+</button>
 
 <!-- Floating Agent Popup Drawer -->
 <div class="agent-popup hidden" id="agent-popup">
   <div class="sheet-handle"></div>
   <div class="popup-header">
-    <div>
-      <b style="font-size:15px;color:var(--text-primary)">MllyMed AI</b>
-      <div style="font-size:11.5px;color:#059669;display:flex;align-items:center;gap:4px">
-        <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#10b981"></span> Klinik xavfsiz maslahat
+    <div class="popup-id">
+      <span class="orb" aria-hidden="true"><span class="orb-ring"></span></span>
+      <div>
+        <b>MllyMed AI</b>
+        <div class="popup-status"><span class="pulse-dot"></span> Klinik xavfsiz maslahat</div>
       </div>
     </div>
-    <button class="btn-close-popup" onclick="toggleAgentPopup()">×</button>
+    <button class="btn-close-popup" onclick="toggleAgentPopup()" aria-label="Yopish">×</button>
   </div>
 
   <div class="chat-stream" id="chat-log">
@@ -539,7 +534,7 @@
       <div class="notify-list">
         <!-- 1-bildirishnoma: Yangi e-retsept -->
         <div class="notify-item unread" onclick="openAuthModal();closeNotificationModal()">
-          <div class="notify-icon icon-rx">📋</div>
+          <div class="notify-icon icon-rx"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 13.5 2 2 4-4.5"/></svg></div>
           <div class="notify-content">
             <div class="notify-head">
               <span class="notify-title">Yangi elektron retsept (XPN)</span>
@@ -551,7 +546,7 @@
 
         <!-- 2-bildirishnoma: Mahalliy arzon muqobil tavsiyasi -->
         <div class="notify-item" onclick="quickSearch('Paratsetamol');closeNotificationModal()">
-          <div class="notify-icon icon-price">🇺🇿</div>
+          <div class="notify-icon icon-price"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.6 2.6a2 2 0 0 0-1.4-.6H4a2 2 0 0 0-2 2v7.2a2 2 0 0 0 .6 1.4l9.7 9.7a2 2 0 0 0 2.8 0l7.2-7.2a2 2 0 0 0 0-2.8l-9.7-9.7Z"/><circle cx="7.5" cy="7.5" r="1.4"/></svg></div>
           <div class="notify-content">
             <div class="notify-head">
               <span class="notify-title">Arzon mahalliy dori topildi!</span>
@@ -563,7 +558,7 @@
 
         <!-- 3-bildirishnoma: DMED E-Navbat -->
         <div class="notify-item" onclick="openAuthModal();closeNotificationModal()">
-          <div class="notify-icon icon-dmed">🏥</div>
+          <div class="notify-icon icon-dmed"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M12 10h.01"/></svg></div>
           <div class="notify-content">
             <div class="notify-head">
               <span class="notify-title">DMED: Shifokor qabuli</span>
@@ -575,7 +570,7 @@
 
         <!-- 4-bildirishnoma: FarmNazorat referent narx -->
         <div class="notify-item">
-          <div class="notify-icon icon-shield">🛡️</div>
+          <div class="notify-icon icon-shield"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5 4.5 6v6c0 4.8 3.2 9.3 7.5 10.5 4.3-1.2 7.5-5.7 7.5-10.5V6L12 2.5Z"/><path d="m9.5 12 2 2 3.5-4"/></svg></div>
           <div class="notify-content">
             <div class="notify-head">
               <span class="notify-title">Referent narxlar yangilandi</span>
@@ -646,7 +641,7 @@
       <div id="cal-appointments-list">
         <div class="cal-card-appt">
           <div class="cal-appt-row">
-            <img src="https://images.unsplash.com/photo-1594824813587-08e64c239327?w=120&auto=format&fit=crop&q=80" alt="Doctor" class="cal-doctor-avatar">
+            <img src="data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20120%20120%22%3E%3Cdefs%3E%3ClinearGradient%20id=%22g%22%20x1=%220%22%20y1=%220%22%20x2=%221%22%20y2=%221%22%3E%3Cstop%20offset=%220%22%20stop-color=%22#5eead4%22/%3E%3Cstop%20offset=%221%22%20stop-color=%22#0e7490%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect%20width=%22120%22%20height=%22120%22%20rx=%2260%22%20fill=%22url%28#g%29%22/%3E%3Ccircle%20cx=%2260%22%20cy=%2244%22%20r=%2217%22%20fill=%22#ffffff%22%20opacity=%220.96%22/%3E%3Cpath%20d=%22M23%20112c5-25%2021-36%2037-36s32%2011%2037%2036Z%22%20fill=%22#ffffff%22%20opacity=%220.96%22/%3E%3Crect%20x=%2252.5%22%20y=%2278%22%20width=%2215%22%20height=%225.4%22%20rx=%222.7%22%20fill=%22#0e7490%22%20opacity=%220.85%22/%3E%3C/svg%3E" alt="Shifokor avatari" class="cal-doctor-avatar">
             <div class="cal-appt-meta">
               <div style="display:flex;justify-content:space-between;align-items:center">
                 <b style="font-size:14.5px;color:#0f172a">Dr. Catriona Swift</b>
@@ -675,7 +670,7 @@
       </div>
 
       <div class="cal-rx-card">
-        <div class="cal-rx-icon">💊</div>
+        <div class="cal-rx-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 20.5a7.07 7.07 0 0 1-10-10l6-6a7.07 7.07 0 0 1 10 10l-6 6Z"/><path d="m8.5 8.5 7 7"/></svg></div>
         <div class="cal-rx-info">
           <div style="display:flex;justify-content:space-between;align-items:center">
             <b style="font-size:13.5px;color:#0f172a">Paratsetamol 500mg</b>
@@ -689,7 +684,7 @@
       </div>
 
       <div class="cal-rx-card" style="margin-top:10px">
-        <div class="cal-rx-icon" style="background:#ecfdf5;color:#059669">✅</div>
+        <div class="cal-rx-icon" style="background:#ecfdf5;color:#059669"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="m8.5 12.2 2.4 2.4 4.6-5.4"/></svg></div>
         <div class="cal-rx-info">
           <div style="display:flex;justify-content:space-between;align-items:center">
             <b style="font-size:13.5px;color:#0f172a">Amoksitsillin 500mg</b>
@@ -761,7 +756,7 @@
         </form>
 
         <p style="font-size:11.5px;color:var(--text-muted);text-align:center;margin-top:16px">
-          🔒 Shaxsiy ma'lumotlar O'zbekiston Respublikasi "Shaxsga doir ma'lumotlar to'g'risida"gi qonuniga muvofiq himoyalanadi.
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:4px"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Shaxsiy ma'lumotlar O'zbekiston Respublikasi "Shaxsga doir ma'lumotlar to'g'risida"gi qonuniga muvofiq himoyalanadi.
         </p>
       </div>
 
@@ -811,20 +806,21 @@
 </div>
 
 <!-- Shared Core Scripts -->
-<script src="shared/js/api.js?v=3.1"></script>
-<script src="shared/js/app.js?v=3.1"></script>
+<script src="shared/js/icons.js?v=4.0"></script>
+<script src="shared/js/api.js?v=4.0"></script>
+<script src="shared/js/app.js?v=4.0"></script>
 
 <!-- B2C Scripts -->
-<script src="b2c/catalog.js?v=3.1"></script>
-<script src="b2c/patient.js?v=3.1"></script>
+<script src="b2c/catalog.js?v=4.0"></script>
+<script src="b2c/patient.js?v=4.0"></script>
 
 <!-- B2B Scripts -->
-<script src="b2b/doctor.js?v=3.1"></script>
-<script src="b2b/pharmacist.js?v=3.1"></script>
-<script src="b2b/factory.js?v=3.1"></script>
+<script src="b2b/doctor.js?v=4.0"></script>
+<script src="b2b/pharmacist.js?v=4.0"></script>
+<script src="b2b/factory.js?v=4.0"></script>
 
 <!-- Agent Widget Script -->
-<script src="agent/agent_widget.js?v=3.1"></script>
+<script src="agent/agent_widget.js?v=4.0"></script>
 
 </body>
 </html>

@@ -51,6 +51,8 @@ function mobileNavTab(tab) {
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   } else if (tab === 'drugs') {
+    const btn = $('tab-mob-home');
+    if (btn) btn.classList.add('active');
     if (typeof closePatientModal === 'function') closePatientModal();
     closeCalendarModal();
     closeNotificationModal();
@@ -83,6 +85,7 @@ function mobileNavTab(tab) {
   } else if (tab === 'ai' || tab === 'support') {
     openSupportChat();
   }
+  if (typeof updateDockIndicator === 'function') updateDockIndicator();
 }
 
 /**
@@ -111,7 +114,7 @@ async function loadCalendarAppointments() {
         html += `
           <div class="cal-card-appt" style="margin-bottom:10px">
             <div class="cal-appt-row">
-              <img src="https://images.unsplash.com/photo-1594824813587-08e64c239327?w=120&auto=format&fit=crop&q=80" alt="Doctor" class="cal-doctor-avatar">
+              <img src="data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20120%20120%22%3E%3Cdefs%3E%3ClinearGradient%20id=%22g%22%20x1=%220%22%20y1=%220%22%20x2=%221%22%20y2=%221%22%3E%3Cstop%20offset=%220%22%20stop-color=%22#5eead4%22/%3E%3Cstop%20offset=%221%22%20stop-color=%22#0e7490%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect%20width=%22120%22%20height=%22120%22%20rx=%2260%22%20fill=%22url%28#g%29%22/%3E%3Ccircle%20cx=%2260%22%20cy=%2244%22%20r=%2217%22%20fill=%22#ffffff%22%20opacity=%220.96%22/%3E%3Cpath%20d=%22M23%20112c5-25%2021-36%2037-36s32%2011%2037%2036Z%22%20fill=%22#ffffff%22%20opacity=%220.96%22/%3E%3Crect%20x=%2252.5%22%20y=%2278%22%20width=%2215%22%20height=%225.4%22%20rx=%222.7%22%20fill=%22#0e7490%22%20opacity=%220.85%22/%3E%3C/svg%3E" alt="Shifokor avatari" class="cal-doctor-avatar">
               <div class="cal-appt-meta">
                 <div style="display:flex;justify-content:space-between;align-items:center">
                   <b style="font-size:14.5px;color:#0f172a">${esc(docName)}</b>
@@ -293,6 +296,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  animateStatCounters();
+  setTimeout(updateDockIndicator, 350);
+
   // URL Deep Linklar (tab=calendar, q=...)
   try {
     const urlParams = new URLSearchParams(window.location.search);
@@ -322,8 +328,72 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+/* ── Toast bildirishnomalar ── */
+function showToast(msg, iconName) {
+  let root = document.getElementById('toast-root');
+  if (!root) {
+    root = document.createElement('div');
+    root.id = 'toast-root';
+    root.className = 'toast-root';
+    root.setAttribute('aria-live', 'polite');
+    document.body.appendChild(root);
+  }
+  const el = document.createElement('div');
+  el.className = 'toast';
+  const ic = typeof window.icon === 'function' ? window.icon(iconName || 'check-circle', 16, 2.2) : '';
+  const span = document.createElement('span');
+  span.textContent = String(msg == null ? '' : msg);
+  el.innerHTML = ic;
+  el.appendChild(span);
+  root.appendChild(el);
+  setTimeout(() => {
+    el.classList.add('toast-out');
+    setTimeout(() => el.remove(), 320);
+  }, 2600);
+}
+
+/* ── Statistikalarni count-up bilan jonlantirish ── */
+function animateStatCounters() {
+  const fmt = n => Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '\u2009');
+  document.querySelectorAll('.stat-val[data-count]').forEach(el => {
+    const target = parseFloat(el.getAttribute('data-count')) || 0;
+    const suffix = el.getAttribute('data-suffix') || '';
+    const dur = 1300;
+    const t0 = performance.now();
+    function frame(t) {
+      const k = Math.min(1, (t - t0) / dur);
+      const e = 1 - Math.pow(1 - k, 3);
+      el.textContent = fmt(target * e) + suffix;
+      if (k < 1) requestAnimationFrame(frame);
+      else el.textContent = fmt(target) + suffix;
+    }
+    requestAnimationFrame(frame);
+  });
+}
+
+/* ── Mobil dock: aktiv element ostiga sirg'aluvchi ko'rsatkich ── */
+function updateDockIndicator() {
+  const pill = document.querySelector('.mob-dock-pill');
+  if (!pill) return;
+  let ind = pill.querySelector('.dock-indicator');
+  if (!ind) {
+    ind = document.createElement('span');
+    ind.className = 'dock-indicator';
+    ind.setAttribute('aria-hidden', 'true');
+    pill.insertBefore(ind, pill.firstChild);
+  }
+  const active = pill.querySelector('.dock-item.active');
+  if (!active) { ind.style.opacity = '0'; return; }
+  ind.style.opacity = '1';
+  ind.style.left = active.offsetLeft + 'px';
+  ind.style.width = active.offsetWidth + 'px';
+}
+window.addEventListener('resize', updateDockIndicator);
+
 window.switchMode = switchMode;
 window.mobileNavTab = mobileNavTab;
 window.onSearchInput = onSearchInput;
 window.openNotificationModal = openNotificationModal;
 window.closeNotificationModal = closeNotificationModal;
+window.showToast = showToast;
+window.updateDockIndicator = updateDockIndicator;
