@@ -218,3 +218,23 @@ da — zaxiradan tiklanadi.
 | Health FAIL | `docker ps`; xotira yetarli emasligini `dmesg` da tekshiring |
 | Bot javob bermayapti | `systemctl status mllymed-bot`; token rotatsiyadan keyin yangilanganini tekshiring; `python3 bot.py` lokal ishga tushirib ko'ring; poller bittami? |
 | Port band | `PUBLIC_PORT=8080` (env) yoki `docker run -p 8080:8200` |
+
+---
+
+## 9. Changelog — 2026-11-18 (frontend UX + deploy zanjiri)
+
+**Eslatma:** endi frontend ham o'zgartirilgan (ilgari
+"mahsulot kodi o'zgartirilmagan" qayd etilgan edi — bu endi yangilanadi).
+
+- **Fon:** tekis `#f8fafc` o'rniga yumshoq radial «mesh» gradient (ko'k/yashil/binafsha nur).
+- **Qidirish:** desktop va mobil qidiruv panelida «Qidirish» tugmasi; Enter ham ishlaydi.
+- **Natija yo'q:** har doim chiroyli empty-state (««so'rov» topilmadi» + «Qidiruvni tozalash» tugmasi) — ilgari bo'sh grid chiqardi.
+- **Kategoriyalar:** chiplar bazadagi haqiqiy nomlar (16 ta, soni bilan, facets'dan); ilgari `yurak`/`ogriq` kabi noto'g'ri qiymatlar hech qachon mos kelmasdi — filtr ishlamayotgan edi.
+- **Katalog kontrakti:** `name`/`pharmacies`/`rx` maydonlari to'g'irlandi; `local` filtri `local`/`import` qiymatlarini yuboradi. Kartochkalar endi bo'sh nom bilan chiqmaydi.
+- **Dori kartasi:** backend'ning haqiqiy javobiga moslashtirildi — `status: ok|ambiguous|not_found`; offers/80% tekshiruvi/XPN guruh statistikasi real maydonlardan; «ambiguous» bo'lsa nomzodlar tanlanadi; «not_found» qo'llab-quvvatlanadi. Ilgari karta har doim «topilmadi» chiqarardi.
+- **Agent oynasi:** «MllyMed AI o'ylayapti… Ns» jonli soniya taymeri + uch nuqtali to'lqin animatsiyasi + spinner.
+- **Integratsiya:** bosh sahifada «ECOTIZIM» strip — Arzon Apteka (orindor.pages.dev/#/asosiy) va DMED mini (orindor.pages.dev/dmed#/bosh) bir tugmada; teskari linklar orindor.pages.dev tomonida (`docs/` — alohida, main branch).
+- **Yuklash:** katalog skeleto-shimmer (tezkor yuklanish hissi).
+- **Workflow:** R2 zaxira qadami — maxfiylik yo'q/R2 yoqilmagan bo'lsa `::warning::` bilan skip (xato emas); R2 10042 kodi ham skip sifatida qayta ishlanadi.
+- **Tetiklash:** develop ga push — GitHub Actions (deploy/** o'zgargani uchun bu fayl) + Render autoDeploy (frontend/** har doim, native). Health + Smoke + R2 bosqichlari develop'da tekshiriladi.
+- **Tuzatilgan:** Mini App tugmasi `WEBAPP_URL` orqali yangi saytga (Render) ishora qiladi — bot serve qilingan sayt.

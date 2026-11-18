@@ -5,7 +5,7 @@ name: render-deploy
 
 on:
   push:
-    branches: [develop, arena/41081f3c-mllymed]   # arena branch — deployni shu yerdan ishga tushirish uchun
+    branches: [develop, arena/69c55672-mllymed]   # arena branch — deployni shu yerdan ishga tushirish uchun
     paths:
       - '.github/workflows/render-deploy.yml'
       - 'deploy/**'
@@ -169,18 +169,28 @@ jobs:
           R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
         run: |
           set -euo pipefail
+          if [ -z "${R2_ACCESS_KEY_ID:-}" ] || [ -z "${R2_SECRET_ACCESS_KEY:-}" ] || [ -z "${CF_API_TOKEN:-}" ] || [ -z "${CF_ACCOUNT_ID:-}" ]; then
+            echo "::warning::R2 maxfiyliklari sozlanmagan — backup skip qilindi (deploy baribir jonli)."
+            echo "R2'ni yoqish: dash.cloudflare.com → R2 → Enable R2, so'ng repo secrets'ga"
+            echo "CF_API_TOKEN, CF_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY qo'shing."
+            exit 0
+          fi
           CODE=$(curl -sS -o /tmp/r2_bucket.json -w '%{http_code}' -X POST \
                  -H "Authorization: Bearer $CF_API_TOKEN" -H 'Content-Type: application/json' \
                  -d '{"name":"mllymed-backup"}' \
                  "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT_ID/r2/buckets")
           echo "bucket create HTTP $CODE (mavjud bo‘lsa — muammo emas)"
           jq -c '{success, errors}' /tmp/r2_bucket.json || true
+          if grep -q '10042' /tmp/r2_bucket.json 2>/dev/null; then
+            echo "::warning::R2 hali yoqilmagan (Cloudflare Dashboard → R2 → Enable R2). Backup skip qilindi."
+            exit 0
+          fi
           pip install -q awscli
           export AWS_ACCESS_KEY_ID="$R2_ACCESS_KEY_ID" AWS_SECRET_ACCESS_KEY="$R2_SECRET_ACCESS_KEY"
           export AWS_DEFAULT_REGION=auto
           EP="https://$CF_ACCOUNT_ID.r2.cloudflarestorage.com"
-          aws s3 sync ./data "s3://mllymed-backup/data" --endpoint-url "$EP" --only-show-errors
-          aws s3 sync ./orindor/data "s3://mllymed-backup/orindor-data" --endpoint-url "$EP" --only-show-errors
+          aws s3 sync ./data "s3://mllymed-backup/data" --endpoint-url "$EP" --only-show-errors || echo "::warning::data/ sync o'tmadi (R2 holatini tekshiring)"
+          aws s3 sync ./orindor/data "s3://mllymed-backup/orindor-data" --endpoint-url "$EP" --only-show-errors || echo "::warning::orindor/data/ sync o'tmadi (R2 holatini tekshiring)"
           echo "✅ R2 backup tugadi: s3://mllymed-backup/{data,orindor-data}"
 
       - name: Yakuniy xulosa
