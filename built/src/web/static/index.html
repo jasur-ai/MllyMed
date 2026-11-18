@@ -9,16 +9,16 @@
   <title>MllyMed — Milliy dori vositalariga ishonch ekotizimi</title>
   
   <!-- Shared Design Tokens & Layout -->
-  <link rel="stylesheet" href="shared/css/base.css?v=2.7">
-  <link rel="stylesheet" href="shared/css/navbar.css?v=2.7">
-  <link rel="stylesheet" href="shared/css/modal.css?v=2.7">
+  <link rel="stylesheet" href="shared/css/base.css?v=2.8">
+  <link rel="stylesheet" href="shared/css/navbar.css?v=2.8">
+  <link rel="stylesheet" href="shared/css/modal.css?v=2.8">
 
   <!-- B2C & B2B Styles -->
-  <link rel="stylesheet" href="b2c/b2c.css?v=2.7">
-  <link rel="stylesheet" href="b2b/b2b.css?v=2.7">
+  <link rel="stylesheet" href="b2c/b2c.css?v=2.8">
+  <link rel="stylesheet" href="b2b/b2b.css?v=2.8">
 
   <!-- MllyMed AI Agent Widget -->
-  <link rel="stylesheet" href="agent/agent_widget.css?v=2.7">
+  <link rel="stylesheet" href="agent/agent_widget.css?v=2.8">
 
   <!-- Telegram Web App SDK (Mini App rejimida ochilganda native rejimni yoqish) -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -107,25 +107,7 @@
         <button type="button" id="mob-search-clear" class="search-clear-btn hidden" onclick="clearSearch()">&times;</button>
       </div>
 
-      <!-- 3. Hero Promo Banner (Your Health, Our Priority) -->
-      <div class="mob-hero-card">
-        <div class="mob-hero-content">
-          <h3 class="mob-hero-title">Sog'lig'ingiz — bizning ustuvorligimiz</h3>
-          <p class="mob-hero-desc">46 079 ta dori va 80% arzon mahalliy GMP muqobillarini ishonch bilan toping.</p>
-          <button class="mob-hero-btn" onclick="toggleAgentPopup()">
-            <span>AI Maslahat</span>
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-              <line x1="5" y1="12" x2="19" y2="12"/>
-              <polyline points="12 5 19 12 12 19"/>
-            </svg>
-          </button>
-        </div>
-        <div class="mob-hero-media">
-          <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=360&auto=format&fit=crop&q=80" alt="Doctor" class="mob-doctor-img">
-        </div>
-      </div>
-
-      <!-- 4. Quick 3-Service Action Row (Checkup, Consult, Diagnostic) -->
+      <!-- Quick 3-Service Action Row (Checkup, Consult, Diagnostic) -->
       <div class="mob-service-row">
         <!-- Service 1: Checkup / Triaj -->
         <div class="mob-service-card" onclick="sendPrompt('Boshim qattiq og\'riyapti')">
@@ -733,20 +715,20 @@
 </div>
 
 <!-- Shared Core Scripts -->
-<script src="shared/js/api.js?v=2.7"></script>
-<script src="shared/js/app.js?v=2.7"></script>
+<script src="shared/js/api.js?v=2.8"></script>
+<script src="shared/js/app.js?v=2.8"></script>
 
 <!-- B2C Scripts -->
-<script src="b2c/catalog.js?v=2.7"></script>
-<script src="b2c/patient.js?v=2.7"></script>
+<script src="b2c/catalog.js?v=2.8"></script>
+<script src="b2c/patient.js?v=2.8"></script>
 
 <!-- B2B Scripts -->
-<script src="b2b/doctor.js?v=2.7"></script>
-<script src="b2b/pharmacist.js?v=2.7"></script>
-<script src="b2b/factory.js?v=2.7"></script>
+<script src="b2b/doctor.js?v=2.8"></script>
+<script src="b2b/pharmacist.js?v=2.8"></script>
+<script src="b2b/factory.js?v=2.8"></script>
 
 <!-- Agent Widget Script -->
-<script src="agent/agent_widget.js?v=2.7"></script>
+<script src="agent/agent_widget.js?v=2.8"></script>
 
 </body>
 </html>
