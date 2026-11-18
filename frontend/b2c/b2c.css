@@ -421,11 +421,7 @@
     padding: calc(10px + env(safe-area-inset-top, 0px)) 16px calc(90px + env(safe-area-inset-bottom, 0px)) 16px !important;
   }
 
-  /* Desktop Navbar and Stats Strip are hidden on mobile */
-  .nav-header {
-    display: none !important;
-  }
-
+  /* Desktop Stats Strip is hidden on mobile (Mobile App has its own hero cards) */
   .stats-strip {
     display: none !important;
   }
@@ -1037,77 +1033,5 @@
     width: 16px;
     border-radius: 4px;
     background: #0f3d64;
-  }
-
-  /* 6. Floating Island Bottom Navigation */
-  .mobile-bottom-nav {
-    display: flex !important;
-    position: fixed;
-    bottom: 12px;
-    left: 0;
-    right: 0;
-    z-index: 120;
-    pointer-events: none;
-    justify-content: center;
-    background: none !important;
-    border: none !important;
-    box-shadow: none !important;
-    height: auto !important;
-    padding: 0 !important;
-  }
-
-  .mob-island-bar {
-    pointer-events: auto;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    background: rgba(255, 255, 255, 0.96);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    border-radius: 40px;
-    padding: 6px 10px;
-    box-shadow: 0 10px 30px rgba(15, 60, 110, 0.14);
-    border: 1px solid rgba(255, 255, 255, 0.9);
-    width: calc(100% - 32px);
-    max-width: 380px;
-  }
-
-  .island-tab-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #64748b;
-    padding: 10px;
-    border-radius: 50%;
-    border: none;
-    background: none;
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-
-  .island-tab-btn.active {
-    background: #0f3d64;
-    color: #ffffff;
-    border-radius: 30px;
-    padding: 8px 16px;
-    gap: 6px;
-  }
-
-  .island-tab-btn.active svg {
-    color: #ffffff;
-    stroke: none;
-    fill: #ffffff;
-  }
-
-  .island-tab-btn .tab-label {
-    display: none;
-    font-size: 13px;
-    font-weight: 700;
-    color: #ffffff;
-  }
-
-  .island-tab-btn.active .tab-label {
-    display: inline;
   }
 }

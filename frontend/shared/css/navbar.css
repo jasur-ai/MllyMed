@@ -133,6 +133,10 @@
   transform: translateY(-1px);
 }
 
+.btn-nav-user {
+  display: none;
+}
+
 /* Real Mobile App Bottom Navigation Bar */
 .mobile-bottom-nav {
   display: none !important;
@@ -155,6 +159,9 @@
   .mobile-bottom-nav {
     display: none !important;
   }
+  .btn-nav-user {
+    display: none !important;
+  }
 }
 
 /* ══════════════════════════════════════════════════════════════
@@ -163,21 +170,25 @@
 @media (max-width: 640px) {
   /* Mobile Native Top App Bar */
   .nav-header {
+    display: flex !important;
     position: sticky;
     top: 0;
     left: 0;
     right: 0;
-    margin: 0 -12px 12px -12px;
-    border-radius: 0 0 20px 20px;
-    padding: calc(6px + env(safe-area-inset-top, 0px)) 16px 10px 16px;
+    margin: 0 -16px 12px -16px;
+    border-radius: 0 0 22px 22px;
+    padding: calc(8px + env(safe-area-inset-top, 0px)) 16px 10px 16px;
     border-top: none;
     border-left: none;
     border-right: none;
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 0.96);
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
     border-bottom: 1px solid rgba(226, 232, 240, 0.85);
+    z-index: 100;
+    align-items: center;
+    justify-content: space-between;
   }
 
   .brand-svg {
@@ -189,9 +200,15 @@
     display: none !important;
   }
 
-  /* Tepada Kirish o'rnida faqat Bildirishnoma chiqadi */
+  /* Tepada Kirish o'rnida faqat Bildirishnoma va Kabinet chiqadi */
   .btn-login {
     display: none !important;
+  }
+
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
 
   .btn-notification {
@@ -199,76 +216,118 @@
     width: 38px;
     height: 38px;
     background: #f8fafc;
+    border: 1px solid rgba(226, 232, 240, 0.9);
+    border-radius: 50%;
   }
 
-  /* Native Mobile Bottom Tab Bar */
+  .btn-nav-user {
+    display: flex !important;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #f8fafc;
+    border: 1px solid rgba(226, 232, 240, 0.9);
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.15s ease;
+  }
+
+  .btn-nav-user:active {
+    transform: scale(0.92);
+  }
+
+  /* Real Mobile App Floating Island Bottom Dock */
   .mobile-bottom-nav {
-    display: flex;
+    display: flex !important;
     position: fixed;
-    bottom: 0;
+    bottom: calc(10px + env(safe-area-inset-bottom, 0px));
     left: 0;
     right: 0;
-    height: calc(58px + env(safe-area-inset-bottom, 0px));
-    padding-bottom: env(safe-area-inset-bottom, 0px);
-    background: rgba(255, 255, 255, 0.96);
+    z-index: 120;
+    pointer-events: none;
+    justify-content: center;
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    height: auto !important;
+    padding: 0 10px !important;
+  }
+
+  .mob-island-bar {
+    pointer-events: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4px;
+    background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
-    border-top: 1px solid rgba(226, 232, 240, 0.9);
-    align-items: center;
-    justify-content: space-around;
-    z-index: 120;
-    box-shadow: 0 -4px 18px rgba(15, 23, 42, 0.06);
+    border-radius: 40px;
+    padding: 6px 8px;
+    box-shadow: 0 10px 30px rgba(15, 60, 110, 0.16), 0 2px 8px rgba(15, 60, 110, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.95);
+    width: 100%;
+    max-width: 410px;
   }
 
-  .nav-item-btn {
+  .island-tab-btn {
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 4px;
     color: #64748b;
-    font-size: 10.5px;
-    font-weight: 600;
-    flex: 1;
-    height: 100%;
+    padding: 8px 10px;
+    border-radius: 30px;
+    border: none;
+    background: none;
     cursor: pointer;
-    transition: all 0.2s ease;
-    user-select: none;
-    -webkit-user-select: none;
+    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    -webkit-tap-highlight-color: transparent;
   }
 
-  .nav-item-btn:active {
-    transform: scale(0.94);
+  .island-tab-btn:active {
+    transform: scale(0.92);
   }
 
-  .nav-item-btn.active {
-    color: var(--primary);
+  .island-tab-btn.active {
+    background: #0f3d64;
+    color: #ffffff;
+    padding: 8px 14px;
+    gap: 6px;
   }
 
-  .nav-item-btn.active svg {
-    stroke: var(--primary);
+  .island-tab-btn.active svg {
+    color: #ffffff;
+    stroke: none;
+    fill: #ffffff;
   }
 
-  /* Markaziy MllyMed AI tugmasi */
-  .nav-item-ai {
-    position: relative;
+  .island-tab-btn.active svg[fill="none"] {
+    stroke: #ffffff;
+    fill: none;
   }
 
-  .nav-item-ai .ai-glow-icon {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #0066ff, #0b69ed);
+  .tab-icon-wrap {
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 16px rgba(0, 102, 255, 0.45);
-    margin-top: -16px;
-    transition: transform 0.2s ease;
   }
 
-  .nav-item-ai:active .ai-glow-icon {
-    transform: scale(0.9);
+  .island-tab-btn .tab-label {
+    display: none;
+    font-size: 12px;
+    font-weight: 700;
+    color: #ffffff;
+    white-space: nowrap;
+  }
+
+  .island-tab-btn.active .tab-label {
+    display: inline;
+  }
+
+  /* Markaziy AI Agent ikonka uslubi */
+  .island-tab-ai.active {
+    background: linear-gradient(135deg, #0b69ed 0%, #004dc7 100%);
   }
 
   /* Telefonda floating button o'rniga pastki bar ishlaydi */

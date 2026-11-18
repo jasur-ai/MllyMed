@@ -67,6 +67,16 @@
         <span class="notification-badge-dot"></span>
       </button>
 
+      <!-- Mobil Foydalanuvchi/Menyu tugmasi -->
+      <button class="btn-nav-user" onclick="openAuthModal()" title="Kabinet" aria-label="Kabinet">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1e293b" stroke-width="2">
+          <rect x="3" y="3" width="7" height="7" rx="1.5"/>
+          <rect x="14" y="3" width="7" height="7" rx="1.5"/>
+          <rect x="14" y="14" width="7" height="7" rx="1.5"/>
+          <rect x="3" y="14" width="7" height="7" rx="1.5"/>
+        </svg>
+      </button>
+
       <!-- Kirish tugmasi (Desktop) -->
       <button class="btn-login" id="btn-nav-auth" onclick="openAuthModal()">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
@@ -418,9 +428,9 @@
 <!-- ══════════ REAL MOBILE APP FLOATING ISLAND BOTTOM NAVIGATION ══════════ -->
 <nav class="mobile-bottom-nav">
   <div class="mob-island-bar">
-    <button class="island-tab-btn active" id="tab-mob-home" onclick="mobileNavTab('home')">
+    <button class="island-tab-btn active" id="tab-mob-home" onclick="mobileNavTab('home')" title="Asosiy">
       <div class="tab-icon-wrap">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
           <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
         </svg>
       </div>
@@ -428,25 +438,46 @@
     </button>
 
     <button class="island-tab-btn" id="tab-mob-drugs" onclick="mobileNavTab('drugs')" title="Dorilar">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-      </svg>
+      <div class="tab-icon-wrap">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/>
+          <path d="m8.5 8.5 7 7"/>
+        </svg>
+      </div>
+      <span class="tab-label">Dorilar</span>
     </button>
 
-    <button class="island-tab-btn" id="tab-mob-rxs" onclick="mobileNavTab('rxs')" title="Retseptlar & Navbatlar">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-        <line x1="16" y1="2" x2="16" y2="6"/>
-        <line x1="8" y1="2" x2="8" y2="6"/>
-        <line x1="3" y1="10" x2="21" y2="10"/>
-      </svg>
+    <button class="island-tab-btn island-tab-ai" id="tab-mob-ai" onclick="mobileNavTab('ai')" title="AI Maslahat">
+      <div class="tab-icon-wrap ai-icon-wrap">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/>
+          <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+          <line x1="12" y1="19" x2="12" y2="22"/>
+        </svg>
+      </div>
+      <span class="tab-label">AI Agent</span>
+    </button>
+
+    <button class="island-tab-btn" id="tab-mob-rxs" onclick="mobileNavTab('rxs')" title="Retseptlar & Qabul">
+      <div class="tab-icon-wrap">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+          <line x1="16" y1="2" x2="16" y2="6"/>
+          <line x1="8" y1="2" x2="8" y2="6"/>
+          <line x1="3" y1="10" x2="21" y2="10"/>
+        </svg>
+      </div>
+      <span class="tab-label">Retseptlar</span>
     </button>
 
     <button class="island-tab-btn" id="tab-mob-auth" onclick="mobileNavTab('auth')" title="Kabinet">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-        <circle cx="12" cy="7" r="4"/>
-      </svg>
+      <div class="tab-icon-wrap">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+      </div>
+      <span class="tab-label">Kabinet</span>
     </button>
   </div>
 </nav>
