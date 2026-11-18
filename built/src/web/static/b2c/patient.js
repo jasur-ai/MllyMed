@@ -24,8 +24,8 @@ function closePatientModal() {
   const authBtn = $('tab-mob-auth');
   if (authBtn && authBtn.classList.contains('active')) {
     authBtn.classList.remove('active');
-    const drugsBtn = $('tab-mob-drugs');
-    if (drugsBtn) drugsBtn.classList.add('active');
+    const homeBtn = $('tab-mob-home') || $('tab-mob-drugs');
+    if (homeBtn) homeBtn.classList.add('active');
   }
 }
 
@@ -126,6 +126,11 @@ function updateNavLoginState() {
   const mobUser = $('mob-user-display');
   if (mobUser) {
     mobUser.textContent = isUserLoggedIn ? (loggedInUser?.name?.split(' ')[0] || 'Sohibjon') : 'Sohibjon';
+  }
+
+  const mobAvatar = $('mob-nav-avatar');
+  if (mobAvatar && isUserLoggedIn && loggedInUser?.name) {
+    mobAvatar.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(loggedInUser.name)}&background=0b69ed&color=fff&size=100`;
   }
 }
 

@@ -100,8 +100,8 @@ function closeCalendarModal() {
   const calBtn = $('tab-mob-rxs');
   if (calBtn && calBtn.classList.contains('active')) {
     calBtn.classList.remove('active');
-    const drugsBtn = $('tab-mob-drugs');
-    if (drugsBtn) drugsBtn.classList.add('active');
+    const homeBtn = $('tab-mob-home') || $('tab-mob-drugs');
+    if (homeBtn) homeBtn.classList.add('active');
   }
 }
 
@@ -163,6 +163,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const searchInput = $('q');
   if (searchInput) {
     searchInput.addEventListener('input', onSearchInput);
+    searchInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        clearTimeout(searchTimer);
+        if (typeof loadCatalog === 'function') loadCatalog(true);
+      }
+    });
   }
 
   const mobSearch = $('mob-search-input');
@@ -174,6 +181,13 @@ document.addEventListener('DOMContentLoaded', () => {
       if (clearBtn) {
         if (e.target.value.trim().length > 0) clearBtn.classList.remove('hidden');
         else clearBtn.classList.add('hidden');
+      }
+    });
+    mobSearch.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        clearTimeout(searchTimer);
+        if (typeof loadCatalog === 'function') loadCatalog(true);
       }
     });
   }
@@ -198,8 +212,8 @@ document.addEventListener('DOMContentLoaded', () => {
       if (typeof tg.enableClosingConfirmation === 'function') {
         tg.enableClosingConfirmation();
       }
-      if (typeof tg.setHeaderColor === 'function') tg.setHeaderColor('#ffffff');
-      if (typeof tg.setBackgroundColor === 'function') tg.setBackgroundColor('#f8fafc');
+      if (typeof tg.setHeaderColor === 'function') tg.setHeaderColor('#eef3fb');
+      if (typeof tg.setBackgroundColor === 'function') tg.setBackgroundColor('#eef3fb');
 
       if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
         const u = tg.initDataUnsafe.user;
