@@ -1,0 +1,18 @@
+[Unit]
+Description=MllyMed Telegram bot (long polling)
+After=network.target mllymed.service
+Requires=mllymed.service
+
+[Service]
+Type=simple
+User=mllymed
+WorkingDirectory=/opt/mllymed
+EnvironmentFile=/opt/mllymed/deploy/.env
+ExecStart=/usr/bin/python3 deploy/telegram_bot.py
+Restart=always
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
