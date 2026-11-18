@@ -532,10 +532,10 @@
     font-size: 11px;
   }
 
-  /* 2-Column Mobile App Product Grid (1:1 with Uzum / Apteka apps) */
+  /* 2-Column Mobile App Product Grid (Bitta qatorda 2 ta kartochka) */
   .product-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
   }
 
   .product-card {
@@ -1435,8 +1435,8 @@
 
   .mob-home-drugs-grid {
     display: grid !important;
-    grid-template-columns: 1fr !important;
-    gap: 12px !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
     margin-bottom: 24px !important;
   }
 
