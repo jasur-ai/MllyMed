@@ -1,0 +1,25 @@
+# MllyMed — Cline Code & Clean Architecture Guidelines
+
+## 1. Loyiha haqida (Project Overview)
+- **Trek**: №17 — Milliy dori vositalariga ishonch
+- **Mahsulot**: MllyMed (Milliy tibbiyot va dori vositalari ishonch ekotizimi)
+- **Jonli demo (Production)**: https://mllymed.onrender.com/
+- **Asosiy filial**: `develop`
+
+## 2. Clean Code Qoidalari (Clean Code Principles)
+- **Modullik va Clean Architecture**:
+  - `frontend/` — Toza semantik HTML5, CSS o'zgaruvchilari (tokenlar), zamonaviy Vanilla JS (ortiqcha og'ir freymvorklarsiz yuqori tezlik).
+  - `built/` va `backend/` — Asosiy ishlab chiqarish serveri, API marshrutlari va optimallashtirilgan keshlar.
+  - `agent/` va `orindor/` — Klinik qat'iy tekshiruv, triaj va xavfsiz 103 filtrlari.
+- **Xavfsizlik va Halollik**:
+  - Har qanday foydalanuvchi matni `esc()` yordamida XSS hujumlariga qarshi sanitizatsiya qilinadi.
+  - Favqulodda holatlar (yurak xuruji, hushdan ketish, insult) darhol 103 ga yo'naltiriladi.
+  - Retseptli dorilar retseptisiz berilmaydi, dorilar dozasi tavsiya qilinmaydi.
+- **Formatlash va Uslub**:
+  - Python: PEP 8 qoidalari, aniq nomlanish, tur belgilari (`typing`), ortiqcha debug izohlari yo'q.
+  - JS: ES6+, asinxron API chaqiruvlari (`async/await`), xatoliklarni to'g'ri ushlash (`try/catch`).
+  - Ma'lumotlar: 46 079 ta dori vositasi davlat reyestri va 12 612 ta referent narx chegarasi bilan to'liq integratsiya.
+
+## 3. Testlash va Ishga tushirish (Verification)
+- `python3 run.py --test` — Barcha 17 ta invariant testlar, 12 ta stsenariy va 10 ta halol o'lchov har doim 100% yashil o'tishi lozim.
+- `python3 run.py` — Serverni `http://127.0.0.1:8200` manzilida ishga tushirish.
