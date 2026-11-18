@@ -69,27 +69,30 @@
   gap: 12px;
 }
 
-/* Bildirishnoma (Notification) tugmasi */
+/* Bildirishnoma (Notification) tugmasi - MllyMed identikasi asosida */
 .btn-notification {
   position: relative;
   width: 42px;
   height: 42px;
   border-radius: var(--radius-full);
-  background: #f1f5f9;
-  border: 1px solid rgba(226, 232, 240, 0.85);
+  background: #f0f7ff;
+  border: 1px solid rgba(11, 105, 237, 0.18);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #334155;
+  color: #0b69ed;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   user-select: none;
   -webkit-tap-highlight-color: transparent;
+  box-shadow: 0 2px 6px rgba(11, 105, 237, 0.08);
 }
 
 .btn-notification:hover {
-  background: #e2e8f0;
-  color: var(--primary);
+  background: #e0effe;
+  color: #0056cb;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(11, 105, 237, 0.16);
 }
 
 .btn-notification:active {
@@ -98,14 +101,14 @@
 
 .notification-badge-dot {
   position: absolute;
-  top: 9px;
-  right: 10px;
-  width: 8px;
-  height: 8px;
+  top: 7px;
+  right: 8px;
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
   background: #ef4444;
   border: 2px solid #ffffff;
-  box-shadow: 0 0 6px rgba(239, 68, 68, 0.6);
+  box-shadow: 0 0 8px rgba(239, 68, 68, 0.75);
   animation: pulse-dot 2s infinite ease-in-out;
 }
 
@@ -133,10 +136,6 @@
   transform: translateY(-1px);
 }
 
-.btn-nav-user {
-  display: none;
-}
-
 /* Real Mobile App Bottom Navigation Bar: strictly hidden on desktop & tablet */
 @media (min-width: 641px) {
   .mobile-bottom-nav {
@@ -157,9 +156,6 @@
   .btn-login {
     padding: 8px 14px;
     font-size: 12.5px;
-  }
-  .btn-nav-user {
-    display: none !important;
   }
 }
 
@@ -199,7 +195,7 @@
     display: none !important;
   }
 
-  /* Tepada Kirish o'rnida faqat Bildirishnoma va Kabinet chiqadi */
+  /* Tepada Kirish o'rnida faqat Bildirishnoma chiqadi */
   .btn-login {
     display: none !important;
   }
@@ -207,33 +203,18 @@
   .nav-actions {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 0;
   }
 
+  /* O'ng taraf: Identikaga mos bildirishnoma tugmasi */
   .btn-notification {
     display: flex !important;
-    width: 38px;
-    height: 38px;
-    background: #f8fafc;
-    border: 1px solid rgba(226, 232, 240, 0.9);
+    width: 40px;
+    height: 40px;
+    background: #f0f7ff;
+    border: 1px solid rgba(11, 105, 237, 0.2);
     border-radius: 50%;
-  }
-
-  .btn-nav-user {
-    display: flex !important;
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    background: #f8fafc;
-    border: 1px solid rgba(226, 232, 240, 0.9);
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: transform 0.15s ease;
-  }
-
-  .btn-nav-user:active {
-    transform: scale(0.92);
+    color: #0b69ed;
   }
 
   /* Real Mobile App Floating Dock (1:1 Namuna asosida) */
