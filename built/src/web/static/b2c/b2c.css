@@ -376,6 +376,40 @@
 }
 
 /* ══════════════════════════════════════════════════════════════
+   MOBILE APP VIEW: STRICTLY HIDDEN ON DESKTOP & TABLET (> 640px)
+   ══════════════════════════════════════════════════════════════ */
+.mob-app-home {
+  display: none !important;
+}
+
+.mobile-bottom-nav {
+  display: none !important;
+}
+
+/* Tablet Optimizations (641px - 1024px) */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .mob-app-home {
+    display: none !important;
+  }
+  .mobile-bottom-nav {
+    display: none !important;
+  }
+  .stats-strip {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+    margin-bottom: 18px !important;
+  }
+  .catalog-toolbar {
+    padding: 16px 18px !important;
+  }
+  .drug-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 14px !important;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════
    REAL MOBILE APP RESPONSIVE SYSTEM (1:1 NATIVE APP DARADASIDA)
    ══════════════════════════════════════════════════════════════ */
 @media (max-width: 640px) {

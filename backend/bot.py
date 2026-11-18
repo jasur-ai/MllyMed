@@ -32,7 +32,7 @@ from agent.agent import Agent, Session
 
 # Konfiguratsiya
 BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "").strip()
-WEBAPP_URL = os.getenv("WEBAPP_URL", "https://jasur-ai.github.io/MllyMed/")
+WEBAPP_URL = os.getenv("WEBAPP_URL", "https://mllymed.onrender.com")
 API_BASE = f"https://api.telegram.org/bot{BOT_TOKEN}"
 
 logging.basicConfig(
