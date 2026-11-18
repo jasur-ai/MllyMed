@@ -108,9 +108,11 @@ jobs:
           else
             echo "Mavjud bot servisi: $BID"
           fi
-          # Env var: faqat TELEGRAM_BOT_TOKEN (qiymat logga CHIQARILMAYDI)
-          ENVPAYLOAD=$(jq -nc --arg t "$TELEGRAM_BOT_TOKEN" \
-            '[{key:"TELEGRAM_BOT_TOKEN", value:$t}]')
+          # Env varlar: TELEGRAM_BOT_TOKEN + WEBAPP_URL (web servis manzili).
+          # WEBAPP_URL — Mini App tugmasi yangi (MllyMed) saytni ochishi uchun;
+          # gh-pages'dagi eski O'RINDOR nomli statik saytga ishora qolmasin.
+          ENVPAYLOAD=$(jq -nc --arg t "$TELEGRAM_BOT_TOKEN" --arg u "$WEB_URL" \
+            '[{key:"TELEGRAM_BOT_TOKEN", value:$t}, {key:"WEBAPP_URL", value:$u}]')
           CODE=$(curl -sS -o /tmp/env_resp.json -w '%{http_code}' -X PUT \
                  -H "Authorization: Bearer $RENDER_API_KEY" -H 'Content-Type: application/json' \
                  -d "$ENVPAYLOAD" "$RENDER_API/services/$BID/env-vars")
@@ -118,7 +120,7 @@ jobs:
             echo "::error::Bot env-vars o‘rnatilmadi (HTTP $CODE)"
             exit 1
           fi
-          echo "Env var o‘rnatildi: TELEGRAM_BOT_TOKEN"
+          echo "Env varlar o‘rnatildi: TELEGRAM_BOT_TOKEN + WEBAPP_URL=$WEB_URL (token logga CHIQARILMAYDI)"
           curl -sS -X POST -H "Authorization: Bearer $RENDER_API_KEY" -H 'Content-Type: application/json' \
                -d '{}' "$RENDER_API/services/$BID/deploys" | jq -c '{deploy:(.deploy.id // .id), status:(.deploy.status // .status // "triggered")}'
           curl -sS -H "Authorization: Bearer $RENDER_API_KEY" "$RENDER_API/services/$BID" > /tmp/bot_service.json
