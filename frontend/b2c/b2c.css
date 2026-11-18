@@ -903,6 +903,8 @@
     font-weight: 700;
     color: #0f172a;
     text-align: center;
+    line-height: 1.25;
+    white-space: normal;
   }
 
   /* Section Title */
