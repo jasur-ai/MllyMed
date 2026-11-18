@@ -24,8 +24,8 @@ function closePatientModal() {
   const authBtn = $('tab-mob-auth');
   if (authBtn && authBtn.classList.contains('active')) {
     authBtn.classList.remove('active');
-    const drugsBtn = $('tab-mob-drugs');
-    if (drugsBtn) drugsBtn.classList.add('active');
+    const homeBtn = $('tab-mob-home') || $('tab-mob-drugs');
+    if (homeBtn) homeBtn.classList.add('active');
   }
 }
 

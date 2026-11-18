@@ -100,8 +100,8 @@ function closeCalendarModal() {
   const calBtn = $('tab-mob-rxs');
   if (calBtn && calBtn.classList.contains('active')) {
     calBtn.classList.remove('active');
-    const drugsBtn = $('tab-mob-drugs');
-    if (drugsBtn) drugsBtn.classList.add('active');
+    const homeBtn = $('tab-mob-home') || $('tab-mob-drugs');
+    if (homeBtn) homeBtn.classList.add('active');
   }
 }
 
