@@ -31,22 +31,15 @@ function switchMode(mode) {
  * Real Mobile App Bottom Navigation Bar boshqaruvi
  */
 function mobileNavTab(tab) {
-  document.querySelectorAll('.island-tab-btn, .nav-item-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.dock-item, .island-tab-btn, .nav-item-btn').forEach(b => b.classList.remove('active'));
   
-  if (tab === 'home') {
-    const btn = $('tab-mob-home');
+  if (tab === 'drugs' || tab === 'home') {
+    const btn = $('tab-mob-drugs') || $('tab-mob-home');
     if (btn) btn.classList.add('active');
     window.scrollTo({ top: 0, behavior: 'smooth' });
     const popup = $('agent-popup');
     if (popup && !popup.classList.contains('hidden')) {
       popup.classList.add('hidden');
-    }
-  } else if (tab === 'drugs') {
-    const btn = $('tab-mob-drugs');
-    if (btn) btn.classList.add('active');
-    const catalog = $('drug-cards-container');
-    if (catalog) {
-      catalog.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   } else if (tab === 'rxs') {
     const btn = $('tab-mob-rxs');
@@ -54,25 +47,15 @@ function mobileNavTab(tab) {
     if (typeof openAuthModal === 'function') {
       openAuthModal();
     }
-  } else if (tab === 'search') {
-    const btn = $('tab-mob-search');
-    if (btn) btn.classList.add('active');
-    const inp = $('mob-search-input') || $('q');
-    if (inp) {
-      inp.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      setTimeout(() => inp.focus(), 250);
-    }
-  } else if (tab === 'ai') {
-    const btn = $('tab-mob-ai');
-    if (btn) btn.classList.add('active');
-    if (typeof toggleAgentPopup === 'function') {
-      toggleAgentPopup();
-    }
   } else if (tab === 'auth') {
     const btn = $('tab-mob-auth');
     if (btn) btn.classList.add('active');
     if (typeof openAuthModal === 'function') {
       openAuthModal();
+    }
+  } else if (tab === 'ai') {
+    if (typeof toggleAgentPopup === 'function') {
+      toggleAgentPopup();
     }
   }
 }
