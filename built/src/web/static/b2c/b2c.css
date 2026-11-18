@@ -379,51 +379,31 @@
    REAL MOBILE APP RESPONSIVE SYSTEM (1:1 NATIVE APP DARADASIDA)
    ══════════════════════════════════════════════════════════════ */
 @media (max-width: 640px) {
-  /* 1:1 Swipeable Stats Ribbon */
+  body {
+    background-color: #edf6fc !important;
+  }
+
+  .container {
+    padding: calc(10px + env(safe-area-inset-top, 0px)) 16px calc(90px + env(safe-area-inset-bottom, 0px)) 16px !important;
+  }
+
+  /* Desktop Navbar and Stats Strip are hidden on mobile */
+  .nav-header {
+    display: none !important;
+  }
+
   .stats-strip {
-    display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    gap: 8px;
-    margin: 0 -12px 14px -12px;
-    padding: 0 12px 4px 12px;
-  }
-  .stats-strip::-webkit-scrollbar { display: none; }
-
-  .stat-card {
-    flex: 0 0 calc(50% - 4px);
-    scroll-snap-align: start;
-    padding: 10px 12px;
-    border-radius: var(--radius-md);
-    gap: 8px;
-    background: #ffffff;
-    border: 1px solid rgba(226, 232, 240, 0.85);
-    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);
+    display: none !important;
   }
 
-  .stat-icon {
-    width: 32px;
-    height: 32px;
-    font-size: 16px;
-    border-radius: 10px;
+  /* Compact Native App Search Toolbar (hide duplicate search bar) */
+  .catalog-toolbar .search-wrap {
+    display: none !important;
   }
 
-  .stat-val {
-    font-size: 15.5px;
-    font-weight: 800;
-  }
-
-  .stat-label {
-    font-size: 9.5px;
-    font-weight: 600;
-  }
-
-  /* Compact Native App Search Toolbar */
   .catalog-toolbar {
-    padding: 12px;
-    border-radius: 16px;
+    padding: 10px 12px;
+    border-radius: 18px;
     margin-bottom: 14px;
     background: #ffffff;
     border: 1px solid rgba(226, 232, 240, 0.85);
@@ -673,5 +653,427 @@
   .btn-card-action:active {
     transform: scale(0.95);
     opacity: 0.92;
+  }
+
+  /* ══════════════════════════════════════════════════════════════
+     1:1 NATIVE MOBILE APP VIEW (NAMUNA ASOSIDA)
+     ══════════════════════════════════════════════════════════════ */
+  .mob-app-home {
+    display: block !important;
+    padding-top: 4px;
+    margin-bottom: 8px;
+  }
+
+  /* 1. Profile Header Row */
+  .mob-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+
+  .mob-profile-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+  }
+
+  .mob-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+
+  .mob-greeting-text {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .mob-greeting-sub {
+    font-size: 12px;
+    color: #64748b;
+    font-weight: 500;
+  }
+
+  .mob-greeting-name {
+    font-size: 16px;
+    font-weight: 800;
+    color: #0f172a;
+    letter-spacing: -0.2px;
+  }
+
+  .mob-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .mob-action-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #ffffff;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.15s ease;
+  }
+
+  .mob-action-btn:active {
+    transform: scale(0.92);
+  }
+
+  /* 2. Search Capsule */
+  .mob-search-bar {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
+  .mob-search-bar svg {
+    position: absolute;
+    left: 16px;
+    pointer-events: none;
+  }
+
+  .mob-search-bar input {
+    width: 100%;
+    padding: 14px 40px 14px 44px;
+    border-radius: 26px;
+    border: 1px solid rgba(226, 232, 240, 0.9);
+    background: #ffffff;
+    font-size: 13.5px;
+    color: #0f172a;
+    outline: none;
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.03);
+    transition: all 0.2s ease;
+  }
+
+  .mob-search-bar input:focus {
+    border-color: #0b69ed;
+    box-shadow: 0 0 0 3px rgba(11, 105, 237, 0.12);
+  }
+
+  /* 3. Hero Promo Banner */
+  .mob-hero-card {
+    background: linear-gradient(135deg, #0b69ed 0%, #004dc7 100%);
+    border-radius: 24px;
+    padding: 20px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+    box-shadow: 0 10px 24px rgba(11, 105, 237, 0.28);
+    margin-bottom: 18px;
+    min-height: 160px;
+  }
+
+  .mob-hero-content {
+    flex: 1;
+    z-index: 2;
+    padding-right: 10px;
+  }
+
+  .mob-hero-title {
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 800;
+    line-height: 1.25;
+    margin-bottom: 6px;
+    letter-spacing: -0.2px;
+  }
+
+  .mob-hero-desc {
+    color: rgba(255, 255, 255, 0.88);
+    font-size: 12px;
+    line-height: 1.4;
+    margin-bottom: 14px;
+    max-width: 220px;
+  }
+
+  .mob-hero-btn {
+    background: #ffffff;
+    color: #0f172a;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 12.5px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.15s ease;
+  }
+
+  .mob-hero-btn:active {
+    transform: scale(0.95);
+  }
+
+  .mob-hero-media {
+    position: absolute;
+    right: -10px;
+    bottom: -15px;
+    width: 140px;
+    height: 175px;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .mob-doctor-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+    filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.2));
+  }
+
+  /* 4. Quick 3-Service Row */
+  .mob-service-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 22px;
+  }
+
+  .mob-service-card {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 16px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-shadow: 0 3px 12px rgba(15, 23, 42, 0.04);
+    border: 1px solid rgba(226, 232, 240, 0.7);
+    cursor: pointer;
+    transition: transform 0.15s ease;
+  }
+
+  .mob-service-card:active {
+    transform: scale(0.94);
+  }
+
+  .mob-service-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mob-service-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: #0f172a;
+    text-align: center;
+  }
+
+  /* Section Title */
+  .mob-section-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 12px;
+  }
+
+  /* 5. Upcoming Card */
+  .mob-upcoming-card {
+    background: #ffffff;
+    border-radius: 22px;
+    padding: 16px;
+    box-shadow: 0 3px 14px rgba(15, 23, 42, 0.04);
+    border: 1px solid rgba(226, 232, 240, 0.75);
+    margin-bottom: 12px;
+  }
+
+  .mob-upcoming-header {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 14px;
+  }
+
+  .mob-upcoming-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 14px;
+    object-fit: cover;
+  }
+
+  .mob-upcoming-meta {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .mob-upcoming-name-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 3px;
+  }
+
+  .mob-upcoming-name {
+    font-size: 14.5px;
+    font-weight: 800;
+    color: #0f172a;
+  }
+
+  .mob-status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #10b981;
+    display: inline-block;
+  }
+
+  .mob-upcoming-spec {
+    font-size: 12px;
+    font-weight: 600;
+    color: #0284c7;
+    margin-bottom: 4px;
+  }
+
+  .mob-upcoming-clinic {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    color: #64748b;
+  }
+
+  .mob-upcoming-actions {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 8px;
+  }
+
+  .mob-btn-outline {
+    background: #f1f5f9;
+    color: #0f172a;
+    border-radius: 20px;
+    padding: 10px 12px;
+    font-size: 12px;
+    font-weight: 700;
+    border: 1px solid #e2e8f0;
+    cursor: pointer;
+  }
+
+  .mob-btn-primary {
+    background: #0f3d64;
+    color: #ffffff;
+    border-radius: 20px;
+    padding: 10px 12px;
+    font-size: 12px;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+  }
+
+  .mob-dots-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    margin-bottom: 14px;
+  }
+
+  .mob-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #cbd5e1;
+  }
+
+  .mob-dot.active {
+    width: 16px;
+    border-radius: 4px;
+    background: #0f3d64;
+  }
+
+  /* 6. Floating Island Bottom Navigation */
+  .mobile-bottom-nav {
+    display: flex !important;
+    position: fixed;
+    bottom: 12px;
+    left: 0;
+    right: 0;
+    z-index: 120;
+    pointer-events: none;
+    justify-content: center;
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    height: auto !important;
+    padding: 0 !important;
+  }
+
+  .mob-island-bar {
+    pointer-events: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-radius: 40px;
+    padding: 6px 10px;
+    box-shadow: 0 10px 30px rgba(15, 60, 110, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    width: calc(100% - 32px);
+    max-width: 380px;
+  }
+
+  .island-tab-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #64748b;
+    padding: 10px;
+    border-radius: 50%;
+    border: none;
+    background: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .island-tab-btn.active {
+    background: #0f3d64;
+    color: #ffffff;
+    border-radius: 30px;
+    padding: 8px 16px;
+    gap: 6px;
+  }
+
+  .island-tab-btn.active svg {
+    color: #ffffff;
+    stroke: none;
+    fill: #ffffff;
+  }
+
+  .island-tab-btn .tab-label {
+    display: none;
+    font-size: 13px;
+    font-weight: 700;
+    color: #ffffff;
+  }
+
+  .island-tab-btn.active .tab-label {
+    display: inline;
   }
 }

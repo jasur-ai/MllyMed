@@ -115,6 +115,11 @@ function updateNavLoginState() {
   if (mobLabel) {
     mobLabel.textContent = isUserLoggedIn ? 'Kabinet' : 'Kirish';
   }
+
+  const mobUser = $('mob-user-display');
+  if (mobUser) {
+    mobUser.textContent = isUserLoggedIn ? (loggedInUser?.name?.split(' ')[0] || 'Sohibjon') : 'Sohibjon';
+  }
 }
 
 async function loadPatientState() {

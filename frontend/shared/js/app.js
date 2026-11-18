@@ -31,20 +31,33 @@ function switchMode(mode) {
  * Real Mobile App Bottom Navigation Bar boshqaruvi
  */
 function mobileNavTab(tab) {
-  document.querySelectorAll('.nav-item-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.island-tab-btn, .nav-item-btn').forEach(b => b.classList.remove('active'));
   
-  if (tab === 'drugs') {
-    const btn = $('tab-mob-drugs');
+  if (tab === 'home') {
+    const btn = $('tab-mob-home');
     if (btn) btn.classList.add('active');
     window.scrollTo({ top: 0, behavior: 'smooth' });
     const popup = $('agent-popup');
     if (popup && !popup.classList.contains('hidden')) {
       popup.classList.add('hidden');
     }
+  } else if (tab === 'drugs') {
+    const btn = $('tab-mob-drugs');
+    if (btn) btn.classList.add('active');
+    const catalog = $('drug-cards-container');
+    if (catalog) {
+      catalog.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  } else if (tab === 'rxs') {
+    const btn = $('tab-mob-rxs');
+    if (btn) btn.classList.add('active');
+    if (typeof openAuthModal === 'function') {
+      openAuthModal();
+    }
   } else if (tab === 'search') {
     const btn = $('tab-mob-search');
     if (btn) btn.classList.add('active');
-    const inp = $('q');
+    const inp = $('mob-search-input') || $('q');
     if (inp) {
       inp.scrollIntoView({ behavior: 'smooth', block: 'center' });
       setTimeout(() => inp.focus(), 250);
@@ -99,6 +112,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const searchInput = $('q');
   if (searchInput) {
     searchInput.addEventListener('input', onSearchInput);
+  }
+
+  const mobSearch = $('mob-search-input');
+  if (mobSearch && searchInput) {
+    mobSearch.addEventListener('input', (e) => {
+      searchInput.value = e.target.value;
+      onSearchInput();
+      const clearBtn = $('mob-search-clear');
+      if (clearBtn) {
+        if (e.target.value.trim().length > 0) clearBtn.classList.remove('hidden');
+        else clearBtn.classList.add('hidden');
+      }
+    });
   }
 
   const localSelect = $('cat-local');

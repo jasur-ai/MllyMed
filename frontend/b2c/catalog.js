@@ -23,13 +23,16 @@ function quickSearch(term) {
 
 function clearSearch() {
   const inp = $('q');
-  if (inp) {
-    inp.value = '';
-    const clearBtn = $('search-clear-btn');
-    if (clearBtn) clearBtn.classList.add('hidden');
-    inp.focus();
-    loadCatalog(true);
-  }
+  const mobInp = $('mob-search-input');
+  if (inp) inp.value = '';
+  if (mobInp) mobInp.value = '';
+  const clearBtn = $('search-clear-btn');
+  const mobClearBtn = $('mob-search-clear');
+  if (clearBtn) clearBtn.classList.add('hidden');
+  if (mobClearBtn) mobClearBtn.classList.add('hidden');
+  if (mobInp) mobInp.focus();
+  else if (inp) inp.focus();
+  loadCatalog(true);
 }
 
 function originBadge(isLocal) {
