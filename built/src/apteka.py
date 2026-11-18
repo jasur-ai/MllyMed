@@ -25,6 +25,31 @@ from core.text import norm as _core_norm  # noqa: E402
 from core import registry  # noqa: E402
 
 CATALOG = paths.DATA / "apteka_catalog.json"
+MANIFEST_FILE = paths.STATIC / "assets" / "img" / "manifest.json"
+
+
+@lru_cache(maxsize=1)
+def photo_manifest() -> dict[str, str]:
+    try:
+        if MANIFEST_FILE.is_file():
+            return json.loads(MANIFEST_FILE.read_text(encoding="utf-8"))
+    except Exception:
+        pass
+    return {}
+
+
+def resolve_photo(p: dict) -> str | None:
+    m = photo_manifest()
+    if not m:
+        return None
+    pid = str(p.get("id") or "")
+    if pid in m:
+        return m[pid]
+    name = (p.get("name") or "").lower()
+    for k, v in m.items():
+        if len(k) > 3 and k.lower() in name:
+            return v
+    return None
 
 
 def norm(s: str) -> str:
@@ -101,6 +126,9 @@ def linked() -> list[dict]:
             q.update(canon_inn=c, link_method=method, link_score=score)
         else:
             q.update(canon_inn=None, link_method="none", link_score=0.0)
+        ph = resolve_photo(q)
+        q["photo_url"] = ph
+        q["has_photo"] = bool(ph)
         out.append(q)
     return out
 

@@ -8,7 +8,9 @@ let currentCategory = '';
 window.PACK_IMG = window.PACK_IMG || {};
 
 function getDrugPhotoUrl(p) {
-  if (!p || !window.PACK_IMG) return null;
+  if (!p) return null;
+  if (p.photo_url) return p.photo_url;
+  if (!window.PACK_IMG) return null;
   const pid = p.id != null ? String(p.id).replace(/[^a-zA-Z0-9_-]/g, '') : '';
   if (pid && window.PACK_IMG[pid]) return window.PACK_IMG[pid];
   if (p.image_id && window.PACK_IMG[p.image_id]) return window.PACK_IMG[p.image_id];
@@ -561,10 +563,12 @@ async function loadCatalog(reset = false) {
 
     if (reset) {
       container.innerHTML = html;
-      // Mobilda Bosh sahifadagi 4 ta dori prevyusi
+      // Mobilda Bosh sahifadagi 4 ta dori prevyusi (haqiqiy fotosuratli mahsulotlar)
       const mobHomeContainer = $('mob-home-drugs');
       if (mobHomeContainer) {
-        const previewItems = items.slice(0, 4);
+        const photoItems = items.filter(p => getDrugPhotoUrl(p) || p.photo_url);
+        const restItems = items.filter(p => !getDrugPhotoUrl(p) && !p.photo_url);
+        const previewItems = [...photoItems, ...restItems].slice(0, 4);
         mobHomeContainer.innerHTML = previewItems.map((p, i) => renderDrugCardHtml(p, i)).join('');
       }
     } else {

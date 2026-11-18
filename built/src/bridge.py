@@ -137,17 +137,25 @@ class Bridge:
     def catalog(self, q: str = "", page: int = 1, size: int = 20,
                 local: str | None = None, category: str | None = None) -> dict:
         from core.text import norm as n
-        rows = apteka.linked()
-        # Milliy ustuvorlik: mahalliy takliflar ro'yxat boshida
-        rows.sort(key=lambda p: (p.get("local") is not True,
-                                 p.get("price_from_som") is None,
-                                 p.get("price_from_som") or 0,
-                                 n(p.get("name") or "")))
+        rows = list(apteka.linked())
         qq = n(q).strip()
         if qq:
             rows = [p for p in rows
                     if qq in n(p.get("name")) or qq in n(p.get("inn"))
                     or qq in n(p.get("manufacturer"))]
+            rows.sort(key=lambda p: (not bool(p.get("has_photo")),
+                                     p.get("local") is not True,
+                                     p.get("price_from_som") is None,
+                                     p.get("price_from_som") or 0,
+                                     n(p.get("name") or "")))
+        else:
+            # Vitrina va bosh sahifa: fotosurati bor mashhur dorilar oldinda,
+            # so'ng mahalliy va eng arzon takliflar
+            rows.sort(key=lambda p: (not bool(p.get("has_photo")),
+                                     p.get("local") is not True,
+                                     p.get("price_from_som") is None,
+                                     p.get("price_from_som") or 0,
+                                     n(p.get("name") or "")))
         if local in ("local", "import", "unknown"):
             want = {"local": True, "import": False, "unknown": None}[local]
             rows = [p for p in rows if p.get("local") is want]
@@ -162,7 +170,8 @@ class Bridge:
             items.append({k: p.get(k) for k in
                           ("id", "name", "inn", "canon_inn", "manufacturer",
                            "country", "local", "price_from_som", "pharmacies",
-                           "seller", "category", "source", "url", "rx")})
+                           "seller", "category", "source", "url", "rx",
+                           "photo_url", "has_photo")})
         cats: dict[str, int] = {}
         for p in apteka.linked():
             if p.get("category"):
