@@ -20,7 +20,75 @@ function sendPrompt(text) {
   const inp = $('chat-in');
   if (inp) {
     inp.value = text;
+    autoResizeInput(inp);
     chatSend();
+  }
+}
+
+function autoResizeInput(el) {
+  if (!el) return;
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+  const sendBtn = $('chat-send-btn');
+  if (sendBtn) {
+    if (el.value.trim().length > 0) {
+      sendBtn.classList.remove('disabled');
+    } else {
+      sendBtn.classList.add('disabled');
+    }
+  }
+}
+
+function onChatKeyDown(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    chatSend();
+  }
+}
+
+function toggleQuickPrompts() {
+  const box = $('quick-prompts-box');
+  if (box) {
+    box.style.display = box.style.display === 'none' ? 'flex' : 'none';
+    const log = $('chat-log');
+    if (log) log.scrollTop = log.scrollHeight;
+  }
+}
+
+let speechRec = null;
+function toggleSpeechRecognition() {
+  const micBtn = $('chat-mic-btn');
+  const inp = $('chat-in');
+  const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRec) {
+    alert("Brauzeringiz ovozli kiritishni qo'llab-quvvatlamaydi.");
+    return;
+  }
+  if (!speechRec) {
+    speechRec = new SpeechRec();
+    speechRec.lang = 'uz-UZ';
+    speechRec.interimResults = false;
+    speechRec.onstart = () => {
+      micBtn?.classList.add('recording');
+    };
+    speechRec.onresult = (e) => {
+      const phrase = e.results[0][0].transcript;
+      if (inp) {
+        inp.value = (inp.value ? inp.value + ' ' : '') + phrase;
+        autoResizeInput(inp);
+      }
+    };
+    speechRec.onerror = () => {
+      micBtn?.classList.remove('recording');
+    };
+    speechRec.onend = () => {
+      micBtn?.classList.remove('recording');
+    };
+  }
+  try {
+    speechRec.start();
+  } catch (err) {
+    speechRec.stop();
   }
 }
 
@@ -128,8 +196,11 @@ async function chatSend() {
         foot.className = 'bubble-foot';
         foot.innerHTML = `<button type="button" class="badge badge-otc triage-chip" onclick="quickSearch('${esc(specialist)}')">${icon('stethoscope', 13, 2.1)} Yo'naltirish: ${esc(specialist)}</button>`;
         bubble.appendChild(foot);
-        log.scrollTop = log.scrollHeight;
       }
+      // Pastida harakatlar paneli: vaqt (qancha daqiqa oldin), copy, like, dislike
+      const actions = createBotActionsBar(Date.now());
+      bubble.appendChild(actions);
+      log.scrollTop = log.scrollHeight;
     });
   } catch (e) {
     stopThinking();
@@ -138,6 +209,131 @@ async function chatSend() {
   }
 }
 
+/**
+ * Vaqtni nisbiy hisoblash: "Hozirgina", "1 daqiqa oldin", "X daqiqa oldin"
+ */
+function formatRelativeTime(ts) {
+  if (!ts) return "Hozirgina";
+  const diffSec = Math.max(0, Math.floor((Date.now() - ts) / 1000));
+  if (diffSec < 45) return "Hozirgina";
+  const diffMin = Math.floor(diffSec / 60);
+  if (diffMin <= 1) return "1 daqiqa oldin";
+  if (diffMin < 60) return diffMin + " daqiqa oldin";
+  const diffHour = Math.floor(diffMin / 60);
+  if (diffHour === 1) return "1 soat oldin";
+  return diffHour + " soat oldin";
+}
+
+/**
+ * Bot xabari ostidagi harakatlar panelini yaratish
+ */
+function createBotActionsBar(timestamp) {
+  const bar = document.createElement('div');
+  bar.className = 'bot-actions';
+  const ts = timestamp || Date.now();
+  bar.setAttribute('data-timestamp', String(ts));
+  bar.innerHTML = `
+    <span class="bot-time">${formatRelativeTime(ts)}</span>
+    <div class="bot-action-btns">
+      <button type="button" class="bot-act-btn btn-copy" title="Nusxa olish" aria-label="Nusxa olish" onclick="copyBotMsg(this)">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span class="copy-lbl">Nusxa</span>
+      </button>
+      <button type="button" class="bot-act-btn btn-like" title="Foydali" aria-label="Foydali" onclick="rateBotMsg(this, 'like')">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
+      </button>
+      <button type="button" class="bot-act-btn btn-dislike" title="Foydasiz" aria-label="Foydasiz" onclick="rateBotMsg(this, 'dislike')">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-3"></path></svg>
+      </button>
+    </div>
+  `;
+  return bar;
+}
+
+/**
+ * Xabardan nusxa olish (Clipboard)
+ */
+function copyBotMsg(btn) {
+  const bubble = btn.closest('.bubble.bot') || btn.closest('#chat-log')?.querySelector('.bubble.bot');
+  if (!bubble) return;
+  const clone = bubble.cloneNode(true);
+  clone.querySelectorAll('.bot-actions, .bubble-foot, .stream-cursor, .quick-chip').forEach(el => el.remove());
+  const text = (clone.textContent || '').trim();
+
+  const lbl = btn.querySelector('.copy-lbl');
+  const doFeedback = () => {
+    btn.classList.add('copied');
+    if (lbl) lbl.textContent = 'Olingan';
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      if (lbl) lbl.textContent = 'Nusxa';
+    }, 2000);
+  };
+
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(doFeedback).catch(() => fallbackCopy(text, doFeedback));
+  } else {
+    fallbackCopy(text, doFeedback);
+  }
+}
+
+function fallbackCopy(text, cb) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.select();
+  try {
+    document.execCommand('copy');
+    if (typeof cb === 'function') cb();
+  } catch (e) {}
+  document.body.removeChild(ta);
+}
+
+/**
+ * Like / Dislike baholash
+ */
+function rateBotMsg(btn, type) {
+  const parent = btn.closest('.bot-action-btns');
+  if (!parent) return;
+  const likeBtn = parent.querySelector('.btn-like');
+  const dislikeBtn = parent.querySelector('.btn-dislike');
+
+  if (type === 'like') {
+    const isLiked = likeBtn && likeBtn.classList.contains('active');
+    likeBtn?.classList.toggle('active', !isLiked);
+    dislikeBtn?.classList.remove('active');
+  } else {
+    const isDisliked = dislikeBtn && dislikeBtn.classList.contains('active');
+    dislikeBtn?.classList.toggle('active', !isDisliked);
+    likeBtn?.classList.remove('active');
+  }
+}
+
+// Barcha xabarlar vaqtini yangilab turish (har 20 soniyada)
+setInterval(() => {
+  document.querySelectorAll('.bot-actions[data-timestamp]').forEach(bar => {
+    let ts = parseInt(bar.getAttribute('data-timestamp'), 10);
+    if (!ts || ts === 0) {
+      ts = Date.now();
+      bar.setAttribute('data-timestamp', String(ts));
+    }
+    const timeEl = bar.querySelector('.bot-time');
+    if (timeEl) {
+      timeEl.textContent = formatRelativeTime(ts);
+    }
+  });
+}, 20000);
+
 window.toggleAgentPopup = toggleAgentPopup;
 window.sendPrompt = sendPrompt;
 window.chatSend = chatSend;
+window.autoResizeInput = autoResizeInput;
+window.onChatKeyDown = onChatKeyDown;
+window.toggleQuickPrompts = toggleQuickPrompts;
+window.toggleSpeechRecognition = toggleSpeechRecognition;
+window.createBotActionsBar = createBotActionsBar;
+window.formatRelativeTime = formatRelativeTime;
+window.copyBotMsg = copyBotMsg;
+window.rateBotMsg = rateBotMsg;

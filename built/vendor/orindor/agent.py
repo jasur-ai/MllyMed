@@ -170,6 +170,19 @@ class Agent:
             return s.say(validate_triage(
                 self._escalation(scr.reason + " (javob noaniq — xavfsiz default)")))
 
+        # ── Salomlashish va umumiy murojaat
+        low_t = norm(text)
+        if any(low_t == g or low_t.startswith(g + " ") for g in ("salom", "assalom", "assalomu alaykum", "xayrli kun", "qalaysiz", "qalesiz")):
+            return s.say(
+                "Assalomu alaykum! 👋\n"
+                "Men MllyMed AI tibbiy va farmatsevtik yordamchisiman.\n\n"
+                "Sizga quyidagi masalalarda yordam bera olaman:\n"
+                "💊 Dori qidiruvi va 80% arzon GMP muqobillari\n"
+                "🩺 Alomatlar bo'yicha xavfsiz triaj va shifokorga yo'naltirish\n"
+                "📅 Shifokor qabuli va dori ichish eslatmalari\n\n"
+                "Istalgan dori nomini yoki sizni bezovta qilayotgan shikoyatni yozing."
+            )
+
         # ── 3. Rejim tanlash
         if s.mode is None:
             s.mode = detect_intent(text)
@@ -239,6 +252,14 @@ class Agent:
 
     # ── triaj rejimi
     def _triage_turn(self, s: Session, text: str) -> str:
+        # Agar foydalanuvchi dori qidirayotgan bo'lsa (va favqulodda skriningda bo'lmasa)
+        if s.stage != "screening":
+            res = registry.resolve(text)
+            if res["status"] in ("ok", "ambiguous") and not _symptom_hit(text):
+                s.mode = "card"
+                s.stage = "idle"
+                return self._card_turn(s, text)
+
         s.symptoms.append(text)
 
         age = parse_age(text)
