@@ -104,7 +104,21 @@ button {
 
 /* Real Mobile App Screen Adjustments */
 @media (max-width: 640px) {
+  body {
+    overscroll-behavior-y: none;
+    -webkit-overflow-scrolling: touch;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
   .container {
-    padding: 10px 12px 100px;
+    padding: env(safe-area-inset-top, 0px) 12px calc(80px + env(safe-area-inset-bottom, 16px));
+    max-width: 100%;
+  }
+
+  /* Input maydonlarida matn kiritish va tanlashga ruxsat */
+  input, textarea {
+    user-select: text !important;
+    -webkit-user-select: text !important;
   }
 }

@@ -161,7 +161,13 @@ async function loadCatalog(reset = false) {
                 <span class="price-label">Eng past narx</span>
                 <span class="price-val">${money(p.price_from_som)}</span>
               </div>
-              <button class="btn-card-action" onclick="event.stopPropagation();lookup('${esc(p.title)}')">Tahlil qilish</button>
+              <button class="btn-card-action" onclick="event.stopPropagation();lookup('${esc(p.title)}')">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+                  <path d="M21 21l-4.35-4.35"/>
+                  <circle cx="11" cy="11" r="7"/>
+                </svg>
+                <span>Tahlil qilish</span>
+              </button>
             </div>
           </div>
         </div>
