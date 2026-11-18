@@ -1,8 +1,45 @@
 /* ── MllyMed B2C (Bemorlar & Aholi Portali) Uslublari ────────────────────────────── */
 
 /* ── Market Hero & Stats Strip ────────────────────────────── */
-.stats-strip {
+.stats-strip, .eco-strip {
   display: none !important;
+}
+
+.market-quick-stats {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(226, 232, 240, 0.85);
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-size: 12px;
+  color: #64748b;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 6px rgba(15, 43, 72, 0.04);
+}
+
+.market-quick-stats .pulse-dot {
+  width: 7px;
+  height: 7px;
+  background: #10b981;
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.market-quick-stats .dot-sep {
+  color: #cbd5e1;
+  font-weight: 700;
+}
+
+@media (max-width: 640px) {
+  .market-quick-stats {
+    display: none !important;
+  }
 }
 
 .stat-card {
