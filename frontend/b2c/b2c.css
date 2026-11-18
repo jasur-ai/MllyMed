@@ -2,10 +2,7 @@
 
 /* ── Market Hero & Stats Strip ────────────────────────────── */
 .stats-strip {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 14px;
-  margin-bottom: 22px;
+  display: none !important;
 }
 
 .stat-card {
@@ -1070,12 +1067,9 @@
 /* ══════════ 2026-11 UX yangilanishi: ekotizim strip, qidirish tugmasi, ══ */
 /* ══════════ empty-state, skeleton, detal-modal komponentlari          ══ */
 
-/* Ecotizim strip — Arzon Apteka va DMED'ga bir yo'l (ikki tomonlama integratsiya) */
+/* Ecotizim strip — Arzon Apteka va DMED'ga bir yo'l (desktop/tabletdan tozalangan) */
 .eco-strip {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin: 4px 0 18px;
+  display: none !important;
 }
 
 .eco-card {
