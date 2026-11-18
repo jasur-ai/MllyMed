@@ -1,0 +1,213 @@
+/* ── MagicHeal Floating Navbar & Real Mobile App Nav System ────────────────────────────── */
+.nav-header {
+  position: sticky;
+  top: 14px;
+  z-index: 80;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  padding: 10px 22px;
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-md);
+  border: 1px solid rgba(226, 232, 240, 0.85);
+  margin-bottom: 22px;
+  transition: all 0.2s ease;
+}
+
+.brand-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.brand-svg {
+  height: 36px;
+  width: auto;
+  display: block;
+}
+
+/* MagicHeal Segmented Nav Pills */
+.nav-pills {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #f1f5f9;
+  padding: 4px;
+  border-radius: var(--radius-full);
+}
+
+.pill-item {
+  padding: 8px 20px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  border-radius: var(--radius-full);
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.pill-item:hover {
+  color: var(--text-primary);
+}
+
+.pill-item.active {
+  background: var(--primary);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 102, 255, 0.28);
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.btn-login {
+  background: var(--primary);
+  color: #ffffff;
+  padding: 9px 24px;
+  border-radius: var(--radius-full);
+  font-size: 13.5px;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0, 102, 255, 0.25);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.btn-login:hover {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+}
+
+/* Real Mobile App Bottom Navigation Bar */
+.mobile-bottom-nav {
+  display: none;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   REAL MOBILE APP UI SYSTEM (TELEFON UCHUN HAQIQIY MOBIL ILOVA)
+   ══════════════════════════════════════════════════════════════ */
+@media (max-width: 640px) {
+  /* Mobile Native Top App Bar */
+  .nav-header {
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: -10px -12px 14px -12px;
+    border-radius: 0 0 18px 18px;
+    padding: 10px 16px;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+  }
+
+  .brand-svg {
+    height: 28px;
+  }
+
+  .nav-header .nav-pills {
+    display: none; /* Pastki mobil menyuda asosiy bo'lib turadi */
+  }
+
+  .btn-login {
+    padding: 7px 16px;
+    font-size: 12px;
+    gap: 6px;
+    border-radius: var(--radius-full);
+  }
+
+  .btn-login svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  /* Native Mobile Bottom Tab Bar */
+  .mobile-bottom-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 64px;
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(226, 232, 240, 0.9);
+    align-items: center;
+    justify-content: space-around;
+    z-index: 120;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    box-shadow: 0 -4px 18px rgba(15, 23, 42, 0.06);
+  }
+
+  .nav-item-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    color: #64748b;
+    font-size: 10.5px;
+    font-weight: 600;
+    flex: 1;
+    height: 100%;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .nav-item-btn:active {
+    transform: scale(0.94);
+  }
+
+  .nav-item-btn.active {
+    color: var(--primary);
+  }
+
+  .nav-item-btn.active svg {
+    stroke: var(--primary);
+  }
+
+  /* Markaziy MllyMed AI tugmasi */
+  .nav-item-ai {
+    position: relative;
+  }
+
+  .nav-item-ai .ai-glow-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #0066ff, #0b69ed);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 16px rgba(0, 102, 255, 0.45);
+    margin-top: -16px;
+    transition: transform 0.2s ease;
+  }
+
+  .nav-item-ai:active .ai-glow-icon {
+    transform: scale(0.9);
+  }
+
+  /* Telefonda floating button o'rniga pastki bar ishlaydi */
+  .floating-agent-btn {
+    display: none !important;
+  }
+}

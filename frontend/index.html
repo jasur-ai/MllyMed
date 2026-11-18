@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MllyMed — Milliy dori vositalariga ishonch ekotizimi</title>
+  
+  <!-- Shared Design Tokens & Layout -->
+  <link rel="stylesheet" href="shared/css/base.css">
+  <link rel="stylesheet" href="shared/css/navbar.css">
+  <link rel="stylesheet" href="shared/css/modal.css">
+
+  <!-- B2C & B2B Styles -->
+  <link rel="stylesheet" href="b2c/b2c.css">
+  <link rel="stylesheet" href="b2b/b2b.css">
+
+  <!-- MllyMed AI Agent Widget -->
+  <link rel="stylesheet" href="agent/agent_widget.css">
+</head>
+<body>
+
+<div class="container">
+
+  <!-- ══════════ FLOATING HEADER / NAVBAR (MagicHeal Style) ══════════ -->
+  <header class="nav-header">
+    <!-- Chap taraf: Logo va Dorilar yonma-yon -->
+    <div style="display:flex;align-items:center;gap:20px">
+      <a href="/" class="brand-wrap" title="MllyMed Bosh sahifa">
+        <svg class="brand-svg" id="_Слой_1" data-name="Слой 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 763.5 218.14">
+          <defs>
+            <style>
+              .cls-1 { fill: #0b69ed; }
+              .cls-2 { fill: #383838; }
+            </style>
+          </defs>
+          <path class="cls-1" d="M165.79,0H52.35C23.44,0,0,23.44,0,52.35v113.43c0,28.91,23.44,52.35,52.35,52.35h113.43c28.91,0,52.35-23.44,52.35-52.35V52.35c0-28.92-23.44-52.35-52.35-52.35ZM193.4,175.38h-46.41c-4.38,0-8.09-3.26-8.65-7.6l-9.26-71.51-10.95,40.74c-.91,3.39-3.77,5.91-7.26,6.38-3.48.47-6.91-1.19-8.69-4.22l-5.94-10.08-7.35,20.23c-1.26,3.45-4.53,5.75-8.2,5.75H24.75c-4.82,0-8.73-3.91-8.73-8.73s3.9-8.73,8.73-8.73h49.82l11.59-31.9c1.16-3.18,4.04-5.4,7.4-5.71,3.36-.31,6.61,1.35,8.32,4.26l4.78,8.12,16.98-63.17c1.08-4.02,4.85-6.72,9.01-6.44,4.15.28,7.53,3.46,8.07,7.59l13.93,107.56h38.74c4.82,0,8.73,3.9,8.73,8.73s-3.9,8.73-8.73,8.73Z"/>
+          <path class="cls-2" d="M319.04,120.28l15.92-65.77h30.44v85.64h-20.91v-59.61l-14.52,59.61h-21.73l-14.64-59.61v59.61h-20.92V54.52h30.44l15.92,65.77Z"/>
+          <path class="cls-2" d="M399.22,52.89v87.26h-20.57V52.89h20.57Z"/>
+          <path class="cls-2" d="M431.87,52.89v87.26h-20.57V52.89h20.57Z"/>
+          <path class="cls-2" d="M461.5,74.62l14.76,44.04,13.94-44.04h21.5l-25.21,65.53s-1.16,25.1-28.47,25.1c-9.88,0-17.89-4.18-17.89-4.18v-13.94s7.2,4.65,15.57,4.65c11.15,0,10.69-11.62,10.69-11.62l-26.38-65.53h21.5Z"/>
+          <path class="cls-1" d="M566.66,120.28l15.92-65.77h30.44v85.64h-20.91v-59.61l-14.52,59.61h-21.73l-14.64-59.61v59.61h-20.92V54.52h30.44l15.92,65.77Z"/>
+          <path class="cls-1" d="M657.53,72.41c38.23,0,30.44,41.36,30.44,41.36h-43.69c1.28,10.23,5.93,15.11,12.55,15.11,11.97,0,10.34-10.34,10.34-10.34h20.8s2.44,23.82-30.44,23.82c-20.33,0-34.74-11.97-34.74-34.97s14.41-34.97,34.74-34.97ZM656.83,86.01c-6.62,0-11.27,4.88-12.55,15.11h22.77s1.86-15.11-10.23-15.11Z"/>
+          <path class="cls-1" d="M694.95,107.27c0-22.77,11.27-34.16,27.77-34.16,13.48,0,20.33,8.71,20.33,8.71v-28.93h20.45v87.26h-20.45v-7.2c0-.12-6.86,8.6-20.33,8.6-16.5,0-27.77-11.5-27.77-34.28ZM716.21,107.27c0,12.66,4.42,18.94,12.32,18.94,9.18,0,14.52-7.9,14.52-18.94s-5.34-18.82-14.52-18.82c-7.9,0-12.32,6.16-12.32,18.82Z"/>
+        </svg>
+      </a>
+
+      <!-- Chap taraf: Faqat Dorilar -->
+      <nav class="nav-pills">
+        <a class="pill-item active" href="javascript:void(0)">Dorilar</a>
+      </nav>
+    </div>
+
+    <!-- O'ng taraf: Kirish -->
+    <div class="nav-actions">
+      <button class="btn-login" id="btn-nav-auth" onclick="openAuthModal()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+          <polyline points="10 17 15 12 10 7"/>
+          <line x1="15" y1="12" x2="3" y2="12"/>
+        </svg>
+        Kirish
+      </button>
+    </div>
+  </header>
+
+  <!-- ══════════ SECTION 1: B2C DORILAR KATALOGI ══════════ -->
+  <section id="sec-b2c">
+    
+    <!-- Top Market Stats Strip -->
+    <div class="stats-strip">
+      <div class="stat-card">
+        <div class="stat-icon" style="background:#eff6ff;color:#0066ff">💊</div>
+        <div>
+          <div class="stat-val">46 079</div>
+          <div class="stat-label">Davlat Ro'yxati Dorilari</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:#ecfdf5;color:#059669">🇺🇿</div>
+        <div>
+          <div class="stat-val">80%</div>
+          <div class="stat-label">Mahalliy Paritet Kafolati</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:#fef3c7;color:#d97706">📑</div>
+        <div>
+          <div class="stat-val">2 941</div>
+          <div class="stat-label">Xalqaro XPN Guruhlari</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:#f1f5f9;color:#475569">🏪</div>
+        <div>
+          <div class="stat-val">308+</div>
+          <div class="stat-label">Ochiq Dorixona Takliflari</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search & Filter Toolbar -->
+    <div class="catalog-toolbar">
+      <div class="search-wrap">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+          <circle cx="11" cy="11" r="8"/>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <input type="text" id="q" class="search-input" placeholder="Dori nomi yoki XPN (INN) bo'yicha qidiring (masalan: Paratsetamol, Amoksitsillin, Kardiomagnil)..." autocomplete="off">
+      </div>
+
+      <!-- Quick Search Chips -->
+      <div class="quick-tags">
+        <span class="quick-tag-label">Tezkor so'rovlar:</span>
+        <button class="quick-chip" onclick="quickSearch('Paratsetamol')">Paratsetamol</button>
+        <button class="quick-chip" onclick="quickSearch('Amoksitsillin')">Amoksitsillin</button>
+        <button class="quick-chip" onclick="quickSearch('Kardiomagnil')">Kardiomagnil</button>
+        <button class="quick-chip" onclick="quickSearch('Sitramon')">Sitramon</button>
+        <button class="quick-chip" onclick="quickSearch('Ibuprofen')">Ibuprofen</button>
+        <button class="quick-chip" onclick="quickSearch('Validol')">Validol</button>
+      </div>
+
+      <!-- Filter Row & Category Buttons -->
+      <div class="filter-row">
+        <div class="category-chips">
+          <button class="category-btn active" onclick="setCategory('', this)">Barchasi</button>
+          <button class="category-btn" onclick="setCategory('yurak', this)">Yurak-qon tomir</button>
+          <button class="category-btn" onclick="setCategory('ogriq', this)">Og'riq qoldiruvchi</button>
+          <button class="category-btn" onclick="setCategory('antibiotik', this)">Antibiotiklar</button>
+          <button class="category-btn" onclick="setCategory('oshqozon', this)">Oshqozon-ichak</button>
+          <button class="category-btn" onclick="setCategory('vitamin', this)">Vitaminlar</button>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:12px">
+          <select id="cat-local" class="filter-select">
+            <option value="">Barcha ishlab chiqaruvchilar</option>
+            <option value="true">🇺🇿 Faqat Mahalliy (GMP)</option>
+            <option value="false">🌍 Faqat Import</option>
+          </select>
+          <div class="meta-stats" id="cat-count">Yuklanmoqda...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dynamic Product Cards Grid -->
+    <div class="product-grid" id="drug-cards-container">
+      <!-- Dori kartochkalari JavaScript orqali joylanadi -->
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination-wrap">
+      <button class="btn-page" id="cat-more" onclick="loadCatalog(false)" style="display:none">Yana dori ko'rsatish</button>
+    </div>
+  </section>
+
+  <!-- ══════════ SECTION 2: B2B BO'LIMI (SHIFOKOR, DORIXONA, ADMIN) ══════════ -->
+  <section id="sec-b2b" class="hidden">
+    <div class="b2b-wrapper">
+      <div class="b2b-nav">
+        <button class="b2b-tab active" id="tab-b2b-dr" onclick="switchB2BTab('doctor')">🩺 Shifokor (XPN e-Retsept)</button>
+        <button class="b2b-tab" id="tab-b2b-ph" onclick="switchB2BTab('pharmacist')">💊 Dorixona (Berish navbati)</button>
+        <button class="b2b-tab" id="tab-b2b-mfg" onclick="switchB2BTab('factory')">🏭 Zavod & Admin (Audit / Tahlil)</button>
+      </div>
+
+      <!-- Doctor Portal Tab -->
+      <div id="b2b-doctor-box">
+        <h3 style="font-size:17px;font-weight:700;margin-bottom:14px">Elektron retsept yozish (Xalqaro Patentlanmagan Nom bo'yicha)</h3>
+        <p style="font-size:13px;color:var(--text-secondary);margin-bottom:16px">Qonunchilik talabi bo'yicha shifokor faqat XPN (INN) dori moddasini tayinlaydi. Mahalliy yoki import brendni bemor dorixonada erkin tanlaydi.</p>
+        
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Bemor Identifikatori (JShShIR / ID)</label>
+            <input type="text" id="dr-p" value="bemor_1" placeholder="Bemor ID">
+          </div>
+          <div class="form-group">
+            <label>XPN Dori Moddasi (INN)</label>
+            <input type="text" id="dr-inn" value="Paracetamol" placeholder="Masalan: Paracetamol, Amoxicillin">
+          </div>
+        </div>
+
+        <button class="btn-primary" onclick="b2bDraftPrescription()">E-Retseptni yaratish va imzolash</button>
+        <div id="dr-b2b-status"></div>
+      </div>
+
+      <!-- Pharmacist Tab -->
+      <div id="b2b-pharmacist-box" class="hidden">
+        <h3 style="font-size:17px;font-weight:700;margin-bottom:14px">Dorixona Dispense Navbati (Berish)</h3>
+        <p style="font-size:13px;color:var(--text-secondary);margin-bottom:16px">Shifokorlar tomonidan imzolangan elektron retseptlar. Farmatsevt bemorga 80% arzon mahalliy ekvivalentni taklif qiladi va kassada tasdiqlaydi.</p>
+        <div id="ph-b2b-queue">Kutilmoqda...</div>
+      </div>
+
+      <!-- Factory & Admin Tab -->
+      <div id="b2b-factory-box" class="hidden">
+        <h3 style="font-size:17px;font-weight:700;margin-bottom:14px">Mahalliy ishlab chiqaruvchilar va Bozor analitikasi</h3>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));gap:16px;margin-bottom:24px" id="factory-metrics">
+          <!-- Analitika ko'rsatkichlari -->
+        </div>
+
+        <h4 style="font-size:15px;font-weight:700;margin-bottom:10px">Tizim audit jurnali (Haqiqiy domen amallari)</h4>
+        <div style="background:#f8fafc;padding:16px;border-radius:var(--radius-md);border:1px solid var(--border-light);max-height:260px;overflow-y:auto" id="factory-audit">
+          Yuklanmoqda...
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ══════════ FLOATING MLLYMED AI AGENT ══════════ -->
+<div class="floating-agent-btn" onclick="toggleAgentPopup()" id="agent-fab" title="MllyMed AI tibbiy maslahatchi">
+  <div class="agent-icon-circle">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.3">
+      <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/>
+      <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+      <line x1="12" y1="19" x2="12" y2="22"/>
+    </svg>
+  </div>
+  <span style="font-weight:700;letter-spacing:0.2px">MllyMed AI</span>
+</div>
+
+<!-- Floating Agent Popup Drawer -->
+<div class="agent-popup hidden" id="agent-popup">
+  <div class="popup-header">
+    <div>
+      <b style="font-size:15px;color:var(--text-primary)">MllyMed AI</b>
+      <div style="font-size:11.5px;color:#059669;display:flex;align-items:center;gap:4px">
+        <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#10b981"></span> Klinik xavfsiz maslahat
+      </div>
+    </div>
+    <button class="btn-close-popup" onclick="toggleAgentPopup()">×</button>
+  </div>
+
+  <div class="chat-stream" id="chat-log">
+    <div class="bubble bot">
+      Assalomu alaykum! Men <b>MllyMed AI</b> tibbiy triaj maslahatchisiman.<br>
+      Sizni qanday shikoyat yoki dori qidiruvi bezovta qilyapti?
+    </div>
+    <!-- Tezkor yordam tugmalari -->
+    <div style="display:flex;gap:6px;flex-wrap:wrap;padding:4px 0">
+      <button class="quick-chip" onclick="sendPrompt('Boshim qattiq og\'rib, ko\'nglim ayniyapti')">Bosh og'rig'i</button>
+      <button class="quick-chip" onclick="sendPrompt('Ko\'kragimda kuchli qisuvchi og\'riq bor')">Yurak og'rig'i (103)</button>
+      <button class="quick-chip" onclick="sendPrompt('Paratsetamolning mahalliy arzon analogi bormi?')">Mahalliy analog</button>
+    </div>
+  </div>
+
+  <form class="chat-bottom" onsubmit="event.preventDefault();chatSend()">
+    <input id="chat-in" autocomplete="off" placeholder="Shikoyatingizni yozing...">
+    <button class="btn-send" type="submit">Yuborish</button>
+  </form>
+</div>
+
+<!-- ══════════ REAL MOBILE APP BOTTOM NAVIGATION BAR (≤ 640px) ══════════ -->
+<nav class="mobile-bottom-nav">
+  <button class="nav-item-btn active" id="tab-mob-drugs" onclick="mobileNavTab('drugs')">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <rect x="2" y="7" width="20" height="14" rx="3"/>
+      <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+    </svg>
+    <span>Dorilar</span>
+  </button>
+
+  <button class="nav-item-btn nav-item-ai" id="tab-mob-ai" onclick="mobileNavTab('ai')">
+    <div class="ai-glow-icon">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.3">
+        <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/>
+        <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+        <line x1="12" y1="19" x2="12" y2="22"/>
+      </svg>
+    </div>
+    <span>MllyMed AI</span>
+  </button>
+
+  <button class="nav-item-btn" id="tab-mob-auth" onclick="mobileNavTab('auth')">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+      <circle cx="12" cy="7" r="4"/>
+    </svg>
+    <span id="tab-mob-auth-label">Kirish</span>
+  </button>
+</nav>
+
+<!-- ══════════ MODAL: KIRISH VA BEMOR KABINETI (OneID, MyGov, Telefon) ══════════ -->
+<div class="modal-overlay hidden" id="patient-modal">
+  <div class="modal-content">
+    <div class="sheet-handle"></div>
+    <div class="modal-header">
+      <div class="modal-title" id="modal-auth-title">Tizimga kirish</div>
+      <button class="btn-close-popup" onclick="closePatientModal()">×</button>
+    </div>
+    
+    <div class="modal-body">
+      <!-- 1-KO'RINISH: KIRISH USULLARI (OneID, MyGov, Telefon) -->
+      <div id="auth-view-login">
+        <p style="font-size:13.5px;color:var(--text-secondary);margin-bottom:18px;line-height:1.5">
+          Tibbiy retseptlaringiz, navbatlaringiz va dorixona kafolatlarini boshqarish uchun shaxsingizni tasdiqlang:
+        </p>
+
+        <div class="auth-providers">
+          <!-- OneID Button -->
+          <button class="btn-auth-provider btn-oneid" onclick="loginWithOneId()">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+            <span><b>OneID</b> orqali kirish</span>
+          </button>
+
+          <!-- MyGov.uz Button -->
+          <button class="btn-auth-provider btn-mygov" onclick="loginWithMyGov()">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+              <polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+            <span><b>MyGov.uz</b> portali orqali kirish</span>
+          </button>
+        </div>
+
+        <div class="auth-divider">yoki telefon raqam orqali</div>
+
+        <form onsubmit="loginWithPhone(event)">
+          <div class="phone-field-group">
+            <span class="phone-prefix">+998</span>
+            <input type="tel" id="auth-phone" class="phone-input" placeholder="(90) 123-45-67" maxlength="15" autocomplete="tel">
+          </div>
+          <button type="submit" class="btn-primary" style="width:100%;padding:12px;font-size:14px">
+            Kodni olish va kirish
+          </button>
+        </form>
+
+        <p style="font-size:11.5px;color:var(--text-muted);text-align:center;margin-top:16px">
+          🔒 Shaxsiy ma'lumotlar O'zbekiston Respublikasi "Shaxsga doir ma'lumotlar to'g'risida"gi qonuniga muvofiq himoyalanadi.
+        </p>
+      </div>
+
+      <!-- 2-KO'RINISH: SHAXSIY KABINET (Muvaffaqiyatli kirilgandan so'ng) -->
+      <div id="auth-view-cabinet" class="hidden">
+        <div style="background:#f1f5f9;padding:14px 16px;border-radius:var(--radius-md);margin-bottom:18px;display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <div style="font-size:11.5px;color:var(--text-muted);font-weight:600">FOYDALANUVCHI</div>
+            <b id="patient-id-display" style="font-size:15px;color:var(--text-primary)">Sohibjon Sulaymonov</b>
+          </div>
+          <span class="badge badge-local" id="patient-provider-badge">OneID</span>
+        </div>
+
+        <h4 style="font-size:14px;font-weight:700;margin-bottom:8px">Mening Qabullarim (DMED navbatlar)</h4>
+        <div id="patient-appts-list" style="margin-bottom:20px">Yuklanmoqda...</div>
+
+        <h4 style="font-size:14px;font-weight:700;margin-bottom:8px">Mening Elektron Retseptlarim (XPN)</h4>
+        <div id="patient-rxs-list">Yuklanmoqda...</div>
+
+        <div style="margin-top:20px;padding-top:14px;border-top:1px dashed var(--border-light);text-align:right">
+          <button class="btn-secondary" onclick="logoutPatient()" style="color:#ef4444;font-size:12.5px">Chiqish</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closePatientModal()">Yopish</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ MODAL: DORI CHUQUR TAHLILI ══════════ -->
+<div class="modal-overlay hidden" id="detail-modal">
+  <div class="modal-content" style="max-width:760px">
+    <div class="sheet-handle"></div>
+    <div class="modal-header">
+      <div class="modal-title">Dori Vositasining Chuqur Tahlili</div>
+      <button class="btn-close-popup" onclick="closeDetailModal()">×</button>
+    </div>
+    <div class="modal-body" id="detail-modal-body">
+      Yuklanmoqda...
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeDetailModal()">Yopish</button>
+    </div>
+  </div>
+</div>
+
+<!-- Shared Core Scripts -->
+<script src="shared/js/api.js"></script>
+<script src="shared/js/app.js"></script>
+
+<!-- B2C Scripts -->
+<script src="b2c/catalog.js"></script>
+<script src="b2c/patient.js"></script>
+
+<!-- B2B Scripts -->
+<script src="b2b/doctor.js"></script>
+<script src="b2b/pharmacist.js"></script>
+<script src="b2b/factory.js"></script>
+
+<!-- Agent Widget Script -->
+<script src="agent/agent_widget.js"></script>
+
+</body>
+</html>

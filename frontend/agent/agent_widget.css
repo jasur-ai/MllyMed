@@ -1,0 +1,219 @@
+/* ── Floating MllyMed AI Agent (Mobile-First) ────────────────────────────── */
+.floating-agent-btn {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--primary);
+  color: #ffffff;
+  padding: 10px 22px 10px 14px;
+  border-radius: var(--radius-full);
+  box-shadow: 0 8px 28px rgba(0, 102, 255, 0.4);
+  cursor: pointer;
+  border: none;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.floating-agent-btn:hover {
+  background: var(--primary-hover);
+  transform: translateY(-3px) scale(1.02);
+}
+
+.agent-icon-circle {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.agent-popup {
+  position: fixed;
+  bottom: 96px;
+  right: 28px;
+  width: 400px;
+  max-width: calc(100vw - 32px);
+  height: 560px;
+  max-height: calc(100vh - 120px);
+  background: #ffffff;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 20px 48px rgba(15, 23, 42, 0.2);
+  border: 1px solid var(--border-light);
+  display: flex;
+  flex-direction: column;
+  z-index: 101;
+  overflow: hidden;
+  animation: popupFade 0.25s ease forwards;
+}
+
+@keyframes popupFade {
+  from { opacity: 0; transform: translateY(16px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.popup-header {
+  background: #f8fafc;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-light);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.btn-close-popup {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #e2e8f0;
+  color: var(--text-secondary);
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.btn-close-popup:hover {
+  background: #cbd5e1;
+  color: var(--text-primary);
+}
+
+.chat-stream {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: #f8fafc;
+  -webkit-overflow-scrolling: touch;
+}
+
+.bubble {
+  max-width: 84%;
+  padding: 12px 16px;
+  border-radius: 18px;
+  font-size: 13.5px;
+  line-height: 1.45;
+  word-break: break-word;
+}
+
+.bubble.bot {
+  background: #ffffff;
+  color: var(--text-primary);
+  border-bottom-left-radius: 4px;
+  align-self: flex-start;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  border: 1px solid var(--border-light);
+}
+
+.bubble.user {
+  background: var(--primary);
+  color: #ffffff;
+  border-bottom-right-radius: 4px;
+  align-self: flex-end;
+}
+
+.bubble.warning {
+  background: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+  font-weight: 500;
+}
+
+.chat-bottom {
+  padding: 12px 16px;
+  background: #ffffff;
+  border-top: 1px solid var(--border-light);
+  display: flex;
+  gap: 8px;
+}
+
+.chat-bottom input {
+  flex-grow: 1;
+  padding: 11px 16px;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-full);
+  outline: none;
+  font-size: 14px;
+}
+
+.chat-bottom input:focus {
+  border-color: var(--primary);
+}
+
+.btn-send {
+  background: var(--primary);
+  color: #ffffff;
+  padding: 10px 18px;
+  border-radius: var(--radius-full);
+  font-weight: 600;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.btn-send:hover {
+  background: var(--primary-hover);
+}
+
+/* ── Mobile App Bottom Sheet Presentation ────────────────── */
+@media (max-width: 640px) {
+  .floating-agent-btn {
+    bottom: 20px;
+    right: 14px;
+    padding: 8px 16px 8px 10px;
+    gap: 8px;
+    box-shadow: 0 6px 20px rgba(0, 102, 255, 0.35);
+  }
+
+  .agent-icon-circle {
+    width: 32px;
+    height: 32px;
+  }
+
+  .agent-icon-circle svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .floating-agent-btn span {
+    font-size: 13px;
+  }
+
+  .agent-popup {
+    width: 100%;
+    max-width: 100vw;
+    height: 86vh;
+    max-height: 86vh;
+    right: 0;
+    bottom: 0;
+    border-radius: 22px 22px 0 0;
+    border-bottom: none;
+    border-left: none;
+    border-right: none;
+    animation: agentSheetUp 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  @keyframes agentSheetUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+
+  .popup-header {
+    padding: 14px 18px;
+  }
+
+  .chat-bottom {
+    padding: 10px 14px 28px 14px; /* safe bottom inset */
+  }
+
+  .chat-bottom input {
+    font-size: 16px; /* Prevents auto-zoom in iOS Safari */
+  }
+}

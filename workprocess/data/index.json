@@ -1,0 +1,101 @@
+{
+ "loyiha": "O'RINDOR · №17",
+ "yangilangan": "2026-11-18",
+ "jami_mb": 32.4,
+ "fayllar": [
+  {
+   "fayl": "reyestr_dori.json",
+   "yozuv": 46079,
+   "kb": 24932.8,
+   "manba": "api.mpa.uz/drug-catalog-api/v2/drugs/portal/search",
+   "izoh": "O'zbekiston davlat dori reyestri — to'liq",
+   "csv": "reyestr_dori.csv",
+   "csv_kb": 15438.6
+  },
+  {
+   "fayl": "referent_narx.json",
+   "yozuv": 12612,
+   "kb": 5039.6,
+   "manba": "api.mpa.uz/drug-catalog-api/v1/referent-price/all",
+   "izoh": "3735-son bo'yicha referent (chegaraviy) narxlar",
+   "csv": "referent_narx.csv",
+   "csv_kb": 2740.0
+  },
+  {
+   "fayl": "tafsilot.json",
+   "yozuv": 538,
+   "kb": 441.4,
+   "manba": "api.mpa.uz/drug-catalog-api/v2/drugs/{drugId}",
+   "izoh": "dori tafsiloti: maxSalePrice = qonuniy chegara narx (asl valyutada), retailPrice = so'mdagi chakana, tarkib (substanceNames)",
+   "csv": "tafsilot.csv",
+   "csv_kb": 190.7
+  },
+  {
+   "fayl": "atx_guruhlari.json",
+   "yozuv": 15,
+   "kb": 5.7,
+   "manba": "api.mpa.uz/drug-catalog-api",
+   "izoh": "ATX guruhlari va ulardagi dori soni",
+   "csv": "atx_guruhlari.csv",
+   "csv_kb": 0.1
+  },
+  {
+   "fayl": "dori_shakllari.json",
+   "yozuv": 104,
+   "kb": 3.1,
+   "manba": "api.mpa.uz/drug-catalog-api",
+   "izoh": "dori shakllari ro'yxati"
+  },
+  {
+   "fayl": "hisob.json",
+   "yozuv": 1,
+   "kb": 0.0,
+   "manba": "api.mpa.uz/drug-catalog-api",
+   "izoh": "umumiy hisob (dori + tibbiyot tashkiloti)"
+  },
+  {
+   "fayl": "mini_apteka_katalog.json",
+   "yozuv": 48,
+   "kb": 17.8,
+   "manba": "apteka.uz (ochiq kategoriya sahifalari, 12 kategoriya × 4)",
+   "izoh": "48 mahsulot: XPN, ishlab chiqaruvchi, davlat, narx, dorixonalar soni",
+   "csv": "mini_apteka_katalog.csv",
+   "csv_kb": 11.6
+  },
+  {
+   "fayl": "arzon_vitrina.json",
+   "yozuv": 20,
+   "kb": 4.5,
+   "manba": "arzonapteka.uz/uz",
+   "izoh": "20 mahsulot ArzonApteka bosh sahifasidan (XPN ko'rsatilmaydi)",
+   "csv": "arzon_vitrina.csv",
+   "csv_kb": 1.9
+  },
+  {
+   "fayl": "faktlar.json",
+   "yozuv": 17,
+   "kb": 9.3,
+   "manba": "lex.uz (17 hujjat)",
+   "izoh": "17 tekshirilgan fakt + 3735 narx modeli"
+  },
+  {
+   "fayl": "reyestr_dori.xlsx",
+   "yozuv": 40000,
+   "kb": 2744.1,
+   "manba": "api.mpa.uz/v2/drugs/download-excel",
+   "izoh": "rasmiy Excel nusxa (11 ustun) — oflayn ishlash uchun"
+  }
+ ],
+ "manbalar": [
+  "api.mpa.uz/drug-catalog-api (davlat reyestri, referent narx) — ochiq, kalitsiz",
+  "apteka.uz (12 kategoriya) — ochiq sahifalar",
+  "arzonapteka.uz (bosh sahifa, katalog daraxti) — ochiq sahifalar",
+  "lex.uz (17 hujjat) — ochiq"
+ ],
+ "yopiq": [
+  "GMP/GDP/GPP registrlari — E-IMZO talab qiladi (401)",
+  "Asl Belgisi kod tekshiruvi — to'liq auth (401)",
+  "GTIN / shtrix-kod — hech qayerda ochiq emas",
+  "bioekvivalentlik hisobotlari — ochiq emas"
+ ]
+}

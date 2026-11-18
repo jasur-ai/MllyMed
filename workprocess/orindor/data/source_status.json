@@ -1,0 +1,113 @@
+{
+ "built": "2026-11-17",
+ "sources": [
+  {
+   "tier": "T0",
+   "name": "O'zR dori vositalari davlat reyestri",
+   "url": "https://uzpharm-control.uz/registry/drugs",
+   "what": "Ro'yxatdan o'tgan dorilar, sertifikat raqami, ishlab chiqaruvchi",
+   "status": "SHELL",
+   "evidence": "HTTP 200 · text/html · 1248B",
+   "next_step": "Sayt SPA. API nginx orqasida yopiq → yozma so'rov (Farmatsevtika agentligi)"
+  },
+  {
+   "tier": "T0",
+   "name": "Dori sertifikatlari reyestri",
+   "url": "https://uzpharm-control.uz/registry/drug-certificates",
+   "what": "Sertifikat raqami, amal qilish muddati — A2 dalil qatlamining asosi",
+   "status": "SHELL",
+   "evidence": "HTTP 200 · text/html · 1248B",
+   "next_step": "Shu sahifa — №17 ning 'shaffof sertifikat' talabining manbasi"
+  },
+  {
+   "tier": "T0",
+   "name": "lex.uz — VMQ 738-son (24.11.2025)",
+   "url": "https://lex.uz/uz/docs/-7853907",
+   "what": "BE talabi, bioveyver, ICH 2029 — qoidalar matni",
+   "status": "OPEN",
+   "evidence": "HTTP 200 · text/html · 6000B",
+   "next_step": "Ochiq. Matnni olib, band raqamlari bilan iqtibos qilish"
+  },
+  {
+   "tier": "T0",
+   "name": "ASL BELGISI / CRPT Turon",
+   "url": "https://aslbelgisi.uz",
+   "what": "GTIN, seriya, 44 belgili tekshiruv kodi — A1 haqiqiylik",
+   "status": "CLOSED",
+   "evidence": "URLError",
+   "next_step": "API ochiq emas → operator bilan uchrashuv. MUHIM: A1 davlatniki, biz ustiga quramiz"
+  },
+  {
+   "tier": "T0",
+   "name": "O'zbekiston ochiq ma'lumotlar portali",
+   "url": "https://openinfo.uz",
+   "what": "Davlat datasetlari",
+   "status": "OPEN",
+   "evidence": "HTTP 200 · text/html · 6000B",
+   "next_step": "Portal ochiq, lekin farmatsevtika dataseti topilmadi"
+  },
+  {
+   "tier": "T0",
+   "name": "Statistika qo'mitasi",
+   "url": "https://stat.uz",
+   "what": "Import/mahalliy ulush statistikasi",
+   "status": "OPEN",
+   "evidence": "HTTP 200 · text/html · 6000B",
+   "next_step": "403 (bot bloki) — brauzer orqali yoki so'rov"
+  },
+  {
+   "tier": "T1",
+   "name": "apteka.uz",
+   "url": "https://apteka.uz",
+   "what": "Dorixona narxlari, savdo nomlari, ishlab chiqaruvchi — A3 narx qatlami",
+   "status": "OPEN",
+   "evidence": "HTTP 200 · text/html · 6000B",
+   "next_step": "Sayt ochiq; ichki API /api/v1/search/drugs topildi, lekin baza host yopiq → hamkorlik so'rovi"
+  },
+  {
+   "tier": "T1",
+   "name": "Dorixona tarmoqlari (POS)",
+   "url": "—",
+   "what": "Real narx va qoldiq",
+   "status": "REQUEST",
+   "evidence": "hamkorlik so'rovi kerak",
+   "next_step": "W0 pilot: 1 tarmoq bilan to'g'ridan-to'g'ri shartnoma"
+  },
+  {
+   "tier": "T2",
+   "name": "JSST INN / ATC",
+   "url": "https://atcddd.fhi.no",
+   "what": "Xalqaro nom va ATC kodi — birlashtiruvchi kalit",
+   "status": "OPEN",
+   "evidence": "HTTP 200 · text/html · 6000B",
+   "next_step": "Ochiq jadval, bir marta yuklanadi"
+  },
+  {
+   "tier": "T2",
+   "name": "GS1",
+   "url": "https://www.gs1.org/standards",
+   "what": "GTIN tuzilishi, tekshiruv raqami",
+   "status": "CLOSED",
+   "evidence": "HTTPError",
+   "next_step": "Ochiq spetsifikatsiya"
+  },
+  {
+   "tier": "T3",
+   "name": "openFDA",
+   "url": "https://api.fda.gov/drug/label.json",
+   "what": "AQSh ro'yxati: brend, INN, ishlab chiqaruvchi",
+   "status": "OPEN",
+   "evidence": "HTTP 200 · application/json · 3933B",
+   "next_step": "Ochiq API. LEKIN bu AQSh bozori — UZ kartasida ISHLATILMAYDI"
+  },
+  {
+   "tier": "T3",
+   "name": "RxNorm",
+   "url": "https://rxnav.nlm.nih.gov/REST",
+   "what": "Nom normalizatsiyasi",
+   "status": "CLOSED",
+   "evidence": "HTTPError",
+   "next_step": "Ochiq. Faqat nomlash uchun; qaytgan natija darvozadan o'tishi shart"
+  }
+ ]
+}

@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>O'RINDOR — mahalliy doriga ishonch</title>
+<style>
+  :root{
+    --bg:#0b1120; --panel:#111a2c; --panel2:#16213a; --line:#243252;
+    --text:#e8eefc; --muted:#94a3b8; --teal:#2dd4bf; --teal2:#0f766e;
+    --amber:#f5b544; --red:#ef4444; --green:#34d399; --blue:#60a5fa;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);
+    font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+  a{color:var(--teal)}
+  header{padding:18px 22px 12px;border-bottom:1px solid var(--line);
+    background:linear-gradient(180deg,#0d1729,#0b1120)}
+  .brand{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .logo{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;
+    background:linear-gradient(135deg,var(--teal),#3b82f6);color:#04121a;
+    font-weight:800;font-size:18px}
+  h1{font-size:19px;margin:0;letter-spacing:.2px}
+  .sub{color:var(--muted);font-size:12.5px}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  .stat{background:#0f1a2e;border:1px solid var(--line);border-radius:999px;
+    padding:4px 11px;font-size:12px;color:var(--muted)}
+  .stat b{color:var(--text)}
+  main{display:grid;grid-template-columns:minmax(340px,1fr) minmax(380px,.95fr);
+    gap:0;height:calc(100vh - 118px)}
+  .chat{display:flex;flex-direction:column;min-height:0;border-right:1px solid var(--line)}
+  #msgs{flex:1;overflow:auto;padding:18px 20px;scroll-behavior:smooth}
+  .msg{margin:0 0 14px;display:flex;gap:10px}
+  .msg .b{max-width:88%;padding:11px 14px;border-radius:14px;
+    white-space:pre-wrap;word-wrap:break-word;font-size:14px}
+  .msg.user{justify-content:flex-end}
+  .msg.user .b{background:#123c3a;border:1px solid #1c5751;border-top-right-radius:4px}
+  .msg.agent .b{background:var(--panel);border:1px solid var(--line);
+    border-top-left-radius:4px}
+  .msg.sys .b{background:#1d2436;border:1px dashed #38466b;color:var(--muted);
+    font-size:13px}
+  .msg.alert .b{background:#2a1215;border:1px solid #7f1d1d}
+  .avatar{width:28px;height:28px;border-radius:9px;flex:0 0 28px;display:grid;
+    place-items:center;font-size:14px;background:#0f1a2e;border:1px solid var(--line)}
+  .composer{border-top:1px solid var(--line);padding:12px 14px;background:#0c1526}
+  .row{display:flex;gap:8px}
+  input[type=text]{flex:1;background:#0a1222;border:1px solid var(--line);
+    color:var(--text);border-radius:11px;padding:12px 14px;font-size:14px;outline:none}
+  input[type=text]:focus{border-color:var(--teal2);box-shadow:0 0 0 3px #134e4a55}
+  button{background:var(--teal);color:#04211d;border:0;border-radius:11px;
+    padding:12px 16px;font-weight:700;cursor:pointer;font-size:14px}
+  button:hover{filter:brightness(1.07)}
+  .quick{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}
+  .quick button{background:#12213a;color:var(--text);border:1px solid var(--line);
+    font-weight:500;padding:6px 10px;font-size:12px;border-radius:999px}
+  .panel{overflow:auto;padding:18px 20px;background:#0a1020;min-height:0}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;
+    padding:16px 16px 12px;margin-bottom:14px}
+  .card h2{font-size:17px;margin:0 0 2px;line-height:1.3}
+  .card h3{font-size:12px;text-transform:uppercase;letter-spacing:.7px;
+    color:var(--muted);margin:16px 0 7px;border-top:1px solid var(--line);padding-top:10px}
+  .badge{font-size:10.5px;font-weight:700;letter-spacing:.5px;border-radius:999px;
+    padding:3px 8px;white-space:nowrap}
+  .b-local{background:#0d3b32;color:#6ee7b7;border:1px solid #17705c}
+  .b-import{background:#13294a;color:#93c5fd;border:1px solid #26467a}
+  .b-rx{background:#3a2a10;color:#fbd38d;border:1px solid #7c5414}
+  .kv{display:grid;grid-template-columns:120px 1fr;gap:3px 10px;font-size:13px}
+  .kv .k{color:var(--muted)}
+  .price{font-variant-numeric:tabular-nums}
+  .big{font-size:20px;font-weight:800;letter-spacing:-.2px}
+  .bar{height:8px;border-radius:99px;background:#1a2740;overflow:hidden;display:flex}
+  .bar i{display:block;height:100%}
+  .bar .l{background:var(--teal)}
+  .bar .i{background:#3b82f6}
+  .legend{display:flex;gap:14px;font-size:12px;color:var(--muted);margin-top:6px}
+  .dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px}
+  .pill{font-size:11px;padding:2px 7px;border-radius:6px;font-weight:700}
+  .ok{background:#0d3b32;color:#6ee7b7}
+  .unknown{background:#3a2f10;color:#fcd34d}
+  .no{background:#3b1418;color:#fca5a5}
+  .ev{display:flex;justify-content:space-between;gap:10px;padding:6px 0;
+    border-bottom:1px dashed #1d2a45;font-size:13px}
+  .ev:last-child{border-bottom:0}
+  .src{font-size:12px;line-height:1.9;word-break:break-word}
+  .src a{display:block;color:#8fb7e8;text-decoration:none}
+  .src a:hover{text-decoration:underline}
+  .warn{background:#241a08;border:1px solid #6b4a12;color:#fcd9a0;
+    border-radius:10px;padding:9px 11px;font-size:12.5px;margin-top:10px}
+  .empty{color:var(--muted);text-align:center;padding:40px 20px;font-size:14px}
+  .empty .bigicon{font-size:34px;display:block;margin-bottom:10px}
+  .alertbox{background:#2a1215;border:1px solid #7f1d1d;border-radius:14px;
+    padding:16px}
+  .alertbox h2{color:#fca5a5;margin:0 0 6px;font-size:16px}
+  .foot{color:#64748b;font-size:11.5px;padding:10px 2px 24px;line-height:1.6}
+  @media(max-width:900px){
+    main{grid-template-columns:1fr;height:auto}
+    .chat{border-right:0;height:70vh}
+    .panel{border-top:1px solid var(--line)}
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">
+    <div class="logo">O'</div>
+    <div>
+      <h1>O'RINDOR <span class="sub">· №17 · mahalliy dori vositalariga ishonch</span></h1>
+      <div class="sub">Davlat reyestri + referent narx + xavfsiz yo'naltirish.
+        Har raqam — manbasi bilan.</div>
+    </div>
+  </div>
+  <div class="chips" id="stats">
+    <span class="stat">Yuklanmoqda…</span>
+  </div>
+</header>
+
+<main>
+  <section class="chat">
+    <div id="msgs"></div>
+    <div class="composer">
+      <div class="row">
+        <input id="inp" type="text" autocomplete="off"
+               placeholder="Dori nomi yoki shikoyat: «paratsetamol», «ko'kragim og'riyapti»">
+        <button id="send">Yuborish</button>
+      </div>
+      <div class="quick" id="quick"></div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel">
+    <div class="empty">
+      <span class="bigicon">💊</span>
+      Dori nomini yozing — ishonch kartasi shu yerda ochiladi.<br>
+      Masalan: <b>paratsetamol</b>, <b>nurofen</b>, <b>levotiroksin</b>.
+    </div>
+    <div class="foot">
+      ⚕️ Bu tibbiy maslahat emas va retsept emas. Narxlar — 3735-son bo'yicha
+      <b>chegara</b> narxlar, dorixonadagi real narx emas. Bioekvivalentlik
+      hisoboti ochiq emas — «ma'lum emas» deb ko'rsatiladi.
+    </div>
+  </section>
+</main>
+
+<script>
+const $ = s => document.querySelector(s);
+const msgs = $('#msgs'), panel = $('#panel');
+let sid = null;
+
+const esc = s => String(s ?? '').replace(/[&<>"']/g,
+  c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+const fmt = n => (n === null || n === undefined) ? '—'
+  : Number(n).toLocaleString('ru-RU', {maximumFractionDigits: 2});
+
+async function api(path, opts) {
+  const r = await fetch(path, opts);
+  const data = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(data.error || ('HTTP ' + r.status));
+  return data;
+}
+
+function add(role, text, cls) {
+  const wrap = document.createElement('div');
+  wrap.className = 'msg ' + role + (cls ? ' ' + cls : '');
+  if (role === 'agent' || role === 'sys') {
+    const av = document.createElement('div');
+    av.className = 'avatar';
+    av.textContent = role === 'sys' ? '⏰' : '🤖';
+    wrap.appendChild(av);
+  }
+  const b = document.createElement('div');
+  b.className = 'b';
+  b.textContent = text;
+  wrap.appendChild(b);
+  msgs.appendChild(wrap);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function kv(k, v) {
+  return `<div class="k">${esc(k)}</div><div>${v}</div>`;
+}
+
+function renderCard(c) {
+  if (!c) return;
+  const g = c.group || {}, s = c.same || {}, p = c.price, lim = c.limit;
+  const total = (g.local || 0) + (g.import || 0) || 1;
+  const lp = Math.round(100 * (g.local || 0) / total);
+  const localBadge = c.local
+    ? '<span class="badge b-local">MAHALLIY 🇺🇿</span>'
+    : '<span class="badge b-import">IMPORT 🌍</span>';
+
+  let priceRows = '';
+  if (p) {
+    priceRows += p.retail ? kv('Referent chakana', `<b class="price">${fmt(p.retail)} so'm</b>`) : '';
+    priceRows += p.wholesale ? kv('Referent ulgurji', `<span class="price">${fmt(p.wholesale)} so'm</span>`) : '';
+    priceRows += p.base ? kv('Bazaviy narx', `<span class="price">${fmt(p.base)} ${esc(p.currency || '')}</span>`) : '';
+    priceRows += kv('Narx sanasi', esc(p.date || '—'));
+  } else {
+    priceRows = `<div class="warn">Referent narx: <b>MA'LUM EMAS</b> — bu yozuv narx reyestrida yo'q.</div>`;
+  }
+  if (lim && lim.max !== null && lim.max !== undefined) {
+    priceRows += kv('Chegara narx', `<span class="price">${fmt(lim.max)} ${esc(lim.currency || '')}</span>`);
+    if (lim.retail) priceRows += kv('Shu yozuvdagi chakana', `${fmt(lim.retail)} so'm`);
+  }
+
+  const diffRow = (s.local_min && s.import_min)
+    ? `<div class="ev"><span>Bir xil shakl/doza: ${fmt(s.n)} yozuv</span>
+         <b>${s.diff_pct}% farq</b></div>
+       <div class="ev"><span>Mahalliy eng past</span><b>${fmt(s.local_min)} so'm</b></div>
+       <div class="ev"><span>Import eng past</span><b>${fmt(s.import_min)} so'm</b></div>`
+    : `<div class="warn">Bir xil shakl/doza bo'yicha narx solishtirish:
+        <b>MA'LUM EMAS</b>.</div>`;
+
+  const sources = (c.sources || []).map(([label, url]) =>
+    `<a href="${esc(url)}" target="_blank" rel="noopener">${esc(label)} — ${esc(url)}</a>`
+  ).join('');
+
+  panel.innerHTML = `
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start">
+        <h2>${esc(c.name || c.full)}</h2>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          ${localBadge}
+          <span class="badge b-rx">${c.rx ? 'RETSEPT' : 'RETSEPTSIZ'}</span>
+        </div>
+      </div>
+      <div class="sub">${esc(c.strength || '—')} · ${esc(c.form_uz || '')}</div>
+
+      <h3>Reyestr</h3>
+      <div class="kv">
+        ${kv('XPN (INN)', `<b>${esc(c.inn || '—')}</b>`)}
+        ${kv('Ishlab chiqaruvchi', esc(c.manufacturer || '—'))}
+        ${kv('Davlat', esc(c.country || '—'))}
+        ${kv('Reyestr raqami', `<b>${esc(c.reg || '—')}</b>`)}
+        ${kv('ATX', esc(c.atc || '—'))}
+        ${kv('Holat', '<span class="pill ok">✓ roʻyxatda</span>')}
+      </div>
+
+      <h3>Narx — chegara (3735-son)</h3>
+      <div class="kv">${priceRows}</div>
+
+      <h3>Guruh: ${esc(c.inn_display || c.inn)}</h3>
+      <div class="kv">
+        ${kv('Yozuvlar', `<b>${fmt(g.n)}</b> · ${fmt(g.local)} mahalliy · ${fmt(g.import)} import`)}
+        ${kv('Narxli yozuv', fmt(g.priced))}
+      </div>
+      <div class="bar" style="margin-top:9px">
+        <i class="l" style="width:${lp}%"></i><i class="i" style="width:${100-lp}%"></i>
+      </div>
+      <div class="legend">
+        <span><span class="dot" style="background:var(--teal)"></span>Mahalliy ${lp}%</span>
+        <span><span class="dot" style="background:#3b82f6"></span>Import ${100-lp}%</span>
+      </div>
+      <div style="margin-top:8px">${diffRow}</div>
+
+      <h3>Dalil (A2)</h3>
+      <div class="ev"><span>Bioekvivalentlik hisoboti</span><span class="pill unknown">MA'LUM EMAS</span></div>
+      <div class="ev"><span>2029-01-01 dan ICH BE majburiy</span><span class="pill ok">738-son</span></div>
+      <div class="ev"><span>Jenerik ≤ originalning 80%</span><span class="pill ok">3735-son</span></div>
+
+      <h3>Haqiqiylik (A1)</h3>
+      <div class="ev"><span>ASL BELGISI majburiy 2027-07-01</span><span class="pill ok">149-son</span></div>
+      <div class="ev"><span>QR/kod tekshiruvi</span><span class="pill no">TEKSHIRILMADI</span></div>
+
+      <h3>Manbalar</h3>
+      <div class="src">${sources}</div>
+
+      <div class="warn">⚠️ Chegara narx — ruxsat etilgan eng yuqori narx.
+        Dorixonadagi haqiqiy narx farq emas. Qaror — shifokor yoki farmatsevt.</div>
+    </div>`;
+  panel.scrollTop = 0;
+}
+
+function renderEmergency(text) {
+  panel.innerHTML = `<div class="alertbox">
+      <h2>⛔ Shoshilinch holat</h2>
+      <div style="white-space:pre-wrap">${esc(text)}</div>
+    </div>
+    <div class="foot">Bu holatda navbat taklif qilinmaydi. 103 — tez yordam.</div>`;
+}
+
+async function send(text) {
+  text = (text || '').trim();
+  if (!text) return;
+  add('user', text);
+  $('#inp').value = '';
+  try {
+    const r = await api('/api/chat', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({sid, text})
+    });
+    sid = r.sid;
+    add('agent', r.reply, r.is_emergency ? 'alert' : '');
+    if (r.card) renderCard(r.card);
+    if (r.is_emergency) renderEmergency(r.reply);
+  } catch (e) {
+    add('sys', 'Xato: ' + e.message);
+  }
+}
+
+function chip(label, value) {
+  const b = document.createElement('button');
+  b.textContent = label;
+  b.onclick = () => send(value || label);
+  return b;
+}
+
+const QUICK = [
+  ['paratsetamol', 'paratsetamol'],
+  ['nurofen', 'nurofen'],
+  ['levotiroksin', 'levotiroksin'],
+  ["ko'kragim og'riyapti", "ko'kragim og'riyapti"],
+  ['qon qusdim', 'qon qusdim'],
+  ['tishim og\'riyapti', "tishim og'riyapti"],
+  ['yordam', 'yordam'],
+];
+
+async function boot() {
+  QUICK.forEach(([l, v]) => $('#quick').appendChild(chip(l, v)));
+  add('agent', "Salom. Dori nomini yoki shikoyatni yozing.\n" +
+    "Men tashxis qo'ymayman va dori tavsiya qilmayman — reyestr, narx va " +
+    "dalil holatini ko'rsataman.");
+  try {
+    const st = await api('/api/stats');
+    $('#stats').innerHTML = [
+      `<span class="stat"><b>${fmt(st.drugs)}</b> dori</span>`,
+      `<span class="stat"><b>${fmt(st.inn_groups)}</b> XPN guruhi</span>`,
+      `<span class="stat"><b>${fmt(st.referent_prices)}</b> referent narx</span>`,
+      `<span class="stat"><b>${fmt(st.local)}</b> mahalliy · <b>${fmt(st.import)}</b> import</span>`,
+      `<span class="stat">Manba: <b>api.mpa.uz</b> · lex.uz</span>`,
+    ].join('');
+  } catch (e) {
+    $('#stats').innerHTML = '<span class="stat">Statistika yuklanmadi</span>';
+  }
+}
+
+$('#send').onclick = () => send($('#inp').value);
+$('#inp').addEventListener('keydown', e => { if (e.key === 'Enter') send($('#inp').value); });
+
+setInterval(async () => {
+  if (!sid) return;
+  try {
+    const r = await api('/api/reminders?sid=' + encodeURIComponent(sid));
+    (r.due || []).forEach(x => add('sys',
+      `Eslatma: ${x.subject} — ${new Date(x.when).toLocaleString('uz-UZ')}`));
+  } catch (e) { /* jim */ }
+}, 20000);
+
+boot();
+</script>
+</body>
+</html>

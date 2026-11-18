@@ -1,0 +1,143 @@
+{
+ "built": "2026-11-18T05:29:47+00:00",
+ "core_source": "D:\\Hackathon\\National_Hack\\orindor",
+ "core_version": {
+  "drug": [
+   "drugId",
+   "shortName",
+   "fullName",
+   "inn",
+   "innKey",
+   "dosageForm",
+   "strength",
+   "country",
+   "manufacturer",
+   "registrationCode",
+   "local",
+   "atcCode",
+   "prescription"
+  ],
+  "refprice": [
+   "price",
+   "wholesalePrice",
+   "retailPrice",
+   "basePrice",
+   "currency",
+   "prescription",
+   "uploadedAt",
+   "trademark",
+   "innKey"
+  ],
+  "detail": [
+   "maxSalePrice",
+   "currency",
+   "retailPrice",
+   "wholeSalePrice",
+   "priceDate",
+   "substances",
+   "packageCount",
+   "imgCount",
+   "innKey",
+   "atcCode"
+  ]
+ },
+ "data": {
+  "drugs": 46079,
+  "local": 27620,
+  "import": 18459,
+  "inn_groups": 2941,
+  "referent_prices": 12422,
+  "details": 538,
+  "price_coverage_pct": 26.6
+ },
+ "apteka": {
+  "products": 308,
+  "with_inn": 285,
+  "without_inn": 23,
+  "inn_groups": 158,
+  "local": 53,
+  "import": 208
+ },
+ "files": {
+  "vendor/orindor/agent.py": {
+   "bytes": 18839,
+   "sha256": "85867c41abb694a1c95694f02db78835e15070a09315e5e3d41a3e2994caed7d"
+  },
+  "vendor/orindor/core/__init__.py": {
+   "bytes": 42,
+   "sha256": "2a8e92ee392833a9e0961b08e2d7b4ead0e3c953079639b1780c36d3a4068349"
+  },
+  "vendor/orindor/core/evidence.py": {
+   "bytes": 1543,
+   "sha256": "2b6dc0664a7a93424f9bf1284cd85c57b6587b7d61eabc21f75a99bd2f61ee19"
+  },
+  "vendor/orindor/core/registry.py": {
+   "bytes": 10483,
+   "sha256": "4ab8b587caf38697b84db25dd3fbe7f119da7dc93a20e4fdd75189e3daaad336"
+  },
+  "vendor/orindor/core/render.py": {
+   "bytes": 10840,
+   "sha256": "21514ab4d4c645dce2352e61b81d08f71726021d2f5095e3ca868f74f334723a"
+  },
+  "vendor/orindor/core/safety.py": {
+   "bytes": 14675,
+   "sha256": "f5071c3a3ddd10f8be490cee50f968d69bd23884091f90d3c7036128518cd711"
+  },
+  "vendor/orindor/core/session.py": {
+   "bytes": 4228,
+   "sha256": "3f6b6504a725b862d7c869913b962bafed82f705907467c455b1c484d8b762e8"
+  },
+  "vendor/orindor/core/sources.py": {
+   "bytes": 3797,
+   "sha256": "2203d63ae075664bcd416abb64edf176d08b967d574a88e97e9abaf1b338ef74"
+  },
+  "vendor/orindor/core/text.py": {
+   "bytes": 7015,
+   "sha256": "2458ab006e0663cba366dde7e0f4c4ae9ce437bd1b245dda3b7675ee06c279ef"
+  },
+  "vendor/orindor/core/triage.py": {
+   "bytes": 10241,
+   "sha256": "f2edf553837a5d5ca1601a96be32dd99c8bf97d56b0c8b4625af5f5c17b8719f"
+  },
+  "vendor/orindor/data/aliases.json": {
+   "bytes": 920,
+   "sha256": "a518b3c0782401edd3a59a17a2cc260672f19516351c883127a488972ab0d9ad"
+  },
+  "vendor/orindor/data/detail.json": {
+   "bytes": 155900,
+   "sha256": "b615b9a950f7945e2521aa327b8b5728ecb29d9f390f1c7450b14e7c36dca537"
+  },
+  "vendor/orindor/data/drugs.json": {
+   "bytes": 16467375,
+   "sha256": "403acf26b7d0e01de03a74089be8aaedfd25af63dce0589e7fb6144e8d8962f2"
+  },
+  "vendor/orindor/data/facts.json": {
+   "bytes": 9504,
+   "sha256": "e529dbbac2ca244b345dbfea2e18613840761ce483642adaaa78b02744edc02d"
+  },
+  "vendor/orindor/data/inn.json": {
+   "bytes": 963406,
+   "sha256": "4d681cbee2c814a1e70bd20774969597b0a23d6b35b3bd3a5e52ba5c541c9729"
+  },
+  "vendor/orindor/data/mini.json": {
+   "bytes": 13609,
+   "sha256": "e0aa8a4b18c8410a91bc643e0d3fbc3dd3e56d1d645afcf42ede0b0cbdce62d3"
+  },
+  "vendor/orindor/data/refprice.json": {
+   "bytes": 1717444,
+   "sha256": "59e43656ca83ec2bf935d01b405169038e1a0178f4f11e2c92b51d18f9f0b082"
+  },
+  "vendor/orindor/data/source_status.json": {
+   "bytes": 7092,
+   "sha256": "ca8235d6f0f29ec5c4522a4d6665128fb02aa4f58f35e3acbc4cd5935a54fe92"
+  },
+  "vendor/orindor/data/stats.json": {
+   "bytes": 1353,
+   "sha256": "db810d155cb45f358f4f855c92e6b13beb8211dbc4277359d8cd0f20c6d655a6"
+  },
+  "vendor/orindor/VENDORED.md": {
+   "bytes": 209,
+   "sha256": "245498f68d12f1e0f355fde4ad61951e3d2cee5a971e2152fbdeb375eb382573"
+  }
+ }
+}

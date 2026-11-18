@@ -1,0 +1,16 @@
+[
+ {
+  "action": "triage",
+  "payload": {
+   "specialty": "nevrolog"
+  },
+  "created": "2026-11-18T09:50:38.641041"
+ },
+ {
+  "action": "triage",
+  "payload": {
+   "specialty": "nevrolog"
+  },
+  "created": "2026-11-18T09:52:04.037810"
+ }
+]

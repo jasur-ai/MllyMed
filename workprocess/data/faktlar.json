@@ -1,0 +1,198 @@
+{
+ "meta": {
+  "built": "2026-11-17",
+  "product": "EGIZ · №17 — mahalliy dori vositalariga ishonch",
+  "rule": "Har bir fakt — UZ rasmiy hujjatidan so'zma-so'z. Tarjima emas, iqtibos.",
+  "verified_by": "lex.uz to'liq matni (egiz/data/uz/*.txt)"
+ },
+ "facts": [
+  {
+   "id": "F01",
+   "topic": "A2 · ekvivalentlik",
+   "claim": "2029-yil 1-yanvardan jeneriklarning bioekvivalentligini ICH talablariga muvofiq o'rganish MAJBURIY",
+   "quote": "2029-yil 1-yanvardan boshlab jenerik dori vositalarning bioekvivalentligini xalqaro ICH talablariga muvofiq oʻrganish majburiy hisoblanadi.",
+   "doc": "738",
+   "date": "24.11.2025",
+   "url": "https://lex.uz/uz/docs/-7853907",
+   "file": "7853907_738.txt"
+  },
+  {
+   "id": "F02",
+   "topic": "A2 · bioveyver",
+   "claim": "BCS I va III klass dori moddalari uchun in vitro (bioveyver) hisobot yetarli",
+   "quote": "I va III biofarmatsevtik klassifikatsiyalash tizimiga mansub dori moddasi (substansiya) saqlovchi dori vositalari uchun bioveyver usulida amalga oshirilgan bioekvivalentlikni tasdiqlovchi hisobotlar taqdim etilishi mumkin.",
+   "doc": "738",
+   "date": "24.11.2025",
+   "url": "https://lex.uz/uz/docs/-7853907",
+   "file": "7853907_738.txt"
+  },
+  {
+   "id": "F03",
+   "topic": "A2 · tadqiqot talabi",
+   "claim": "Peroral jenerik referensga nisbatan validatsiyalangan in vivo/in vitro BE bilan, miqdoriy natijalar bilan isbotlanishi shart",
+   "quote": "referent preparatga nisbatan bioekvivalentligi validatsiyalangan in vivo yoki in vitro tadqiqot usullaridan foydalangan holda isbotlangan, natijalari miqdoriy koʻrsatkichlar shaklida taqdim etilgan peroral jenerik dori vositalari.",
+   "doc": "738",
+   "date": "24.11.2025",
+   "url": "https://lex.uz/uz/docs/-7853907",
+   "file": "7853907_738.txt"
+  },
+  {
+   "id": "F04",
+   "topic": "A2 · ta'rif",
+   "claim": "Jenerik — originalning faol moddasi bilan sifat va miqdoriy jihatdan bir xil tarkibga ega",
+   "quote": "jenerik dori vositasi — original (patentlangan) dori vositasining faol moddasi bilan sifat va miqdoriy jihatdan bir xil tarkibga, dori shakliga ega boʻlgan, lekin patent muddati tugagandan soʻng ishlab chiqarilgan dori vositasi",
+   "doc": "738",
+   "date": "24.11.2025",
+   "url": "https://lex.uz/uz/docs/-7853907",
+   "file": "7853907_738.txt"
+  },
+  {
+   "id": "F05",
+   "topic": "A3 · referent narx",
+   "claim": "Referent narx tizimi «xuddi shunday faol moddaga ega» dorilarni doza, qadoq, konsentratsiya bo'yicha solishtiradi",
+   "quote": "referent narx shakllantirish tizimi — dori shakli, qadoqdagi soni, dozasi, konsentratsiyasi, hajmi va qadoqlanishini hisobga olgan holda xuddi shunday faol moddaga ega dori vositalarini ishlab chiqaru...",
+   "doc": "3735",
+   "date": "25.12.2025",
+   "url": "https://lex.uz/uz/docs/-7952162",
+   "file": "7952162_3735.txt"
+  },
+  {
+   "id": "F06",
+   "topic": "A3 · referent mamlakatlar",
+   "claim": "Referent mamlakatlar — Jahon bankining daromad guruhlari bo'yicha tanlanadi",
+   "quote": "referent mamlakatlar — Jahon bankining aholi jon boshiga nisbatan yalpi ichki mahsulotning hisoblangan daromadlar darajasidan yuqori, oʻrtachadan yuqoriroq va oʻrtachadan pastroq boʻlgan davlatlar guruhiga kiruvchi ...",
+   "doc": "3735",
+   "date": "25.12.2025",
+   "url": "https://lex.uz/uz/docs/-7952162",
+   "file": "7952162_3735.txt"
+  },
+  {
+   "id": "F07",
+   "topic": "A3 · IMPORT narx formulasi",
+   "claim": "Import cheklangan ulgurji narx: ChUN = (Rn + B + Bx + QQS) × UU · Bx=2%, QQS=12%, UU=15%",
+   "quote": "ChUN = (Rn + B + Bx + QQS) * UU; ChChN = ChUN * CNU; ... Bx — boshqa xarajatlar (referent narxning 2 foizi); QQS — qoʻshilgan qiymat soligʻi (12 foiz); UU — ulgurji ustama (15 foiz = 1,15)",
+   "doc": "3735",
+   "date": "25.12.2025",
+   "url": "https://lex.uz/uz/docs/-7952162",
+   "file": "7952162_3735.txt"
+  },
+  {
+   "id": "F08",
+   "topic": "A3 · MAHALLIY narx formulasi",
+   "claim": "Mahalliy dori: ChUN = (Rn + QQS) × UU — bojxona to'lovi YO'Q, o'rtasida vositachi yo'q",
+   "quote": "Mahalliy dori vositalarining cheklangan ulgurji va chakana narxi quyidagi formula boʻyicha aniqlanadi: ChUN = (Rn + QQS) * UU; ChChN = ChUN * ChU;",
+   "doc": "3735",
+   "date": "25.12.2025",
+   "url": "https://lex.uz/uz/docs/-7952162",
+   "file": "7952162_3735.txt"
+  },
+  {
+   "id": "F09",
+   "topic": "A3 · 80% qoidasi",
+   "claim": "Jenerikning referent narxi originalnikining 80% idan qimmat bo'lishi MUMKIN EMAS — qonuniy chegara",
+   "quote": "Jenerik dori vositalarining referent narxlari original dori vositalari referent narxlarining 80 foizidan qimmat boʻlishi mumkin emas.",
+   "doc": "3735",
+   "date": "25.12.2025",
+   "url": "https://lex.uz/uz/docs/-7952162",
+   "file": "7952162_3735.txt"
+  },
+  {
+   "id": "F10",
+   "topic": "A3 · eng past narx",
+   "claim": "Bir ishlab chiqaruvchining bir xil tarkibli barcha savdo nomlariga ENG PAST referent narx qo'llanadi",
+   "quote": "Bir ishlab chiqaruvchi tomonidan turli savdo nomlari ostida tarkibi bir xil boʻlgan dori vositalarining barchasiga nisbatan eng past referent narx qoʻllanadi",
+   "doc": "3735",
+   "date": "25.12.2025",
+   "url": "https://lex.uz/uz/docs/-7952162",
+   "file": "7952162_3735.txt"
+  },
+  {
+   "id": "F11",
+   "topic": "A3 · tizim minimumi",
+   "claim": "Avtomatlashtirilgan axborot tizimi hisoblangan qiymatlardan ENG KAMINI oladi",
+   "quote": "Axborot tizimi mazkur bandning ikkinchi — toʻrtinchi xatboshilarida koʻrsatilgan asoslar boʻyicha hisoblangan qiymatlardan eng kam qiymatni ...",
+   "doc": "3735",
+   "date": "25.12.2025",
+   "url": "https://lex.uz/uz/docs/-7952162",
+   "file": "7952162_3735.txt"
+  },
+  {
+   "id": "F12",
+   "topic": "A1 · markirovka tizimi",
+   "claim": "«Asl belgisi» milliy axborot tizimi VM 737-son (20.11.2020) bilan joriy etilgan; 149-son (02.04.2022) dori vositalarida majburiy raqamli markirovka",
+   "quote": "Vazirlar Mahkamasining “Ayrim turdagi mahsulotlarni majburiy raqamli markirovkalash tizimini joriy etish toʻgʻrisida” 2020-yil 20-noyabrdagi 737-son qarori bilan “Asl belgisi” mahsulotlarni markirovkalash va kuzatib borish milliy axborot ...",
+   "doc": "149",
+   "date": "02.04.2022",
+   "url": "https://lex.uz/uz/docs/-5936145",
+   "file": "5936145_149_majburiy_markirovka.txt"
+  },
+  {
+   "id": "F13",
+   "topic": "A1 · kod beruvchi",
+   "claim": "Markirovka kodlarini OPERATOR beradi — ishlab chiqaruvchi o'zi yarata olmaydi",
+   "quote": "Operator tomonidan majburiy raqamli markirovkalanishi belgilangan dori vositalari va tibbiy buyumlarni raqamli markirovkalash uchun markirovka kodlari ...",
+   "doc": "149",
+   "date": "02.04.2022",
+   "url": "https://lex.uz/uz/docs/-5936145",
+   "file": "5936145_149_majburiy_markirovka.txt"
+  },
+  {
+   "id": "F14",
+   "topic": "A1 · bosqichlar",
+   "claim": "To'rtinchi guruh dorilar 2027-yil 1-iyuldan majburiy markirovkalanadi",
+   "quote": "toʻrtinchi guruh — belgilangan tartibda tasdiqlangan roʻyxatga kiritilgan dori vositalari va tibbiy buyumlar — 2027-yil 1-iyuldan boshlab.",
+   "doc": "149",
+   "date": "02.04.2022",
+   "url": "https://lex.uz/uz/docs/-5936145",
+   "file": "5936145_149_majburiy_markirovka.txt"
+  },
+  {
+   "id": "F15",
+   "topic": "S2 · mahalliy ishlab chiqarish rag'bati",
+   "claim": "Patent tugagach 1 yil ichida ishlab chiqarishni yo'lga qo'ygan zavodga texnologiya transferi xarajatining 50%, 50 ming dollargacha qoplanadi",
+   "quote": "(a) original dori vositalarining patent muddati tugagandan soʻng 1 yil ichida ushbu dori vositalarini ishlab chiqarishni yoʻlga qoʻygan ishlab chiqaruvchilarga texnologiyalar transferi xarajatlarining 50 foizi, biroq 50 ming AQSH dollaridan ...",
+   "doc": "PF-35",
+   "date": "05.03.2026",
+   "url": "https://lex.uz/uz/docs/-8076453",
+   "file": "8076453_PF35_mahalliy_ishlab_chiqarish.txt"
+  },
+  {
+   "id": "F16",
+   "topic": "S2 · eksport maqsadi",
+   "claim": "Farmatsevtika eksportini 300 mln dollarga yetkazish — davlat maqsadi",
+   "quote": "(g) mahsulot va xizmatlar eksportini 300 million AQSH dollariga yetkazish;",
+   "doc": "PF-35",
+   "date": "05.03.2026",
+   "url": "https://lex.uz/uz/docs/-8076453",
+   "file": "8076453_PF35_mahalliy_ishlab_chiqarish.txt"
+  },
+  {
+   "id": "F17",
+   "topic": "S4 · sertifikatlash",
+   "claim": "Farmatsevtika mahsulotlarini sertifikatlash qoidalari 3386-son (12.09.2022), 2025-da o'zgartirilgan",
+   "quote": "Farmatsevtika mahsulotlarini sertifikatlashtirish qoidalarini tasdiqlash toʻgʻrisida — 3386-сон 12.09.2022",
+   "doc": "3386",
+   "date": "12.09.2022",
+   "url": "https://lex.uz/uz/docs/-6194223",
+   "file": "6194223_3386_sertifikatlashtirish.txt"
+  }
+ ],
+ "price_model": {
+  "note": "3735-son formulalari. Bojxona to'lovi 0 deb olindi — eng qulay holat. Haqiqiy bojxona stavkasi alohida tekshirilishi kerak (ochiq manba topilmadi).",
+  "constants": {
+   "QQS": 0.12,
+   "Bx": "referens narxning 2%",
+   "ulgurji_ustama": 0.15,
+   "chakana_ustama": 0.2
+  },
+  "example": {
+   "original_referent_narx_som": 126000,
+   "jenerik_referent_narx_som_F09": 100800,
+   "import_yakuniy_narx_som": 198640,
+   "mahalliy_yakuniy_narx_som": 155796,
+   "farq_foiz": 21.6,
+   "sabab": "Asosiy farq — bojxona emas, F09 (80% qoidasi): jenerik referent narxi originalnikining 80% idan oshmasligi shart. Qolgan qismi — bojxona va Bx."
+  },
+  "xulosa": "Narx farqi — taxmin emas, QONUN bilan hisoblanadi. Shu sababli A3 qatlami rasmiy formulani takrorlaydi va har qadamda hujjatga havola beradi."
+ }
+}

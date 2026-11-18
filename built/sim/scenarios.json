@@ -1,0 +1,74 @@
+[
+  {
+    "id": "rf-qon",
+    "persona": "28 yosh, shahar markazi",
+    "steps": ["Qon qusdim"],
+    "expect": {"stage": "emergency", "reply_has": ["103"], "no_appointments": true}
+  },
+  {
+    "id": "rf-stroke",
+    "persona": "61 yosh, gipertoniya",
+    "steps": ["Yuzimning yarmi qimirlamayapti"],
+    "expect": {"stage": "emergency", "reply_has": ["103"], "no_appointments": true}
+  },
+  {
+    "id": "rf-ru",
+    "persona": "45 yosh, rus tilida",
+    "steps": ["У меня рвота с кровью"],
+    "expect": {"stage": "emergency", "reply_has": ["103"], "no_appointments": true}
+  },
+  {
+    "id": "screen-chest-no",
+    "persona": "52 yosh, ofis ishchi",
+    "steps": ["Ko'kragim og'riyapti", "yo'q"],
+    "expect": {"stage": "routed", "reply_has": ["BUGUN"], "dmed_doctors_min": 1, "no_appointments": true}
+  },
+  {
+    "id": "screen-chest-yes",
+    "persona": "52 yosh, ofis ishchi",
+    "steps": ["Ko'kragim og'riyapti", "ha"],
+    "expect": {"stage": "emergency", "reply_has": ["103"], "no_appointments": true}
+  },
+  {
+    "id": "triage-headache",
+    "persona": "34 yosh, uyqusizlik",
+    "steps": ["3 kundan beri boshim og'riyapti", "yo'q"],
+    "expect": {"stage": "routed", "dmed_doctors_min": 1, "no_appointments": true}
+  },
+  {
+    "id": "card-uz",
+    "persona": "xaridor",
+    "steps": ["paratsetamol"],
+    "expect": {"stage": "card", "has_card": true, "card_reg": true}
+  },
+  {
+    "id": "card-ru",
+    "persona": "xaridor, rus tilida",
+    "steps": ["Парацетамол"],
+    "expect": {"stage": "card", "has_card": true}
+  },
+  {
+    "id": "card-rx-link",
+    "persona": "retsept bo'yicha xaridor",
+    "steps": ["ezomeprazol"],
+    "expect": {"stage": "card", "has_card": true, "apteka_min": 1}
+  },
+  {
+    "id": "card-unknown",
+    "persona": "xaridor, imlo xatosi",
+    "steps": ["florbaksinzz"],
+    "expect": {"stage": "idle", "has_card": false, "reply_has": ["topilmadi"]}
+  },
+  {
+    "id": "child-age",
+    "persona": "ota-ona",
+    "steps": ["Bolam isitmasi 38"],
+    "expect": {"reply_has": ["yosh"], "no_appointments": true}
+  },
+  {
+    "id": "benign-tooth",
+    "persona": "talaba",
+    "steps": ["Tishim qattiq og'riyapti"],
+    "expect": {"stage": "routed", "reply_not_has": ["103"], "no_appointments": true}
+  }
+]

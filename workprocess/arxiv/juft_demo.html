@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JUFT — mahalliy dorining ishonch profili</title>
+<style>
+  :root{
+    --ink:#0b1220; --ink2:#3d4a5c; --muted:#7b8798; --line:#e3e8ef;
+    --bg:#f5f7fa; --card:#ffffff;
+    --teal:#0d7a6f; --teal-l:#e6f4f2;
+    --green:#15803d; --green-l:#e8f7ee;
+    --amber:#b45309; --amber-l:#fdf3e3;
+    --red:#b91c1c; --red-l:#fdeaea;
+    --gray:#4b5563; --gray-l:#f1f3f6;
+    --blue:#1d4ed8;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.5; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1180px;margin:0 auto;padding:0 20px 64px}
+
+  /* ---------- header ---------- */
+  header{background:#0b1220;color:#fff;padding:18px 0 0}
+  .hbar{max-width:1180px;margin:0 auto;padding:0 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  .logo{display:flex;align-items:center;gap:10px}
+  .logo svg{display:block}
+  .logo b{font-size:22px;letter-spacing:.14em;font-weight:800}
+  .tag{color:#93a4bd;font-size:13.5px;border-left:1px solid #2a3648;padding-left:16px}
+  .roles{margin-left:auto;display:flex;gap:6px;background:#151f2f;padding:5px;border-radius:12px}
+  .role{
+    border:0;background:transparent;color:#a9b6c9;font:inherit;font-size:13.5px;font-weight:600;
+    padding:8px 16px;border-radius:9px;cursor:pointer;transition:.16s
+  }
+  .role:hover{color:#fff}
+  .role.on{background:#fff;color:#0b1220}
+  .sub{border-top:1px solid #1b2534;margin-top:16px;padding:11px 0;font-size:13px;color:#8fa0b8}
+  .sub .wrap{padding-bottom:0}
+
+  /* ---------- layout ---------- */
+  .grid{display:grid;grid-template-columns:296px 1fr;gap:22px;margin-top:26px;align-items:start}
+  @media(max-width:900px){.grid{grid-template-columns:1fr}}
+
+  .sect-t{font-size:12px;font-weight:800;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+
+  /* ---------- product list ---------- */
+  .plist{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  .pitem{
+    display:flex;align-items:center;gap:11px;padding:13px 15px;cursor:pointer;
+    border-bottom:1px solid var(--line);transition:.14s
+  }
+  .pitem:last-child{border-bottom:0}
+  .pitem:hover{background:#fafbfc}
+  .pitem.on{background:var(--teal-l);box-shadow:inset 3px 0 0 var(--teal)}
+  .pitem .nm{font-size:14px;font-weight:600}
+  .pitem .sub2{font-size:11.5px;color:var(--muted);margin-top:1px}
+  .pdot{width:9px;height:9px;border-radius:50%;flex:0 0 auto}
+  .pdot.g{background:var(--green)} .pdot.a{background:var(--amber)} .pdot.r{background:var(--red)}
+  .badge-n{margin-left:auto;font-size:10.5px;font-weight:800;padding:3px 7px;border-radius:6px;background:var(--gray-l);color:var(--gray)}
+
+  /* ---------- cards ---------- */
+  .cards{display:grid;gap:16px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+  .head{padding:16px 18px;display:flex;gap:14px;align-items:flex-start;border-bottom:1px solid var(--line)}
+  .head .ttl{font-size:19px;font-weight:800;letter-spacing:-.01em}
+  .head .meta{font-size:12.5px;color:var(--muted);margin-top:2px}
+  .flag{font-size:10px;font-weight:800;letter-spacing:.06em;padding:4px 8px;border-radius:6px;text-transform:uppercase}
+  .flag.loc{background:var(--teal-l);color:var(--teal)}
+  .flag.imp{background:#eef2ff;color:var(--blue)}
+  .flag.nti{background:var(--amber-l);color:var(--amber)}
+  .price{margin-left:auto;text-align:right;white-space:nowrap}
+  .price b{font-size:19px;font-weight:800;letter-spacing:-.02em}
+  .price span{display:block;font-size:11px;color:var(--muted)}
+
+  .body{padding:16px 18px}
+  .row{display:flex;align-items:flex-start;gap:10px;font-size:13.5px;padding:5px 0}
+  .row .k{color:var(--muted);flex:0 0 118px;font-size:12.5px;padding-top:1px}
+  .tick{color:var(--green);font-weight:800;flex:0 0 auto}
+  .gap{color:var(--amber);font-weight:800;flex:0 0 auto}
+
+  .verdict{margin:14px 18px 18px;padding:13px 15px;border-radius:12px;display:flex;gap:12px;align-items:flex-start}
+  .verdict .ic{font-size:20px;line-height:1.2}
+  .verdict .tx{font-size:13.5px;font-weight:600}
+  .verdict .sm{font-size:12px;font-weight:500;opacity:.85;margin-top:2px}
+  .v-JUFT{background:var(--green-l);color:#14532d}
+  .v-JUFT_SHART{background:var(--amber-l);color:#7c2d12}
+  .v-DALIL_YOQ{background:var(--gray-l);color:#374151}
+  .v-XAVF{background:var(--red-l);color:#7f1d1d}
+  .v-MOS_EMAS{background:#eef2ff;color:#1e3a8a}
+
+  /* evidence ladder */
+  .ladder{display:flex;gap:5px;margin:10px 0 14px}
+  .rung{flex:1;text-align:center;font-size:10.5px;font-weight:700;padding:7px 2px;border-radius:7px;
+        background:var(--gray-l);color:#9aa4b2;border:1px solid transparent}
+  .rung.on{background:var(--teal);color:#fff;border-color:var(--teal)}
+  .rung.zero.on{background:var(--gray);color:#fff;border-color:var(--gray)}
+  .rung-lbl{font-size:11px;color:var(--muted);text-align:center;margin-top:-8px;margin-bottom:12px}
+
+  /* price bars */
+  .pb{margin-top:12px}
+  .pb-row{display:flex;align-items:center;gap:10px;font-size:12px;margin-top:6px}
+  .pb-row .lb{flex:0 0 92px;color:var(--muted)}
+  .pb-bar{height:9px;border-radius:5px;background:#e9edf2;flex:1;overflow:hidden}
+  .pb-bar i{display:block;height:100%;border-radius:5px}
+  .pb-row .vl{flex:0 0 92px;text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+  .save{font-size:12.5px;font-weight:700;color:var(--green);margin-top:8px}
+
+  /* auth */
+  .authbox{margin-top:14px;border:1px solid var(--line);border-radius:12px;padding:13px 14px;background:#fbfcfd}
+  .authbox .hd{display:flex;align-items:center;gap:9px;font-size:12.5px;font-weight:800}
+  .pill{font-size:10.5px;font-weight:800;padding:3px 8px;border-radius:20px;letter-spacing:.04em}
+  .pill.YASHIL{background:var(--green-l);color:var(--green)}
+  .pill.SARIQ{background:var(--amber-l);color:var(--amber)}
+  .pill.QIZIL{background:var(--red-l);color:var(--red)}
+  .authlist{list-style:none;margin-top:9px;font-size:12.5px;color:var(--ink2)}
+  .authlist li{padding:3px 0 3px 20px;position:relative}
+  .authlist li.h::before{content:"⛔";position:absolute;left:0;font-size:11px}
+  .authlist li.c::before{content:"+";position:absolute;left:0;font-weight:800;color:var(--amber)}
+  .authfoot{margin-top:9px;font-size:12px;font-weight:700;color:var(--ink2)}
+
+  /* patient role */
+  .pat{padding:26px 22px;text-align:center}
+  .pat .big{font-size:26px;font-weight:800;letter-spacing:-.02em}
+  .pat .bignum{font-size:34px;font-weight:800;letter-spacing:-.03em;margin:12px 0 2px}
+  .pat .lbl{font-size:13px;color:var(--muted)}
+  .pat .line{font-size:14.5px;margin-top:16px;color:var(--ink2);max-width:420px;margin-left:auto;margin-right:auto}
+  .patbadge{display:inline-flex;align-items:center;gap:9px;padding:10px 18px;border-radius:999px;font-weight:800;font-size:15px;margin-top:18px}
+
+  /* QR section */
+  .qrsec{margin-top:34px;background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+  .qrhead{padding:16px 18px;border-bottom:1px solid var(--line)}
+  .qrhead h3{font-size:16px;font-weight:800}
+  .qrhead p{font-size:12.5px;color:var(--muted);margin-top:2px}
+  .qrbody{padding:16px 18px;display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:760px){.qrbody{grid-template-columns:1fr}}
+  .qbtns{display:grid;gap:8px}
+  .qbtn{
+    text-align:left;font:inherit;font-size:13px;font-weight:600;padding:11px 14px;border-radius:10px;
+    border:1px solid var(--line);background:#fff;cursor:pointer;transition:.14s;display:flex;gap:10px;align-items:center
+  }
+  .qbtn:hover{border-color:#c9d3df;background:#fafbfc}
+  .qbtn.on{border-color:var(--teal);background:var(--teal-l);color:#0a4f48}
+  .qres{border:1px solid var(--line);border-radius:12px;padding:14px;background:#fbfcfd}
+  .qrband{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:800;padding:6px 12px;border-radius:8px}
+  .qrband.YASHIL{background:var(--green-l);color:var(--green)}
+  .qrband.SARIQ{background:var(--amber-l);color:var(--amber)}
+  .qrband.QIZIL{background:var(--red-l);color:var(--red)}
+  .riskbar{height:8px;border-radius:5px;background:#e9edf2;margin:12px 0 4px;overflow:hidden;position:relative}
+  .riskbar i{display:block;height:100%;border-radius:5px;transition:width .3s}
+  .riskscale{display:flex;justify-content:space-between;font-size:10px;color:var(--muted)}
+
+  /* metrics */
+  .metrics{margin-top:34px;display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  @media(max-width:760px){.metrics{grid-template-columns:1fr 1fr}}
+  .m{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 16px}
+  .m b{display:block;font-size:25px;font-weight:800;letter-spacing:-.02em}
+  .m span{font-size:11.5px;color:var(--muted);display:block;margin-top:3px;line-height:1.35}
+  .m.good b{color:var(--green)} .m.bad b{color:var(--red)}
+  footer{margin-top:34px;font-size:11.5px;color:var(--muted);text-align:center;line-height:1.7}
+  .note{margin-top:14px;padding:12px 14px;border-radius:10px;background:#fff8e6;border:1px solid #f5e0ad;
+        font-size:11.5px;color:#6b4e10}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hbar">
+    <div class="logo">
+      <svg width="34" height="34" viewBox="0 0 34 34" fill="none">
+        <rect x="1" y="1" width="32" height="32" rx="9" fill="#0d7a6f"/>
+        <path d="M11 9v11a6 6 0 0 0 12 0V9" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+        <path d="M8 9h6M20 9h6" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="24" cy="24" r="3.2" fill="#7ee0d0"/>
+      </svg>
+      <b>JUFT</b>
+    </div>
+    <div class="tag">Mahalliy dori — isbotlangan juft</div>
+    <div class="roles" id="roles">
+      <button class="role on" data-role="bemor">Bemor</button>
+      <button class="role" data-role="farmatsevt">Farmatsevt</button>
+      <button class="role" data-role="vrach">Vrach</button>
+    </div>
+  </div>
+  <div class="sub"><div class="wrap">Rasmiy muammo <b style="color:#cfe0f5">№17</b> — mahalliy dori vositalariga ishonch &nbsp;·&nbsp; A1 haqiqiylik &nbsp;/&nbsp; A2 ekvivalentlik &nbsp;/&nbsp; A3 tanlov</div></div>
+</header>
+
+<div class="wrap">
+  <div class="grid">
+    <div>
+      <div class="sect-t">Reyestr · bir INN</div>
+      <div class="plist" id="plist"></div>
+      <div class="note">Narxlar va hujjat raqamlari — <b>demo ma'lumot</b>. Real tizimda: davlat reyestri + referent narx.</div>
+    </div>
+    <div>
+      <div class="sect-t" id="viewtitle">Ishonch profili</div>
+      <div class="cards" id="cards"></div>
+    </div>
+  </div>
+
+  <div class="qrsec">
+    <div class="qrhead">
+      <h3>A1 · Haqiqiylik tekshiruvi — qutidagi QR</h3>
+      <p>Bir xil dori, to'rt xil quti, to'rt xil javob. Seftriakson misolida.</p>
+    </div>
+    <div class="qrbody">
+      <div class="qbtns" id="qbtns"></div>
+      <div class="qres" id="qres"></div>
+    </div>
+  </div>
+
+  <div class="metrics">
+    <div class="m good"><b>99.8%</b><span>Qalbaki aniqlash (600 sinov quti)</span></div>
+    <div class="m good"><b>0.0%</b><span>Qonuniy qutida noto'g'ri ayblov</span></div>
+    <div class="m good"><b>0 / 8</b><span>Asossiz "JUFT" da'vosi</span></div>
+    <div class="m bad"><b>50% → 0%</b><span>Bazaviy qoida → JUFT xavfli da'vo</span></div>
+  </div>
+
+  <footer>
+    JUFT · №17 ishonch profili &nbsp;·&nbsp; dvigatel: <code>prototype/juft17_core.py</code> &nbsp;·&nbsp; baholash: <code>prototype/eval_juft17.py</code><br>
+    Asosiy qoida: dalil bo'lmasa — "teng" deyilmaydi.
+  </footer>
+</div>
+
+<script>
+const DATA = {
+ "groups": [
+  {
+   "inn": "paracetamol",
+   "mg": 500,
+   "label": "paracetamol 500 mg",
+   "cards": [
+    {
+     "trade": "Panadol",
+     "inn": "paracetamol",
+     "mg": 500,
+     "form": "tabletka",
+     "maker": "GSK",
+     "country": "Buyuk Britaniya",
+     "local": false,
+     "nti": false,
+     "price": 21000,
+     "pack": "12 tabletka",
+     "ev": "E2",
+     "evtext": "E2 · BE o'tkazilgan (standart 80–125%)",
+     "docs": [
+      "sertifikat UZ-C-2013/0412 — AMALDA",
+      "GMP sertifikati mavjud",
+      "mustaqil laboratoriya natijasi (Toshkent Davlat Nazorat Lab.)",
+      "BE tadqiqoti: referens «Panadol (RLD)», 2013",
+      "ICH talablariga mos"
+     ],
+     "gaps": [],
+     "cert": "AMALDA",
+     "verdict": "JUFT",
+     "vtext": "JUFT — dalil bilan teng",
+     "score": 0.94,
+     "savings": null,
+     "refprice": null,
+     "action": "Tanlash mumkin — dalil, sertifikat va haqiqiylik joyida",
+     "auth": {
+      "band": "YASHIL",
+      "risk": 0.043,
+      "action": "Haqiqiy — ro'yxatdagi mahsulot",
+      "hard": [],
+      "contrib": []
+     }
+    },
+    {
+     "trade": "Paracetamol",
+     "inn": "paracetamol",
+     "mg": 500,
+     "form": "tabletka",
+     "maker": "Uzpharm",
+     "country": "O'zbekiston",
+     "local": true,
+     "nti": false,
+     "price": 6500,
+     "pack": "12 tabletka",
+     "ev": "E1",
+     "evtext": "E1 · BCS I/III bioveyver (in vitro)",
+     "docs": [
+      "sertifikat UZ-C-2021/1188 — AMALDA",
+      "GMP sertifikati mavjud",
+      "mustaqil laboratoriya natijasi (Toshkent Davlat Nazorat Lab.)",
+      "BCS I/III bioveyver, referens: Panadol (RLD), 2021",
+      "ICH talablariga mos"
+     ],
+     "gaps": [],
+     "cert": "AMALDA",
+     "verdict": "JUFT",
+     "vtext": "JUFT — dalil bilan teng",
+     "score": 0.88,
+     "savings": 69.0,
+     "refprice": 21000,
+     "action": "Tanlash mumkin — dalil, sertifikat va haqiqiylik joyida",
+     "auth": {
+      "band": "YASHIL",
+      "risk": 0.043,
+      "action": "Haqiqiy — ro'yxatdagi mahsulot",
+      "hard": [],
+      "contrib": []
+     }
+    }
+   ]
+  },
+  {
+   "inn": "levothyroxine",
+   "mg": 50,
+   "label": "levothyroxine 50 mg",
+   "cards": [
+    {
+     "trade": "Euthyrox",
+     "inn": "levothyroxine",
+     "mg": 50,
+     "form": "tabletka",
+     "maker": "Merck",
+     "country": "Germaniya",
+     "local": false,
+     "nti": true,
+     "price": 71000,
+     "pack": "50 tabletka",
+     "ev": "E3",
+     "evtext": "E3 · ICH-mos BE + toraytirilgan oraliq (90–111%)",
+     "docs": [
+      "sertifikat UZ-C-2015/0071 — AMALDA",
+      "GMP sertifikati mavjud",
+      "mustaqil laboratoriya natijasi (Toshkent Davlat Nazorat Lab.)",
+      "BE tadqiqoti: referens «Euthyrox (RLD)», 2015",
+      "ICH talablariga mos",
+      "NTI uchun toraytirilgan oraliq 90–111% qo'llangan"
+     ],
+     "gaps": [],
+     "cert": "AMALDA",
+     "verdict": "JUFT_SHART",
+     "vtext": "JUFT + SHART — faqat vrach bilan",
+     "score": 1.0,
+     "savings": null,
+     "refprice": null,
+     "action": "Vrach bilan birga o'tish (monitoring shart)",
+     "auth": {
+      "band": "YASHIL",
+      "risk": 0.043,
+      "action": "Haqiqiy — ro'yxatdagi mahsulot",
+      "hard": [],
+      "contrib": []
+     }
+    },
+    {
+     "trade": "Levotiroksin",
+     "inn": "levothyroxine",
+     "mg": 50,
+     "form": "tabletka",
+     "maker": "Uzpharm",
+     "country": "O'zbekiston",
+     "local": true,
+     "nti": true,
+     "price": 22000,
+     "pack": "50 tabletka",
+     "ev": "E0",
+     "evtext": "E0 · BE hujjati yo'q",
+     "docs": [
+      "sertifikat UZ-C-2022/0902 — AMALDA"
+     ],
+     "gaps": [
+      "GMP sertifikati tasdiqlanmagan",
+      "laboratoriya natijasi yo'q",
+      "BE tadqiqoti hujjati yo'q",
+      "ro'yxatdan 2022-yilda o'tgan; ICH 2029-dan majburiy"
+     ],
+     "cert": "AMALDA",
+     "verdict": "DALIL_YOQ",
+     "vtext": "DALIL YO'Q — tavsiya qilinmaydi",
+     "score": 0.315,
+     "savings": 69.0,
+     "refprice": 71000,
+     "action": "Hozircha tavsiya qilinmaydi — hujjat to'ldirilishi kerak",
+     "auth": {
+      "band": "YASHIL",
+      "risk": 0.043,
+      "action": "Haqiqiy — ro'yxatdagi mahsulot",
+      "hard": [],
+      "contrib": []
+     }
+    }
+   ]
+  },
+  {
+   "inn": "metformin",
+   "mg": 500,
+   "label": "metformin 500 mg",
+   "cards": [
+    {
+     "trade": "Glucophage",
+     "inn": "metformin",
+     "mg": 500,
+     "form": "tabletka",
+     "maker": "Merck",
+     "country": "Fransiya",
+     "local": false,
+     "nti": false,
+     "price": 48000,
+     "pack": "60 tabletka",
+     "ev": "E2",
+     "evtext": "E2 · BE o'tkazilgan (standart 80–125%)",
+     "docs": [
+      "sertifikat UZ-C-2014/0203 — AMALDA",
+      "GMP sertifikati mavjud",
+      "mustaqil laboratoriya natijasi (Toshkent Davlat Nazorat Lab.)",
+      "BE tadqiqoti: referens «Glucophage (RLD)», 2014",
+      "ICH talablariga mos"
+     ],
+     "gaps": [],
+     "cert": "AMALDA",
+     "verdict": "JUFT",
+     "vtext": "JUFT — dalil bilan teng",
+     "score": 0.94,
+     "savings": null,
+     "refprice": null,
+     "action": "Tanlash mumkin — dalil, sertifikat va haqiqiylik joyida",
+     "auth": {
+      "band": "YASHIL",
+      "risk": 0.043,
+      "action": "Haqiqiy — ro'yxatdagi mahsulot",
+      "hard": [],
+      "contrib": []
+     }
+    },
+    {
+     "trade": "Metformin",
+     "inn": "metformin",
+     "mg": 500,
+     "form": "tabletka",
+     "maker": "Jurabek Laboratories",
+     "country": "O'zbekiston",
+     "local": true,
+     "nti": false,
+     "price": 18000,
+     "pack": "60 tabletka",
+     "ev": "E2",
+     "evtext": "E2 · BE o'tkazilgan (standart 80–125%)",
+     "docs": [
+      "sertifikat UZ-C-2022/0455 — AMALDA",
+      "GMP sertifikati mavjud",
+      "mustaqil laboratoriya natijasi (Jurabek lab. (GMP))",
+      "BE tadqiqoti: referens «Glucophage (RLD)», 2022",
+      "ICH talablariga mos"
+     ],
+     "gaps": [],
+     "cert": "AMALDA",
+     "verdict": "JUFT",
+     "vtext": "JUFT — dalil bilan teng",
+     "score": 0.94,
+     "savings": 62.5,
+     "refprice": 48000,
+     "action": "Tanlash mumkin — dalil, sertifikat va haqiqiylik joyida",
+     "auth": {
+      "band": "YASHIL",
+      "risk": 0.043,
+      "action": "Haqiqiy — ro'yxatdagi mahsulot",
+      "hard": [],
+      "contrib": []
+     }
+    }
+   ]
+  },
+  {
+   "inn": "amoxicillin",
+   "mg": 500,
+   "label": "amoxicillin 500 mg",
+   "cards": [
+    {
+     "trade": "Ospamox",
+     "inn": "amoxicillin",
+     "mg": 500,
+     "form": "kapsula",
+     "maker": "Sandoz",
+     "country": "Avstriya",
+     "local": false,
+     "nti": false,
+     "price": 62000,
+     "pack": "16 kapsula",
+     "ev": "E2",
+     "evtext": "E2 · BE o'tkazilgan (standart 80–125%)",
+     "docs": [
+      "sertifikat UZ-C-2020/0640 — AMALDA",
+      "GMP sertifikati mavjud",
+      "mustaqil laboratoriya natijasi (EU lab.)",
+      "BE tadqiqoti: referens «Amoxil (RLD)», 2020"
+     ],
+     "gaps": [
+      "ICH mosligi tasdiqlanmagan (2029-dan majburiy)"
+     ],
+     "cert": "AMALDA",
+     "verdict": "JUFT",
+     "vtext": "JUFT — dalil bilan teng",
+     "score": 0.94,
+     "savings": null,
+     "refprice": null,
+     "action": "Tanlash mumkin — dalil, sertifikat va haqiqiylik joyida",
+     "auth": {
+      "band": "YASHIL",
+      "risk": 0.043,
+      "action": "Haqiqiy — ro'yxatdagi mahsulot",
+      "hard": [],
+      "contrib": []
+     }
+    },
+    {
+     "trade": "Amoksitsillin",
+     "inn": "amoxicillin",
+     "mg": 500,
+     "form": "kapsula",
+     "maker": "Uzpharm",
+     "country": "O'zbekiston",
+     "local": true,
+     "nti": false,
+     "price": 24000,
+     "pack": "16 kapsula",
+     "ev": "E0",
+     "evtext": "E0 · BE hujjati yo'q",
+     "docs": [
+      "sertifikat UZ-C-2019/0331 — AMALDA",
+      "GMP sertifikati mavjud"
+     ],
+     "gaps": [
+      "laboratoriya natijasi yo'q",
+      "BE tadqiqoti hujjati yo'q",
+      "ro'yxatdan 2019-yilda o'tgan; ICH 2029-dan majburiy"
+     ],
+     "cert": "AMALDA",
+     "verdict": "DALIL_YOQ",
+     "vtext": "DALIL YO'Q — tavsiya qilinmaydi",
+     "score": 0.315,
+     "savings": 61.3,
+     "refprice": 62000,
+     "action": "Hozircha tavsiya qilinmaydi — hujjat to'ldirilishi kerak",
+     "auth": {
+      "band": "YASHIL",
+      "risk": 0.043,
+      "action": "Haqiqiy — ro'yxatdagi mahsulot",
+      "hard": [],
+      "contrib": []
+     }
+    }
+   ]
+  },
+  {
+   "inn": "ceftriaxone",
+   "mg": 1000,
+   "label": "ceftriaxone 1000 mg",
+   "cards": [
+    {
+     "trade": "Rocephin",
+     "inn": "ceftriaxone",
+     "mg": 1000,
+     "form": "kukun (flakon)",
+     "maker": "Roche",
+     "country": "Shveytsariya",
+     "local": false,
+     "nti": false,
+     "price": 145000,
+     "pack": "1 flakon",
+     "ev": "EX",
+     "evtext": "EX · BE talab qilinmaydi (parenteral eritma)",
+     "docs": [
+      "sertifikat UZ-C-2012/0018 — AMALDA",
+      "GMP sertifikati mavjud",
+      "mustaqil laboratoriya natijasi (Toshkent Davlat Nazorat Lab.)",
+      "parenteral eritma — BE talab qilinmaydi (738-son)",
+      "referens: Rocephin (RLD)"
+     ],
+     "gaps": [],
+     "cert": "AMALDA",
+     "verdict": "JUFT",
+     "vtext": "JUFT — dalil bilan teng",
+     "score": 0.92,
+     "savings": null,
+     "refprice": null,
+     "action": "Tanlash mumkin — dalil, sertifikat va haqiqiylik joyida",
+     "auth": {
+      "band": "YASHIL",
+      "risk": 0.043,
+      "action": "Haqiqiy — ro'yxatdagi mahsulot",
+      "hard": [],
+      "contrib": []
+     }
+    },
+    {
+     "trade": "Seftriakson",
+     "inn": "ceftriaxone",
+     "mg": 1000,
+     "form": "kukun (flakon)",
+     "maker": "Uzpharm",
+     "country": "O'zbekiston",
+     "local": true,
+     "nti": false,
+     "price": 38000,
+     "pack": "1 flakon",
+     "ev": "EX",
+     "evtext": "EX · BE talab qilinmaydi (parenteral eritma)",
+     "docs": [
+      "sertifikat UZ-C-2020/0711 — AMALDA",
+      "GMP sertifikati mavjud",
+      "mustaqil laboratoriya natijasi (Uzpharm nazorat lab.)",
+      "parenteral eritma — BE talab qilinmaydi (738-son)",
+      "referens: Rocephin (RLD)"
+     ],
+     "gaps": [],
+     "cert": "AMALDA",
+     "verdict": "JUFT",
+     "vtext": "JUFT — dalil bilan teng",
+     "score": 0.92,
+     "savings": 73.8,
+     "refprice": 145000,
+     "action": "Tanlash mumkin — dalil, sertifikat va haqiqiylik joyida",
+     "auth": {
+      "band": "YASHIL",
+      "risk": 0.043,
+      "action": "Haqiqiy — ro'yxatdagi mahsulot",
+      "hard": [],
+      "contrib": []
+     }
+    }
+   ]
+  },
+  {
+   "inn": "ibuprofen",
+   "mg": 400,
+   "label": "ibuprofen 400 mg",
+   "cards": [
+    {
+     "trade": "Nurofen",
+     "inn": "ibuprofen",
+     "mg": 400,
+     "form": "tabletka",
+     "maker": "Reckitt",
+     "country": "Buyuk Britaniya",
+     "local": false,
+     "nti": false,
+     "price": 32000,
+     "pack": "20 tabletka",
+     "ev": "E2",
+     "evtext": "E2 · BE o'tkazilgan (standart 80–125%)",
+     "docs": [
+      "sertifikat UZ-C-2012/0090 — AMALDA",
+      "GMP sertifikati mavjud",
+      "mustaqil laboratoriya natijasi (EU lab.)",
+      "BE tadqiqoti: referens «Nurofen (RLD)», 2012",
+      "ICH talablariga mos"
+     ],
+     "gaps": [],
+     "cert": "AMALDA",
+     "verdict": "JUFT",
+     "vtext": "JUFT — dalil bilan teng",
+     "score": 0.94,
+     "savings": null,
+     "refprice": null,
+     "action": "Tanlash mumkin — dalil, sertifikat va haqiqiylik joyida",
+     "auth": {
+      "band": "YASHIL",
+      "risk": 0.043,
+      "action": "Haqiqiy — ro'yxatdagi mahsulot",
+      "hard": [],
+      "contrib": []
+     }
+    },
+    {
+     "trade": "Ibuprofen",
+     "inn": "ibuprofen",
+     "mg": 400,
+     "form": "tabletka",
+     "maker": "Uzpharm",
+     "country": "O'zbekiston",
+     "local": true,
+     "nti": false,
+     "price": 9000,
+     "pack": "20 tabletka",
+     "ev": "E2",
+     "evtext": "E2 · BE o'tkazilgan (standart 80–125%)",
+     "docs": [
+      "sertifikat UZ-C-2021/0550 — MUDDATI O'TGAN",
+      "GMP sertifikati mavjud",
+      "mustaqil laboratoriya natijasi (Toshkent Davlat Nazorat Lab.)",
+      "BE tadqiqoti: referens «Nurofen (RLD)», 2021",
+      "ICH talablariga mos"
+     ],
+     "gaps": [
+      "sertifikat holati: MUDDATI O'TGAN"
+     ],
+     "cert": "MUDDATI O'TGAN",
+     "verdict": "DALIL_YOQ",
+     "vtext": "DALIL YO'Q — tavsiya qilinmaydi",
+     "score": 0.517,
+     "savings": 71.9,
+     "refprice": 32000,
+     "action": "Hozircha tavsiya qilinmaydi — hujjat to'ldirilishi kerak",
+     "auth": {
+      "band": "YASHIL",
+      "risk": 0.043,
+      "action": "Haqiqiy — ro'yxatdagi mahsulot",
+      "hard": [],
+      "contrib": []
+     }
+    }
+   ]
+  }
+ ],
+ "qr": [
+  {
+   "name": "Oddiy quti",
+   "band": "YASHIL",
+   "risk": 0.043,
+   "action": "Haqiqiy — ro'yxatdagi mahsulot",
+   "hard": [],
+   "contrib": []
+  },
+  {
+   "name": "Ikki hududda skanerlangan",
+   "band": "QIZIL",
+   "risk": 0.6,
+   "action": "BERMANG — nazorat organiga xabar bering",
+   "hard": [
+    "Bu seriya 2 ta turli hududda skanerlangan — kamida bittasi qalbaki"
+   ],
+   "contrib": []
+  },
+  {
+   "name": "Soxta qadoq",
+   "band": "QIZIL",
+   "risk": 0.6,
+   "action": "BERMANG — nazorat organiga xabar bering",
+   "hard": [
+    "GTIN tekshiruv raqami xato — qadoq GS1 standartiga mos emas",
+    "Seriya «UZ-CE-1234567» ishlab chiqaruvchining e'lon qilingan formatiga mos emas",
+    "Partiya «SF2299» ishlab chiqaruvchi tomonidan e'lon qilingan partiyalar ro'yxatida yo'q",
+    "Qadoqdagi saqlash muddati 48 oy — ro'yxatdagi 36 oydan uzun"
+   ],
+   "contrib": [
+    [
+     "narx ro'yxatdagi eng arzon mahsulotdan ham past",
+     "2.0"
+    ]
+   ]
+  },
+  {
+   "name": "Muddati o'tgan",
+   "band": "QIZIL",
+   "risk": 0.6,
+   "action": "BERMANG — nazorat organiga xabar bering",
+   "hard": [
+    "Yaroqlilik muddati o'tgan (2026-01-01)"
+   ],
+   "contrib": []
+  }
+ ]
+};
+
+const $ = s => document.querySelector(s);
+let role = "bemor", gi = 0, qi = 0;
+
+const fmt = n => Math.round(n).toLocaleString("ru-RU").replace(/\u00A0/g," ");
+
+const VICON = {JUFT:"✅", JUFT_SHART:"🟡", DALIL_YOQ:"❔", XAVF:"⛔", MOS_EMAS:"⚪"};
+const VDOT  = {JUFT:"g", JUFT_SHART:"a", DALIL_YOQ:"a", XAVF:"r", MOS_EMAS:"a"};
+
+function money(c){ return fmt(c.price) + " so'm"; }
+
+/* ---------- product list ---------- */
+function renderList(){
+  const el = $("#plist");
+  el.innerHTML = DATA.groups.map((g,i)=>{
+    const loc = g.cards.find(c=>c.local) || g.cards[0];
+    const imp = g.cards.find(c=>!c.local);
+    const dot = VDOT[loc.verdict] || "a";
+    return `<div class="pitem ${i===gi?'on':''}" data-g="${i}">
+      <span class="pdot ${dot}"></span>
+      <div><div class="nm">${g.label}</div>
+      <div class="sub2">${imp?imp.trade+' → ':''}${loc.trade}</div></div>
+      <span class="badge-n">${g.cards.length}</span>
+    </div>`;
+  }).join("");
+  el.querySelectorAll(".pitem").forEach(n=>n.onclick=()=>{ gi=+n.dataset.g; renderList(); renderCards(); });
+}
+
+/* ---------- helpers ---------- */
+function ladder(ev){
+  const order = ["EX","E3","E2","E1","E0"];
+  const names = ["EX","E3","E2","E1","E0"];
+  return `<div class="ladder">${order.map(k=>
+    `<div class="rung ${k===ev?'on':''} ${k==='E0'?'zero':''}">${k}</div>`).join("")}</div>
+    <div class="rung-lbl">${ev==="E0"?"E0 · BE hujjati yo'q":"dalil darajasi: "+ev}</div>`;
+}
+
+function priceBars(c, refPrice){
+  if(!refPrice || c.local===false) return "";
+  const max = Math.max(c.price, refPrice);
+  const pctLocal = Math.round(c.price/max*100), pctImp = Math.round(refPrice/max*100);
+  return `<div class="pb">
+    <div class="pb-row"><span class="lb">Import</span>
+      <span class="pb-bar"><i style="width:${pctImp}%;background:#9aa9bd"></i></span>
+      <span class="vl">${fmt(refPrice)}</span></div>
+    <div class="pb-row"><span class="lb">Mahalliy</span>
+      <span class="pb-bar"><i style="width:${pctLocal}%;background:#0d7a6f"></i></span>
+      <span class="vl">${fmt(c.price)}</span></div>
+    <div class="save">${Math.round(c.savings)}% arzon · tejam ${fmt(refPrice - c.price)} so'm / o'ram</div>
+  </div>`;
+}
+
+function authBox(c){
+  const a = c.auth;
+  const items = [
+    ...a.hard.map(t=>`<li class="h">${t}</li>`),
+    ...a.contrib.map(([t,w])=>`<li class="c">${t} (+${w})</li>`)
+  ].join("");
+  return `<div class="authbox">
+    <div class="hd">A1 · HAQIQIYLIK <span class="pill ${a.band}">${a.band}</span>
+      <span style="margin-left:auto;font-weight:700;color:var(--muted);font-size:11.5px">risk ${a.risk.toFixed(2)}</span></div>
+    ${items?`<ul class="authlist">${items}</ul>`:`<ul class="authlist"><li>qat'iy tekshiruvlar o'tdi · seriya va partiya reyestrga mos</li></ul>`}
+    <div class="authfoot">→ ${a.action}</div>
+  </div>`;
+}
+
+/* ---------- card renderers ---------- */
+function headHtml(c){
+  const flags = [];
+  if(c.local) flags.push('<span class="flag loc">Mahalliy</span>');
+  else flags.push('<span class="flag imp">Import</span>');
+  if(c.nti) flags.push('<span class="flag nti">NTI · tor indeks</span>');
+  return `<div class="head">
+    <div>
+      <div class="ttl">${c.trade}</div>
+      <div class="meta">${c.inn} ${c.mg} mg · ${c.form} · ${c.pack} · ${c.maker} (${c.country})</div>
+      <div style="margin-top:7px;display:flex;gap:6px;flex-wrap:wrap">${flags.join("")}</div>
+    </div>
+    <div class="price"><b>${money(c)}</b><span>${c.local?"mahalliy narx":"import narx"}</span></div>
+  </div>`;
+}
+
+function verdictHtml(c){
+  return `<div class="verdict v-${c.verdict}">
+    <span class="ic">${VICON[c.verdict]}</span>
+    <div><div class="tx">${c.vtext}</div><div class="sm">${c.action}</div></div></div>`;
+}
+
+function cardBemor(c){
+  const badge = `<div class="patbadge v-${c.verdict}">${VICON[c.verdict]} ${c.vtext.split(" — ")[0]}</div>`;
+  const saving = (c.savings && c.savings>0) ? `<div class="lbl" style="color:var(--green);font-weight:700;margin-top:8px">Importdan ${Math.round(c.savings)}% arzon</div>` : "";
+  let line = "";
+  if(c.verdict==="JUFT") line = "Sertifikati amalda, bioekvivalentlik tadqiqoti bor — import bilan bir xil.";
+  else if(c.verdict==="JUFT_SHART") line = c.nti ? "Bu dori uchun almashtirishni faqat vrach hal qiladi." : "Qo'shimcha tekshiruv kerak — farmatsevtdan so'rang.";
+  else if(c.verdict==="DALIL_YOQ") line = "Bu dori haqida hujjat hozircha yetarli emas. Farmatsevtdan so'rang — import variantini tanlashingiz mumkin.";
+  else if(c.verdict==="XAVF") line = "Bu quti haqiqiy emasligi mumkin. Iltimos, tekshirtiring va xabar bering.";
+  else line = "Bu boshqa dori — solishtirib bo'lmaydi.";
+  return `<div class="pat">
+      <div class="big">${c.trade}</div>
+      <div class="bignum">${money(c)}</div>
+      <div class="lbl">${c.inn} ${c.mg} mg · ${c.pack}</div>
+      ${saving}
+      ${badge}
+      <div class="line">${line}</div>
+    </div>`;
+}
+
+function cardFarm(c){
+  const docs = c.docs.map(d=>`<div class="row"><span class="tick">✓</span><span>${d}</span></div>`).join("");
+  const gaps = c.gaps.map(d=>`<div class="row"><span class="gap">!</span><span>${d}</span></div>`).join("");
+  return `<div class="body">
+      ${ladder(c.ev)}
+      <div class="row"><span class="k">A2 · dalil</span><span><b>${c.evtext}</b></span></div>
+      ${docs}${gaps}
+      ${authBox(c)}
+      ${priceBars(c, c.refprice)}
+      <div class="row" style="margin-top:10px"><span class="k">Ishonch balli</span>
+        <span><b>${c.score.toFixed(2)}</b> <span style="color:var(--muted)">/ 1.00 · sertifikat: ${c.cert}</span></span></div>
+    </div>${verdictHtml(c)}`;
+}
+
+function cardVrach(c){
+  const mon = {levothyroxine:"TSH 6 hafta ichida", warfarin:"INR 4–8 hafta ichida",
+               digoxin:"daraja + EKG", tacrolimus:"trough daraja"};
+  const rows = [
+    ["Faol modda", `${c.inn} ${c.mg} mg`],
+    ["Mahsulot", `${c.trade} · ${c.maker}`],
+    ["Dalil darajasi", c.evtext],
+    ["Sertifikat", c.cert],
+  ];
+  if(c.nti) rows.push(["NTI", "HA — almashtirish faqat sizning qaroringiz bilan"]);
+  if(c.nti) rows.push(["Monitoring", mon[c.inn] || "klinik kuzatuv"]);
+  if(c.savings) rows.push(["Bemor tejaydi", Math.round(c.savings)+"% · "+fmt(c.refprice-c.price)+" so'm"]);
+  rows.push(["Haqiqiylik", c.auth.band + " · risk " + c.auth.risk.toFixed(2)]);
+  return `<div class="body">
+    ${rows.map(([k,v])=>`<div class="row"><span class="k">${k}</span><span>${v}</span></div>`).join("")}
+    ${c.gaps.length?`<div style="margin-top:8px">${c.gaps.map(g=>`<div class="row"><span class="gap">!</span><span>${g}</span></div>`).join("")}</div>`:""}
+  </div>${verdictHtml(c)}`;
+}
+
+function renderCards(){
+  const g = DATA.groups[gi];
+  $("#viewtitle").textContent = role==="bemor" ? "Bemor ko'zi bilan"
+    : role==="farmatsevt" ? "Farmatsevt ekrani — to'liq dalil"
+    : "Vrach ekrani — klinik xulosa";
+  const ordered = [...g.cards].sort((a,b)=>(b.local?1:0)-(a.local?1:0));
+  $("#cards").innerHTML = ordered.map(c=>{
+    const inner = role==="bemor" ? cardBemor(c) : role==="farmatsevt" ? cardFarm(c) : cardVrach(c);
+    return `<div class="card">${role==="bemor"?"":headHtml(c)}${inner}</div>`;
+  }).join("");
+}
+
+/* ---------- QR ---------- */
+function renderQr(){
+  const btns = $("#qbtns");
+  btns.innerHTML = DATA.qr.map((q,i)=>
+    `<button class="qbtn ${i===qi?'on':''}" data-q="${i}">
+       <span class="pdot" style="background:${{YASHIL:'#15803d',SARIQ:'#b45309',QIZIL:'#b91c1c'}[q.band]}"></span>
+       ${q.name}</button>`).join("");
+  btns.querySelectorAll(".qbtn").forEach(n=>n.onclick=()=>{qi=+n.dataset.q;renderQr();});
+
+  const q = DATA.qr[qi];
+  const col = {YASHIL:"#15803d",SARIQ:"#b45309",QIZIL:"#b91c1c"}[q.band];
+  const items = [...q.hard.map(t=>`<li class="h">${t}</li>`),
+                 ...q.contrib.map(([t,w])=>`<li class="c">${t} (+${w})</li>`)];
+  $("#qres").innerHTML = `
+    <div class="qrband ${q.band}">${{YASHIL:"🟢",SARIQ:"🟡",QIZIL:"🔴"}[q.band]} ${q.band}</div>
+    <div class="riskbar"><i style="width:${Math.round(q.risk*100)}%;background:${col}"></i></div>
+    <div class="riskscale"><span>0.00</span><span>0.20</span><span>0.60</span><span>1.00</span></div>
+    <ul class="authlist">${items.length?items.join(""):"<li>qat'iy tekshiruvlar o'tdi</li>"}</ul>
+    <div class="authfoot">→ ${q.action}</div>`;
+}
+
+/* ---------- roles ---------- */
+$("#roles").querySelectorAll(".role").forEach(b=>b.onclick=()=>{
+  role=b.dataset.role;
+  $("#roles").querySelectorAll(".role").forEach(x=>x.classList.toggle("on",x===b));
+  renderCards();
+});
+
+renderList(); renderCards(); renderQr();
+</script>
+</body>
+</html>
