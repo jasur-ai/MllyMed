@@ -239,6 +239,14 @@ class Agent:
 
     # ── triaj rejimi
     def _triage_turn(self, s: Session, text: str) -> str:
+        # Agar foydalanuvchi dori qidirayotgan bo'lsa (va favqulodda skriningda bo'lmasa)
+        if s.stage != "screening":
+            res = registry.resolve(text)
+            if res["status"] in ("ok", "ambiguous") and not _symptom_hit(text):
+                s.mode = "card"
+                s.stage = "idle"
+                return self._card_turn(s, text)
+
         s.symptoms.append(text)
 
         age = parse_age(text)
