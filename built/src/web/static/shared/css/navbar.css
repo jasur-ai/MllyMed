@@ -69,6 +69,51 @@
   gap: 12px;
 }
 
+/* Bildirishnoma (Notification) tugmasi */
+.btn-notification {
+  position: relative;
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-full);
+  background: #f1f5f9;
+  border: 1px solid rgba(226, 232, 240, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #334155;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-notification:hover {
+  background: #e2e8f0;
+  color: var(--primary);
+}
+
+.btn-notification:active {
+  transform: scale(0.92);
+}
+
+.notification-badge-dot {
+  position: absolute;
+  top: 9px;
+  right: 10px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ef4444;
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 6px rgba(239, 68, 68, 0.6);
+  animation: pulse-dot 2s infinite ease-in-out;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.25); opacity: 0.85; }
+}
+
 .btn-login {
   background: var(--primary);
   color: #ffffff;
@@ -117,23 +162,24 @@
   }
 
   .brand-svg {
-    height: 28px;
+    height: 30px;
   }
 
+  /* Tepada faqat Logo qoladi: Dorilar pastki navbarga o'tadi */
   .nav-header .nav-pills {
-    display: none; /* Pastki mobil menyuda asosiy bo'lib turadi */
+    display: none !important;
   }
 
+  /* Tepada Kirish o'rnida faqat Bildirishnoma chiqadi */
   .btn-login {
-    padding: 7px 16px;
-    font-size: 12px;
-    gap: 6px;
-    border-radius: var(--radius-full);
+    display: none !important;
   }
 
-  .btn-login svg {
-    width: 15px;
-    height: 15px;
+  .btn-notification {
+    display: flex !important;
+    width: 38px;
+    height: 38px;
+    background: #f8fafc;
   }
 
   /* Native Mobile Bottom Tab Bar */

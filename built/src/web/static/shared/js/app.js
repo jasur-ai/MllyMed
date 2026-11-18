@@ -41,6 +41,14 @@ function mobileNavTab(tab) {
     if (popup && !popup.classList.contains('hidden')) {
       popup.classList.add('hidden');
     }
+  } else if (tab === 'search') {
+    const btn = $('tab-mob-search');
+    if (btn) btn.classList.add('active');
+    const inp = $('q');
+    if (inp) {
+      inp.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      setTimeout(() => inp.focus(), 250);
+    }
   } else if (tab === 'ai') {
     const btn = $('tab-mob-ai');
     if (btn) btn.classList.add('active');
@@ -56,8 +64,31 @@ function mobileNavTab(tab) {
   }
 }
 
+/**
+ * Bildirishnomalar modali
+ */
+function openNotificationModal() {
+  const modal = $('notification-modal');
+  if (modal) modal.classList.remove('hidden');
+}
+
+function closeNotificationModal() {
+  const modal = $('notification-modal');
+  if (modal) modal.classList.add('hidden');
+}
+
 let searchTimer = null;
 function onSearchInput() {
+  const inp = $('q');
+  const clearBtn = $('search-clear-btn');
+  if (clearBtn) {
+    if (inp && inp.value.trim().length > 0) {
+      clearBtn.classList.remove('hidden');
+    } else {
+      clearBtn.classList.add('hidden');
+    }
+  }
+
   clearTimeout(searchTimer);
   searchTimer = setTimeout(() => {
     if (typeof loadCatalog === 'function') loadCatalog(true);
@@ -85,3 +116,5 @@ document.addEventListener('DOMContentLoaded', () => {
 window.switchMode = switchMode;
 window.mobileNavTab = mobileNavTab;
 window.onSearchInput = onSearchInput;
+window.openNotificationModal = openNotificationModal;
+window.closeNotificationModal = closeNotificationModal;

@@ -23,8 +23,8 @@
 
   <!-- ══════════ FLOATING HEADER / NAVBAR (MagicHeal Style) ══════════ -->
   <header class="nav-header">
-    <!-- Chap taraf: Logo va Dorilar yonma-yon -->
-    <div style="display:flex;align-items:center;gap:20px">
+    <!-- Chap taraf: Desktopda Logo va Dorilar, Mobilda faqat Logo -->
+    <div class="nav-left-group" style="display:flex;align-items:center;gap:20px">
       <a href="/" class="brand-wrap" title="MllyMed Bosh sahifa">
         <svg class="brand-svg" id="_Слой_1" data-name="Слой 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 763.5 218.14">
           <defs>
@@ -44,14 +44,24 @@
         </svg>
       </a>
 
-      <!-- Chap taraf: Faqat Dorilar -->
+      <!-- Chap taraf: Faqat Dorilar (Desktopda) -->
       <nav class="nav-pills">
         <a class="pill-item active" href="javascript:void(0)">Dorilar</a>
       </nav>
     </div>
 
-    <!-- O'ng taraf: Kirish -->
+    <!-- O'ng taraf: Bildirishnoma (Mobilda Kirish o'rnida) va Kirish (Desktop) -->
     <div class="nav-actions">
+      <!-- Bildirishnoma tugmasi -->
+      <button class="btn-notification" id="btn-notification" onclick="openNotificationModal()" title="Bildirishnomalar" aria-label="Bildirishnomalar">
+        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+          <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+        </svg>
+        <span class="notification-badge-dot"></span>
+      </button>
+
+      <!-- Kirish tugmasi (Desktop) -->
       <button class="btn-login" id="btn-nav-auth" onclick="openAuthModal()">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
           <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
@@ -105,7 +115,8 @@
           <circle cx="11" cy="11" r="8"/>
           <line x1="21" y1="21" x2="16.65" y2="16.65"/>
         </svg>
-        <input type="text" id="q" class="search-input" placeholder="Dori nomi yoki XPN (INN) bo'yicha qidiring (masalan: Paratsetamol, Amoksitsillin, Kardiomagnil)..." autocomplete="off">
+        <input type="text" id="q" class="search-input" placeholder="Dori nomi yoki XPN (INN) bo'yicha qidiring..." autocomplete="off">
+        <button type="button" id="search-clear-btn" class="search-clear-btn hidden" onclick="clearSearch()" title="Tozalash">&times;</button>
       </div>
 
       <!-- Quick Search Chips -->
@@ -258,6 +269,14 @@
     <span>Dorilar</span>
   </button>
 
+  <button class="nav-item-btn" id="tab-mob-search" onclick="mobileNavTab('search')">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="11" cy="11" r="8"/>
+      <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+    </svg>
+    <span>Qidiruv</span>
+  </button>
+
   <button class="nav-item-btn nav-item-ai" id="tab-mob-ai" onclick="mobileNavTab('ai')">
     <div class="ai-glow-icon">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.3">
@@ -277,6 +296,77 @@
     <span id="tab-mob-auth-label">Kirish</span>
   </button>
 </nav>
+
+<!-- ══════════ MODAL: BILDIRISHNOMALAR (Native Bottom Sheet) ══════════ -->
+<div class="modal-overlay hidden" id="notification-modal">
+  <div class="modal-content" style="max-width:520px">
+    <div class="sheet-handle"></div>
+    <div class="modal-header">
+      <div class="modal-title" style="display:flex;align-items:center;gap:8px">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.2">
+          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+          <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+        </svg>
+        Bildirishnomalar
+      </div>
+      <button class="btn-close-popup" onclick="closeNotificationModal()">×</button>
+    </div>
+    <div class="modal-body" style="padding:16px 20px">
+      <div class="notify-list">
+        <!-- 1-bildirishnoma: Yangi e-retsept -->
+        <div class="notify-item unread" onclick="openAuthModal();closeNotificationModal()">
+          <div class="notify-icon icon-rx">📋</div>
+          <div class="notify-content">
+            <div class="notify-head">
+              <span class="notify-title">Yangi elektron retsept (XPN)</span>
+              <span class="notify-time">Bugun, 10:45</span>
+            </div>
+            <p class="notify-desc">Shifokor tomonidan Paratsetamol 500mg bo'yicha e-retsept rasmiylashtirildi.</p>
+          </div>
+        </div>
+
+        <!-- 2-bildirishnoma: Mahalliy arzon muqobil tavsiyasi -->
+        <div class="notify-item" onclick="quickSearch('Paratsetamol');closeNotificationModal()">
+          <div class="notify-icon icon-price">🇺🇿</div>
+          <div class="notify-content">
+            <div class="notify-head">
+              <span class="notify-title">Arzon mahalliy dori topildi!</span>
+              <span class="notify-time">Kecha</span>
+            </div>
+            <p class="notify-desc">Import dori o'rniga O'zbekistonda ishlab chiqarilgan GMP muqobili 45% arzonga sotilmoqda.</p>
+          </div>
+        </div>
+
+        <!-- 3-bildirishnoma: DMED E-Navbat -->
+        <div class="notify-item" onclick="openAuthModal();closeNotificationModal()">
+          <div class="notify-icon icon-dmed">🏥</div>
+          <div class="notify-content">
+            <div class="notify-head">
+              <span class="notify-title">DMED: Shifokor qabuli</span>
+              <span class="notify-time">17-noyabr</span>
+            </div>
+            <p class="notify-desc">14-sonli poliklinika kardiolog shifokori qabuliga navbatingiz tasdiqlangan.</p>
+          </div>
+        </div>
+
+        <!-- 4-bildirishnoma: FarmNazorat referent narx -->
+        <div class="notify-item">
+          <div class="notify-icon icon-shield">🛡️</div>
+          <div class="notify-content">
+            <div class="notify-head">
+              <span class="notify-title">Referent narxlar yangilandi</span>
+              <span class="notify-time">16-noyabr</span>
+            </div>
+            <p class="notify-desc">Sog'liqni saqlash vazirligi tomonidan 2 941 ta XPN bo'yicha cheklov narxlari tekshirildi.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeNotificationModal()">Yopish</button>
+    </div>
+  </div>
+</div>
 
 <!-- ══════════ MODAL: KIRISH VA BEMOR KABINETI (OneID, MyGov, Telefon) ══════════ -->
 <div class="modal-overlay hidden" id="patient-modal">

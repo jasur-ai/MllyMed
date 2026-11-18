@@ -15,6 +15,19 @@ function quickSearch(term) {
   const inp = $('q');
   if (inp) {
     inp.value = term;
+    const clearBtn = $('search-clear-btn');
+    if (clearBtn) clearBtn.classList.remove('hidden');
+    loadCatalog(true);
+  }
+}
+
+function clearSearch() {
+  const inp = $('q');
+  if (inp) {
+    inp.value = '';
+    const clearBtn = $('search-clear-btn');
+    if (clearBtn) clearBtn.classList.add('hidden');
+    inp.focus();
     loadCatalog(true);
   }
 }
@@ -130,7 +143,7 @@ async function loadCatalog(reset = false) {
     let html = '';
     res.items.forEach(p => {
       html += `
-        <div class="product-card">
+        <div class="product-card" onclick="lookup('${esc(p.title)}')">
           <div class="card-media">
             <span class="card-media-sellers">${p.sellers_count || 1} dorixona</span>
             ${renderDrugPackSvg(p.title, p.local)}
@@ -148,7 +161,7 @@ async function loadCatalog(reset = false) {
                 <span class="price-label">Eng past narx</span>
                 <span class="price-val">${money(p.price_from_som)}</span>
               </div>
-              <button class="btn-card-action" onclick="lookup('${esc(p.title)}')">Tahlil qilish</button>
+              <button class="btn-card-action" onclick="event.stopPropagation();lookup('${esc(p.title)}')">Tahlil qilish</button>
             </div>
           </div>
         </div>

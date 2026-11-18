@@ -202,6 +202,81 @@
   box-shadow: 0 0 0 3px var(--primary-glow);
 }
 
+/* ── Bildirishnomalar (Notifications) ───────────────────────── */
+.notify-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.notify-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.notify-item:hover, .notify-item:active {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+.notify-item.unread {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+}
+
+.notify-icon {
+  font-size: 20px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  flex-shrink: 0;
+}
+
+.notify-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.notify-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.notify-title {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.notify-time {
+  font-size: 11px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.notify-desc {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.45;
+  margin: 0;
+}
+
 /* ── Mobile Native Bottom Sheet Presentation ────────────────── */
 @media (max-width: 640px) {
   .modal-overlay {
