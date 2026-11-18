@@ -9,16 +9,16 @@
   <title>MllyMed — Milliy dori vositalariga ishonch ekotizimi</title>
   
   <!-- Shared Design Tokens & Layout -->
-  <link rel="stylesheet" href="shared/css/base.css?v=2.6">
-  <link rel="stylesheet" href="shared/css/navbar.css?v=2.6">
-  <link rel="stylesheet" href="shared/css/modal.css?v=2.6">
+  <link rel="stylesheet" href="shared/css/base.css?v=2.7">
+  <link rel="stylesheet" href="shared/css/navbar.css?v=2.7">
+  <link rel="stylesheet" href="shared/css/modal.css?v=2.7">
 
   <!-- B2C & B2B Styles -->
-  <link rel="stylesheet" href="b2c/b2c.css?v=2.6">
-  <link rel="stylesheet" href="b2b/b2b.css?v=2.6">
+  <link rel="stylesheet" href="b2c/b2c.css?v=2.7">
+  <link rel="stylesheet" href="b2b/b2b.css?v=2.7">
 
   <!-- MllyMed AI Agent Widget -->
-  <link rel="stylesheet" href="agent/agent_widget.css?v=2.6">
+  <link rel="stylesheet" href="agent/agent_widget.css?v=2.7">
 
   <!-- Telegram Web App SDK (Mini App rejimida ochilganda native rejimni yoqish) -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -29,9 +29,10 @@
 
   <!-- ══════════ FLOATING HEADER / NAVBAR (MagicHeal Style) ══════════ -->
   <header class="nav-header">
-    <!-- Chap taraf: Desktopda Logo va Dorilar, Mobilda faqat Logo -->
-    <div class="nav-left-group" style="display:flex;align-items:center;gap:20px">
-      <a href="/" class="brand-wrap" title="MllyMed Bosh sahifa">
+    <!-- Chap taraf: Desktopda Logo va Dorilar, Mobilda esa Profil (User Icon + Ism) -->
+    <div class="nav-left-group" style="display:flex;align-items:center;gap:18px">
+      <!-- Desktop Brand Logo -->
+      <a href="/" class="brand-wrap desktop-only" title="MllyMed Bosh sahifa">
         <svg class="brand-svg" id="_Слой_1" data-name="Слой 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 763.5 218.14">
           <defs>
             <style>
@@ -50,10 +51,22 @@
         </svg>
       </a>
 
-      <!-- Chap taraf: Faqat Dorilar (Desktopda) -->
-      <nav class="nav-pills">
+      <!-- Desktop Nav Pills (Faqat Desktopda) -->
+      <nav class="nav-pills desktop-only">
         <a class="pill-item active" href="javascript:void(0)">Dorilar</a>
       </nav>
+
+      <!-- Mobil Tepa Bar: Chap tarafda User Icon va Ism (Profil) -->
+      <div class="mob-nav-profile" onclick="openAuthModal()" title="Mening profilim">
+        <div class="mob-nav-avatar-wrap">
+          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" class="mob-nav-avatar" id="mob-nav-avatar" alt="Avatar" onerror="this.src='https://ui-avatars.com/api/?name=Sohibjon&background=0b69ed&color=fff&size=100'">
+          <span class="mob-avatar-badge"></span>
+        </div>
+        <div class="mob-nav-user-text">
+          <span class="mob-nav-greeting">Xayrli kun!</span>
+          <b class="mob-nav-username" id="mob-user-display">Sohibjon</b>
+        </div>
+      </div>
     </div>
 
     <!-- O'ng taraf: Bildirishnoma (Mobilda faqat bildirishnoma) va Kirish (Desktop) -->
@@ -84,22 +97,7 @@
     
     <!-- ══════════ REAL MOBILE APP HOME VIEW (1:1 Namuna asosida) ══════════ -->
     <div class="mob-app-home">
-      <!-- 1. Top Profile Row (Xayrli kun, Amelia/Sohibjon) -->
-      <div class="mob-header-row">
-        <div class="mob-profile-info" onclick="openAuthModal()">
-          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" class="mob-avatar" alt="Avatar">
-          <div class="mob-greeting-text">
-            <span class="mob-greeting-sub">Xayrli kun!</span>
-            <b class="mob-greeting-name" id="mob-user-display">Sohibjon</b>
-          </div>
-        </div>
-        <div class="mob-live-badge">
-          <span class="badge-dot-live"></span>
-          <span>Ekotizim faol</span>
-        </div>
-      </div>
-
-      <!-- 2. Clean Capsule Search Bar -->
+      <!-- Clean Capsule Search Bar -->
       <div class="mob-search-bar">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2.3">
           <circle cx="11" cy="11" r="8"/>
@@ -735,20 +733,20 @@
 </div>
 
 <!-- Shared Core Scripts -->
-<script src="shared/js/api.js?v=2.6"></script>
-<script src="shared/js/app.js?v=2.6"></script>
+<script src="shared/js/api.js?v=2.7"></script>
+<script src="shared/js/app.js?v=2.7"></script>
 
 <!-- B2C Scripts -->
-<script src="b2c/catalog.js?v=2.6"></script>
-<script src="b2c/patient.js?v=2.6"></script>
+<script src="b2c/catalog.js?v=2.7"></script>
+<script src="b2c/patient.js?v=2.7"></script>
 
 <!-- B2B Scripts -->
-<script src="b2b/doctor.js?v=2.6"></script>
-<script src="b2b/pharmacist.js?v=2.6"></script>
-<script src="b2b/factory.js?v=2.6"></script>
+<script src="b2b/doctor.js?v=2.7"></script>
+<script src="b2b/pharmacist.js?v=2.7"></script>
+<script src="b2b/factory.js?v=2.7"></script>
 
 <!-- Agent Widget Script -->
-<script src="agent/agent_widget.js?v=2.6"></script>
+<script src="agent/agent_widget.js?v=2.7"></script>
 
 </body>
 </html>

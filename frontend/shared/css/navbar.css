@@ -25,6 +25,11 @@
   text-decoration: none;
 }
 
+/* Mobil profil desktopda chiqmaydi */
+.mob-nav-profile {
+  display: none;
+}
+
 .brand-svg {
   height: 36px;
   width: auto;
@@ -186,18 +191,78 @@
     justify-content: space-between;
   }
 
-  .brand-svg {
-    height: 30px;
-  }
-
-  /* Tepada faqat Logo qoladi: Dorilar pastki navbarga o'tadi */
-  .nav-header .nav-pills {
-    display: none !important;
-  }
-
-  /* Tepada Kirish o'rnida faqat Bildirishnoma chiqadi */
+  /* Desktop elementlarni mobilda yashirish */
+  .desktop-only,
+  .brand-wrap,
+  .nav-header .nav-pills,
   .btn-login {
     display: none !important;
+  }
+
+  /* Mobil Tepa Bar: Chap tarafda Profil (User Icon va Ism) */
+  .mob-nav-profile {
+    display: flex !important;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+  }
+
+  .mob-nav-avatar-wrap {
+    position: relative;
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+  }
+
+  .mob-nav-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ffffff;
+    box-shadow: 0 2px 8px rgba(11, 105, 237, 0.18);
+    display: block;
+  }
+
+  .mob-avatar-badge {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    width: 10px;
+    height: 10px;
+    background: #10b981;
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+    box-shadow: 0 0 4px rgba(16, 185, 129, 0.6);
+  }
+
+  .mob-nav-user-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    line-height: 1.25;
+  }
+
+  .mob-nav-greeting {
+    font-size: 11.5px;
+    font-weight: 500;
+    color: #64748b;
+    letter-spacing: -0.2px;
+  }
+
+  .mob-nav-username {
+    font-size: 15.5px;
+    font-weight: 700;
+    color: #1e293b;
+    letter-spacing: -0.3px;
+  }
+
+  .mob-nav-profile:active {
+    opacity: 0.82;
+    transform: scale(0.97);
   }
 
   .nav-actions {

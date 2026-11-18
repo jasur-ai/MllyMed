@@ -127,6 +127,11 @@ function updateNavLoginState() {
   if (mobUser) {
     mobUser.textContent = isUserLoggedIn ? (loggedInUser?.name?.split(' ')[0] || 'Sohibjon') : 'Sohibjon';
   }
+
+  const mobAvatar = $('mob-nav-avatar');
+  if (mobAvatar && isUserLoggedIn && loggedInUser?.name) {
+    mobAvatar.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(loggedInUser.name)}&background=0b69ed&color=fff&size=100`;
+  }
 }
 
 async function loadPatientState() {
