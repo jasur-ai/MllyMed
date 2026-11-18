@@ -447,6 +447,7 @@ function openAllDrugsView() {
   const view = $('all-drugs-view');
   if (view) {
     view.classList.remove('hidden');
+    document.body.classList.add('drugs-page-active');
     document.body.style.overflow = 'hidden';
     updateFavBadge();
     loadDrugsView(true);
@@ -457,7 +458,13 @@ function closeAllDrugsView() {
   const view = $('all-drugs-view');
   if (view) {
     view.classList.add('hidden');
+    document.body.classList.remove('drugs-page-active');
     document.body.style.overflow = '';
+  }
+  const homeBtn = $('tab-mob-home');
+  if (homeBtn) {
+    document.querySelectorAll('.dock-item').forEach(b => b.classList.remove('active'));
+    homeBtn.classList.add('active');
   }
 }
 

@@ -289,7 +289,7 @@
     bottom: calc(12px + env(safe-area-inset-bottom, 0px));
     left: 0;
     right: 0;
-    z-index: 120;
+    z-index: 170;
     pointer-events: none;
     justify-content: center;
     background: none !important;
@@ -307,6 +307,21 @@
     width: 100%;
     max-width: 390px;
     gap: 12px;
+  }
+
+  /* Dorilar sahifasida: Asosiy, Kalendar, Profil yashiriladi, faqat Support o'ng pastgi burchakda turadi */
+  body.drugs-page-active .mob-dock-pill {
+    display: none !important;
+  }
+
+  body.drugs-page-active .mob-dock-container {
+    justify-content: flex-end !important;
+    pointer-events: none;
+  }
+
+  body.drugs-page-active .mob-dock-support {
+    pointer-events: auto !important;
+    box-shadow: 0 10px 28px rgba(15, 43, 72, 0.45);
   }
 
   /* 1. Asosiy kapsula (Dorilar, Kalendar, Profil) */
