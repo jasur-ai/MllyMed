@@ -170,17 +170,44 @@ class Agent:
             return s.say(validate_triage(
                 self._escalation(scr.reason + " (javob noaniq — xavfsiz default)")))
 
-        # ── Salomlashish va umumiy murojaat
+        # ── Salomlashish, MllyMed AI haqida savollar va umumiy murojaat
         low_t = norm(text)
-        if any(low_t == g or low_t.startswith(g + " ") for g in ("salom", "assalom", "assalomu alaykum", "xayrli kun", "qalaysiz", "qalesiz")):
+        is_greeting = any(low_t == g or low_t.startswith(g + " ") for g in (
+            "salom", "assalom", "assalomu alaykum", "xayrli kun", "qalaysiz", "qalesiz", "yaxshimisiz", "privet", "hello", "qalesan"
+        ))
+        is_about_ai = any(w in low_t for w in (
+            "qanday ishlaydi", "qandey ishlayapti", "qandey ihslayapti", "qanday ishlaysan", "kimsan", "sen kimsan", "ai haqida",
+            "integratsiya", "tashqi ai", "qaysi ai", "imkoniyat", "nima qila olasan", "tibbiy triaj maslahatchisiman"
+        ))
+
+        if is_about_ai:
+            s.mode = None
+            s.stage = "idle"
+            return s.say(
+                "🤖 Men — MllyMed AI tibbiy triaj va dori vositalari ishonch tizimiman.\n\n"
+                "📌 Qanday ishlayman?\n"
+                "• 46 079 ta davlat reyestri dori vositalari bazasi (api.mpa.uz);\n"
+                "• SSV 3735-son buyrug'i bo'yicha referent narxlar va 80% mahalliy GMP narx pariteti nazorati;\n"
+                "• SSV 738-son qarori (bioekvivalentlik) va 149-son (Asl Belgisi markirovka) talablari;\n"
+                "• 308 ta dorixona bo'yicha real vaqt narxlari va mavjudligi (apteka.uz).\n\n"
+                "🧠 Qaysi AI va modellar bilan integratsiyalashganman?\n"
+                "• Google Gemini 2.0 / Multimodal AI — tibbiy matnlarni tahlil qilish va tabiiy o'zbek tilida muloqot;\n"
+                "• Qat'iy klinik xavfsizlik filtri (Safety Engine) — 103 shoshilinch holatlarni 100% xatosiz aniqlash;\n"
+                "• DMED yagona tibbiy tizimi — oilaviy shifokorga bevosita navbatga yozish.\n\n"
+                "Bizning yo'nalishimizda (Track №17) har qanday import dori uchun 80% arzon mahalliy sifatli GMP muqobilini topib, fuqaro hamyonini tejaymiz va xavfsiz davolanishni ta'minlaymiz! 💊"
+            )
+
+        if is_greeting:
+            s.mode = None
+            s.stage = "idle"
             return s.say(
                 "Assalomu alaykum! 👋\n"
                 "Men MllyMed AI tibbiy va farmatsevtik yordamchisiman.\n\n"
                 "Sizga quyidagi masalalarda yordam bera olaman:\n"
-                "💊 Dori qidiruvi va 80% arzon GMP muqobillari\n"
+                "💊 Dori tahlili va 80% arzon GMP muqobillari\n"
                 "🩺 Alomatlar bo'yicha xavfsiz triaj va shifokorga yo'naltirish\n"
                 "📅 Shifokor qabuli va dori ichish eslatmalari\n\n"
-                "Istalgan dori nomini yoki sizni bezovta qilayotgan shikoyatni yozing."
+                "Istalgan dori nomini yozing yoki kartochkadagi «Tahlil qilish» tugmasini bosing."
             )
 
         # ── 3. Rejim tanlash
@@ -223,7 +250,12 @@ class Agent:
                 s.stage = "idle"
                 return self._triage_turn(s, text)
 
-        res = registry.resolve(text)
+        # Dori nomini tozalab qidirish
+        clean_text = re.sub(r'\b(tahlil|tahlili|tahlilini|tekshir|tekshirish|haqida|malumot|narxi|analogi)\b', '', norm(text)).strip()
+        res = registry.resolve(clean_text or text)
+        if res["status"] == "none" and clean_text:
+            res = registry.resolve(text)
+
         if res["status"] == "none":
             if _symptom_hit(text):
                 s.mode = "triage"
@@ -235,6 +267,8 @@ class Agent:
                 "(nurofen).\n"
                 "   Reyestr 46 079 yozuvdan iborat — imlo farqi bo'lishi mumkin.")
         if res["status"] == "ambiguous":
+            if res["candidates"] and res["candidates"][0].score >= 90:
+                return self._show_card(s, res["candidates"][0].id, alias=res.get("alias"))
             s.candidates = res["candidates"]
             s.stage = "choose"
             return s.say(render.ambiguity_text(text, res["candidates"]))

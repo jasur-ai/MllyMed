@@ -12,6 +12,7 @@ Muhim halollik qoidalari:
 from __future__ import annotations
 
 import json
+import re
 from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
@@ -51,10 +52,10 @@ class Candidate:
     has_price: bool
 
     def line(self) -> str:
-        mark = "mahalliy" if self.local else "import"
+        mark = "🇺🇿" if self.local else "🌍"
         price = " · narx bor" if self.has_price else ""
-        return (f"{self.name} — {self.strength or '—'}, "
-                f"{form_uz(self.form)} · {mark}{price}")
+        return (f"{mark} {self.name} — {self.strength or '—'}, "
+                f"{form_uz(self.form)}{price}")
 
 
 def form_uz(form: str) -> str:
@@ -106,6 +107,14 @@ def _score(target: str, name: str, full: str, inn: str) -> int:
         return 100
     if inn == target:
         return 99
+    if name and len(name) >= 4 and target.startswith(name):
+        return 97
+    if inn and len(inn) >= 4 and target.startswith(inn):
+        return 96
+    if inn and len(inn) >= 4 and inn in target:
+        return 95
+    if name and len(name) >= 4 and name in target:
+        return 94
     if name.startswith(target) and len(target) >= 4:
         return 92
     if inn.startswith(target) and len(target) >= 4:
@@ -166,6 +175,14 @@ def resolve(query: str) -> dict:
     q = norm(query)
     alias = db["aliases"].get(q)
     cands = search(query, limit=8)
+    if (not cands or cands[0].score < 90) and query:
+        # Qo'shimcha tahlil so'zlarini tozalab qayta izlash
+        clean = re.sub(r'\b(tahlil|tahlili|tahlilini|tekshir|tekshirish|haqida|malumot|narxi|analogi)\b', '', q).strip()
+        if clean and clean != q:
+            cands_clean = search(clean, limit=8)
+            if cands_clean and (not cands or cands_clean[0].score > cands[0].score):
+                cands = cands_clean
+                alias = db["aliases"].get(clean) or alias
     if not cands:
         return {"status": "none", "alias": alias, "candidates": []}
     if cands[0].score >= 92 or (alias and cands):

@@ -1701,66 +1701,80 @@
 .product-card:hover .pack-art,
 .product-card:hover .pack-photo { transform: translateY(-4px) scale(1.04); }
 
+.card-media-top {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  z-index: 4;
+}
+
 .card-media-sellers {
-  position: absolute !important;
-  top: 10px !important;
-  left: 10px !important;
-  right: auto !important;
-  bottom: auto !important;
+  position: static !important;
   display: inline-flex !important;
   align-items: center;
   gap: 4px;
-  background: rgba(15, 28, 46, 0.78) !important;
+  background: rgba(15, 28, 46, 0.85) !important;
   -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
   color: #ffffff !important;
-  font-size: 10.5px !important;
+  font-size: 11px !important;
   font-weight: 600 !important;
   letter-spacing: 0.2px;
-  padding: 3px 8px !important;
-  border-radius: 8px !important;
+  padding: 4px 10px !important;
+  border-radius: 9999px !important;
   z-index: 3 !important;
   line-height: 1;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
 }
 
 .card-fav-btn {
-  position: absolute !important;
-  top: 10px !important;
-  right: 10px !important;
-  left: auto !important;
-  bottom: auto !important;
+  position: static !important;
   width: 32px !important;
   height: 32px !important;
   border-radius: 50% !important;
-  background: rgba(255, 255, 255, 0.94) !important;
+  background: #ffffff !important;
   border: 1px solid rgba(226, 232, 240, 0.95) !important;
   display: flex !important;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   z-index: 5 !important;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06) !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08) !important;
   transition: transform 0.16s ease, color 0.16s ease;
 }
 
 .card-inn { color: var(--brand-deep) !important; }
+.card-divider {
+  border-top: 1px dashed #cbd5e1;
+  margin: 10px 0 8px 0;
+}
 .price-val { font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
 
 .btn-card-action {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: rgba(15, 28, 46, 0.05) !important;
-  border: 1px solid var(--hairline);
-  color: var(--text-primary) !important;
+  background: #f8fafc !important;
+  border: 1px solid #e2e8f0 !important;
+  color: #0f172a !important;
+  font-size: 12.5px !important;
+  font-weight: 600 !important;
+  padding: 7px 14px !important;
+  border-radius: 9999px !important;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
 }
 .btn-card-action:hover {
-  background: var(--brand) !important;
-  color: #fff !important;
-  border-color: transparent;
-  box-shadow: var(--glow-brand);
+  background: #0b69ed !important;
+  color: #ffffff !important;
+  border-color: #0b69ed !important;
+  box-shadow: 0 4px 12px rgba(11, 105, 237, 0.25);
 }
-.btn-card-action:active { transform: scale(0.93); }
+.btn-card-action:active { transform: scale(0.95); }
 
 /* Sevimlilar zarralari */
 .fx-particle {
@@ -1818,11 +1832,24 @@
 /* Mobil moslashuv */
 @media (max-width: 640px) {
   .card-media { height: 125px !important; }
-  .card-media-sellers { top: 7px !important; left: 7px !important; right: auto !important; font-size: 9px !important; padding: 2px 6px !important; }
-  .card-fav-btn { top: 7px !important; right: 7px !important; left: auto !important; width: 28px !important; height: 28px !important; }
-  .card-fav-btn svg { width: 14px !important; height: 14px !important; }
+  .card-media-top { top: 6px !important; right: 6px !important; gap: 4px !important; }
+  .card-media-sellers { font-size: 9px !important; padding: 2px 6px !important; }
+  .card-fav-btn { width: 26px !important; height: 26px !important; }
+  .card-fav-btn svg { width: 13px !important; height: 13px !important; }
   .pack-art { width: 92px !important; height: 82px !important; }
   .product-card { border-radius: 16px !important; }
+  .card-footer {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 8px !important;
+  }
+  .btn-card-action {
+    width: 100% !important;
+    justify-content: center !important;
+    padding: 6px 10px !important;
+    font-size: 11.5px !important;
+  }
   .detail-shot { width: 82px; height: 92px; }
   .detail-shot .pack-art { width: 64px !important; height: 60px !important; }
 }

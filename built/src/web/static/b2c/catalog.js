@@ -413,14 +413,16 @@ function renderDrugCardHtml(p, idx) {
   return `
     <div class="product-card" role="button" tabindex="0" data-q="${esc(name)}" style="--d:${delay}ms"
          onclick="lookup(this.dataset.q)" onkeydown="if(event.key==='Enter'){lookup(this.dataset.q)}">
-      <button type="button" class="card-fav-btn ${favActive ? 'active' : ''}" data-title="${esc(name)}" aria-pressed="${favActive}"
-              onclick="toggleFavorite(this.dataset.title, event)" title="Sevimlilar">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="${favActive ? '#ef4444' : 'none'}" stroke="${favActive ? '#ef4444' : '#94a3b8'}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-        </svg>
-      </button>
       <div class="card-media" style="--ph:${hue}">
-        <span class="card-media-sellers">${icon('store', 12, 2.2)} ${p.pharmacies || 1} dorixona</span>
+        <div class="card-media-top">
+          <span class="card-media-sellers">${icon('store', 12, 2.2)} ${p.pharmacies || 1} dorixona</span>
+          <button type="button" class="card-fav-btn ${favActive ? 'active' : ''}" data-title="${esc(name)}" aria-pressed="${favActive}"
+                  onclick="toggleFavorite(this.dataset.title, event)" title="Sevimlilar">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="${favActive ? '#ef4444' : 'none'}" stroke="${favActive ? '#ef4444' : '#94a3b8'}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            </svg>
+          </button>
+        </div>
         ${media}
       </div>
       <div class="card-body">
@@ -430,12 +432,21 @@ function renderDrugCardHtml(p, idx) {
         </div>
         <div class="card-title">${esc(name)}</div>
         ${p.canon_inn ? `<div class="card-inn">XPN: ${esc(p.canon_inn)}</div>` : ''}
-        <div class="card-manufacturer">${esc(p.manufacturer || '—')}</div>
+        <div class="card-manufacturer">Ishlab chiqaruvchi: <b>${esc(p.manufacturer || '—')}</b></div>
+        <div class="card-divider"></div>
         <div class="card-footer">
           <div class="price-box">
-            <span class="price-label">Eng past narx</span>
+            <span class="price-label">ENG PAST NARX</span>
             <span class="price-val">${money(p.price_from_som)}</span>
           </div>
+          <button type="button" class="btn-card-action" data-q="${esc(p.canon_inn || name)}"
+                  onclick="event.stopPropagation();openAgentWithPrompt(this.dataset.q)" title="MllyMed AI bilan tahlil qilish">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="7"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <span>Tahlil qilish</span>
+          </button>
         </div>
       </div>
     </div>

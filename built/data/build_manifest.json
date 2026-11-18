@@ -1,6 +1,6 @@
 {
- "built": "2026-11-18T05:29:47+00:00",
- "core_source": "D:\\Hackathon\\National_Hack\\orindor",
+ "built": "2026-11-18T11:56:32+00:00",
+ "core_source": "/Users/sohibjonsulaymonov/kodlar/National_Hack/orindor",
  "core_version": {
   "drug": [
    "drugId",
@@ -59,9 +59,13 @@
   "import": 208
  },
  "files": {
+  "vendor/orindor/VENDORED.md": {
+   "bytes": 224,
+   "sha256": "b739af175497e7a2f3f6c207440866bdcf1a0800a8d68a056a8fbd629367bde4"
+  },
   "vendor/orindor/agent.py": {
-   "bytes": 18839,
-   "sha256": "85867c41abb694a1c95694f02db78835e15070a09315e5e3d41a3e2994caed7d"
+   "bytes": 22205,
+   "sha256": "3c3a657b92cb70c44b35d2cacbb76088cfef74699fa7bce9d7b3bad21a93149a"
   },
   "vendor/orindor/core/__init__.py": {
    "bytes": 42,
@@ -72,8 +76,8 @@
    "sha256": "2b6dc0664a7a93424f9bf1284cd85c57b6587b7d61eabc21f75a99bd2f61ee19"
   },
   "vendor/orindor/core/registry.py": {
-   "bytes": 10483,
-   "sha256": "4ab8b587caf38697b84db25dd3fbe7f119da7dc93a20e4fdd75189e3daaad336"
+   "bytes": 11276,
+   "sha256": "0a68c3c14c9a11adbf501ba44924b997cd24dc22963187c02a6168a44eec58e6"
   },
   "vendor/orindor/core/render.py": {
    "bytes": 10840,
@@ -134,10 +138,6 @@
   "vendor/orindor/data/stats.json": {
    "bytes": 1353,
    "sha256": "db810d155cb45f358f4f855c92e6b13beb8211dbc4277359d8cd0f20c6d655a6"
-  },
-  "vendor/orindor/VENDORED.md": {
-   "bytes": 209,
-   "sha256": "245498f68d12f1e0f355fde4ad61951e3d2cee5a971e2152fbdeb375eb382573"
   }
  }
 }

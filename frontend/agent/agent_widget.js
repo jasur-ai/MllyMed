@@ -25,6 +25,17 @@ function sendPrompt(text) {
   }
 }
 
+function openAgentWithPrompt(q) {
+  if (!q) return;
+  const popup = $('agent-popup');
+  if (popup) {
+    popup.classList.remove('hidden');
+    const log = $('chat-log');
+    if (log) log.scrollTop = log.scrollHeight;
+  }
+  sendPrompt(q + " tahlili");
+}
+
 function autoResizeInput(el) {
   if (!el) return;
   el.style.height = 'auto';
@@ -131,23 +142,17 @@ async function chatSend() {
   log.insertAdjacentHTML('beforeend', `<div class="bubble user">${esc(text)}</div>`);
   log.scrollTop = log.scrollHeight;
 
-  // "O'ylamoqda" (AI Thinking) holati — fonsiz, nurli shimmer + jonli soniyalik taymer (v4.1)
+  // "O'ylamoqda" (AI Thinking) holati — yumshoq nurli fon + jonli 3 ta nuqta + soniyalik taymer
   const typingId = 'typing-' + Date.now();
   const t0 = AI_TIMER_START();
   log.insertAdjacentHTML('beforeend', `
     <div class="bubble bot typing" id="${typingId}" role="status" aria-live="polite">
-      <span class="think-spark" aria-hidden="true">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
-          <path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z" fill="url(#sparkGrad)"/>
-          <defs>
-            <linearGradient id="sparkGrad" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
-              <stop stop-color="#0b69ed"/>
-              <stop offset="1" stop-color="#38bdf8"/>
-            </linearGradient>
-          </defs>
-        </svg>
+      <span class="think-dots" aria-hidden="true">
+        <span class="tdot"></span>
+        <span class="tdot"></span>
+        <span class="tdot"></span>
       </span>
-      <span class="think-label">O'ylamoqda…</span>
+      <span class="think-label">MllyMed AI o'ylayapti...</span>
       <b class="think-s">0s</b>
     </div>`);
   log.scrollTop = log.scrollHeight;
@@ -341,6 +346,7 @@ setInterval(updateAllBotTimes, 15000);
 
 window.toggleAgentPopup = toggleAgentPopup;
 window.sendPrompt = sendPrompt;
+window.openAgentWithPrompt = openAgentWithPrompt;
 window.chatSend = chatSend;
 window.autoResizeInput = autoResizeInput;
 window.onChatKeyDown = onChatKeyDown;
