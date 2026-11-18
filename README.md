@@ -94,3 +94,7 @@ python3 run.py --test
 ```bash
 python3 run.py --cli
 ```
+ ### 4. Qo'llab quvvatlovchi yordamchi saytlar (asl saytlar bilan boglanish imkoniyati bolmaganligi sababli)
+
+ https://orindor.pages.dev/dmed#
+ https://orindor.pages.dev/#/asosiy
