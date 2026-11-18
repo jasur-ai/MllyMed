@@ -430,7 +430,7 @@ function renderDrugCardHtml(p, idx) {
         </div>
         <div class="card-title">${esc(name)}</div>
         ${p.canon_inn ? `<div class="card-inn">XPN: ${esc(p.canon_inn)}</div>` : ''}
-        <div class="card-manufacturer">Ishlab chiqaruvchi: <b>${esc(p.manufacturer || '—')}</b></div>
+        <div class="card-manufacturer">${esc(p.manufacturer || '—')}</div>
         <div class="card-footer">
           <div class="price-box">
             <span class="price-label">Eng past narx</span>
@@ -442,7 +442,7 @@ function renderDrugCardHtml(p, idx) {
               <path d="M21 21l-4.35-4.35"/>
               <circle cx="11" cy="11" r="7"/>
             </svg>
-            <span>Tahlil qilish</span>
+            <span>Tahlil</span>
           </button>
         </div>
       </div>

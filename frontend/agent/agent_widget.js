@@ -215,13 +215,14 @@ async function chatSend() {
 function formatRelativeTime(ts) {
   if (!ts) return "Hozirgina";
   const diffSec = Math.max(0, Math.floor((Date.now() - ts) / 1000));
-  if (diffSec < 45) return "Hozirgina";
+  if (diffSec < 20) return "Hozirgina";
   const diffMin = Math.floor(diffSec / 60);
   if (diffMin <= 1) return "1 daqiqa oldin";
   if (diffMin < 60) return diffMin + " daqiqa oldin";
   const diffHour = Math.floor(diffMin / 60);
   if (diffHour === 1) return "1 soat oldin";
-  return diffHour + " soat oldin";
+  if (diffHour < 24) return diffHour + " soat oldin";
+  return Math.floor(diffHour / 24) + " kun oldin";
 }
 
 /**
@@ -311,12 +312,16 @@ function rateBotMsg(btn, type) {
   }
 }
 
-// Barcha xabarlar vaqtini yangilab turish (har 20 soniyada)
-setInterval(() => {
-  document.querySelectorAll('.bot-actions[data-timestamp]').forEach(bar => {
-    let ts = parseInt(bar.getAttribute('data-timestamp'), 10);
-    if (!ts || ts === 0) {
-      ts = Date.now();
+// Barcha xabarlar vaqtini yangilab turish (har 15 soniyada)
+function updateAllBotTimes() {
+  const allBars = document.querySelectorAll('.bot-actions');
+  allBars.forEach((bar, idx) => {
+    let raw = bar.getAttribute('data-timestamp');
+    let ts = parseInt(raw, 10);
+    if (raw === 'initial' || !ts || isNaN(ts) || ts <= 0) {
+      // Dastlabki xabarlar uchun tartib bilan daqiqa ajratish (5 daq. oldin, 8 daq. oldin)
+      const minutesAgo = Math.max(3, (allBars.length - idx) * 3 + 1);
+      ts = Date.now() - minutesAgo * 60 * 1000;
       bar.setAttribute('data-timestamp', String(ts));
     }
     const timeEl = bar.querySelector('.bot-time');
@@ -324,7 +329,15 @@ setInterval(() => {
       timeEl.textContent = formatRelativeTime(ts);
     }
   });
-}, 20000);
+}
+
+// Darhol ishga tushirish va har 15 soniyada takrorlash
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', updateAllBotTimes);
+} else {
+  updateAllBotTimes();
+}
+setInterval(updateAllBotTimes, 15000);
 
 window.toggleAgentPopup = toggleAgentPopup;
 window.sendPrompt = sendPrompt;

@@ -1668,39 +1668,27 @@
 }
 
 .card-media {
-  height: 184px !important;
-  background: linear-gradient(165deg, hsl(var(--ph, 215) 78% 97%) 0%, hsl(var(--ph, 215) 58% 91%) 100%) !important;
-  border-bottom: 1px solid var(--hairline) !important;
-  isolation: isolate;
+  height: 165px !important;
+  background: #f8fafc !important;
+  border-bottom: 1px solid #f1f5f9 !important;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
 }
-.card-media::before {
-  content: "";
-  position: absolute; inset: 0; z-index: 0;
-  background-image: radial-gradient(rgba(15, 28, 46, 0.1) 1.05px, transparent 1.35px);
-  background-size: 15px 15px;
-}
+.card-media::before,
 .card-media::after {
-  content: "";
-  position: absolute; z-index: 2;
-  top: -35%; left: 0; width: 46%; height: 175%;
-  background: linear-gradient(100deg, transparent 8%, rgba(255, 255, 255, 0.9) 50%, transparent 92%);
-  transform: translateX(-130%) rotate(20deg);
-  animation: mediaSheen 4.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-  pointer-events: none;
-}
-@keyframes mediaSheen {
-  0%, 62% { transform: translateX(-130%) rotate(20deg); }
-  100% { transform: translateX(330%) rotate(20deg); }
+  display: none !important;
 }
 
 .pack-art {
-  width: 148px !important;
-  height: 130px !important;
+  width: 140px !important;
+  height: 120px !important;
   position: relative;
   z-index: 1;
-  filter: drop-shadow(0 18px 15px rgba(15, 28, 46, 0.3)) !important;
-  transition: transform 0.38s var(--ease-spring);
+  filter: drop-shadow(0 8px 12px rgba(15, 28, 46, 0.15)) !important;
+  transition: transform 0.28s var(--ease-spring);
 }
 .pack-photo {
   max-width: 80%;
@@ -1708,25 +1696,52 @@
   object-fit: contain;
   position: relative;
   z-index: 1;
-  filter: drop-shadow(0 18px 15px rgba(15, 28, 46, 0.3));
-  transition: transform 0.38s var(--ease-spring);
+  filter: drop-shadow(0 8px 12px rgba(15, 28, 46, 0.15));
+  transition: transform 0.28s var(--ease-spring);
 }
 .product-card:hover .pack-art,
-.product-card:hover .pack-photo { transform: translateY(-7px) scale(1.06) rotate(-1.4deg); }
+.product-card:hover .pack-photo { transform: translateY(-4px) scale(1.04); }
 
 .card-media-sellers {
+  position: absolute !important;
+  top: 10px !important;
+  left: 10px !important;
+  right: auto !important;
+  bottom: auto !important;
   display: inline-flex !important;
   align-items: center;
-  gap: 5px;
-  background: rgba(15, 28, 46, 0.84) !important;
+  gap: 4px;
+  background: rgba(15, 28, 46, 0.78) !important;
   -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
   color: #ffffff !important;
   font-size: 10.5px !important;
-  letter-spacing: 0.25px;
-  padding: 4px 10px !important;
-  border-radius: var(--radius-full) !important;
-  z-index: 3;
+  font-weight: 600 !important;
+  letter-spacing: 0.2px;
+  padding: 3px 8px !important;
+  border-radius: 8px !important;
+  z-index: 3 !important;
+  line-height: 1;
+}
+
+.card-fav-btn {
+  position: absolute !important;
+  top: 10px !important;
+  right: 10px !important;
+  left: auto !important;
+  bottom: auto !important;
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 50% !important;
+  background: rgba(255, 255, 255, 0.94) !important;
+  border: 1px solid rgba(226, 232, 240, 0.95) !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 5 !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06) !important;
+  transition: transform 0.16s ease, color 0.16s ease;
 }
 
 .card-inn { color: var(--brand-deep) !important; }
@@ -1803,9 +1818,12 @@
 
 /* Mobil moslashuv */
 @media (max-width: 640px) {
-  .card-media { height: 136px !important; }
-  .pack-art { width: 100px !important; height: 88px !important; }
-  .product-card { border-radius: 18px !important; }
+  .card-media { height: 125px !important; }
+  .card-media-sellers { top: 7px !important; left: 7px !important; right: auto !important; font-size: 9px !important; padding: 2px 6px !important; }
+  .card-fav-btn { top: 7px !important; right: 7px !important; left: auto !important; width: 28px !important; height: 28px !important; }
+  .card-fav-btn svg { width: 14px !important; height: 14px !important; }
+  .pack-art { width: 92px !important; height: 82px !important; }
+  .product-card { border-radius: 16px !important; }
   .detail-shot { width: 82px; height: 92px; }
   .detail-shot .pack-art { width: 64px !important; height: 60px !important; }
 }
