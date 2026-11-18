@@ -137,9 +137,11 @@
   display: none;
 }
 
-/* Real Mobile App Bottom Navigation Bar */
-.mobile-bottom-nav {
-  display: none !important;
+/* Real Mobile App Bottom Navigation Bar: strictly hidden on desktop & tablet */
+@media (min-width: 641px) {
+  .mobile-bottom-nav {
+    display: none !important;
+  }
 }
 
 /* Tablet Navbar Adjustments (641px - 1024px) */
@@ -155,9 +157,6 @@
   .btn-login {
     padding: 8px 14px;
     font-size: 12.5px;
-  }
-  .mobile-bottom-nav {
-    display: none !important;
   }
   .btn-nav-user {
     display: none !important;

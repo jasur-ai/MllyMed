@@ -378,20 +378,15 @@
 /* ══════════════════════════════════════════════════════════════
    MOBILE APP VIEW: STRICTLY HIDDEN ON DESKTOP & TABLET (> 640px)
    ══════════════════════════════════════════════════════════════ */
-.mob-app-home {
-  display: none !important;
-}
-
-.mobile-bottom-nav {
-  display: none !important;
+@media (min-width: 641px) {
+  .mob-app-home {
+    display: none !important;
+  }
 }
 
 /* Tablet Optimizations (641px - 1024px) */
 @media (min-width: 641px) and (max-width: 1024px) {
   .mob-app-home {
-    display: none !important;
-  }
-  .mobile-bottom-nav {
     display: none !important;
   }
   .stats-strip {
