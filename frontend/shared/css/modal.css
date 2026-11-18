@@ -133,15 +133,207 @@
   transform: translateY(-1px);
 }
 
-.btn-mygov {
-  background: #0070ba;
-  color: #ffffff;
-  box-shadow: 0 4px 12px rgba(0, 112, 186, 0.2);
+/* ── Real Profil & Bemor Kabineti Uslublari ── */
+.profile-hero-card {
+  background: linear-gradient(135deg, #f8fafc 0%, #edf4fc 100%);
+  border: 1px solid #dbeafe;
+  border-radius: 18px;
+  padding: 16px;
+  margin-bottom: 14px;
+  box-shadow: 0 4px 16px rgba(15, 43, 72, 0.05);
 }
-
-.btn-mygov:hover {
-  background: #005c99;
-  transform: translateY(-1px);
+.profile-hero-top {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.profile-avatar-wrap {
+  position: relative;
+  width: 52px;
+  height: 52px;
+  flex-shrink: 0;
+}
+.profile-avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 4px 10px rgba(11, 105, 237, 0.2);
+}
+.profile-status-dot {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 12px;
+  height: 12px;
+  background: #10b981;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+}
+.profile-hero-info {
+  flex: 1;
+  min-width: 0;
+}
+.profile-name-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.profile-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+}
+.profile-badge-verified {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  background: #ecfdf5;
+  color: #059669;
+  border: 1px solid #a7f3d0;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+}
+.profile-pinfl {
+  font-size: 11.5px;
+  color: #64748b;
+  margin-top: 3px;
+  font-weight: 500;
+}
+.profile-phone {
+  font-size: 12px;
+  color: #0b69ed;
+  font-weight: 600;
+  margin-top: 2px;
+}
+.profile-chips-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px dashed rgba(203, 213, 225, 0.8);
+}
+.profile-chip {
+  background: #ffffff;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+}
+.profile-chip .chip-label {
+  display: block;
+  font-size: 10px;
+  color: #94a3b8;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.profile-chip .chip-value {
+  font-size: 11.5px;
+  color: #1e293b;
+  font-weight: 700;
+}
+.profile-clinic-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 12px 14px;
+  margin-bottom: 14px;
+}
+.clinic-card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.clinic-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  background: #e0f2fe;
+  color: #0284c7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.clinic-type {
+  font-size: 9.5px;
+  font-weight: 700;
+  color: #64748b;
+  letter-spacing: 0.4px;
+}
+.clinic-title {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #0f172a;
+}
+.doctor-sub-row {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #f1f5f9;
+  font-size: 12px;
+}
+.profile-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.profile-section-header .sec-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #1e293b;
+}
+.sec-action-btn {
+  font-size: 11.5px;
+  color: #0b69ed;
+  font-weight: 600;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.profile-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.profile-item-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-size: 12.5px;
+  transition: border-color 0.2s ease;
+}
+.profile-item-card:hover {
+  border-color: #cbd5e1;
+}
+.profile-footer-actions {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: flex-end;
+}
+.btn-logout-profile {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+  border-radius: 10px;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.btn-logout-profile:hover {
+  background: #fee2e2;
 }
 
 .auth-divider {
