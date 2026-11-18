@@ -3,6 +3,45 @@
  */
 
 let currentCategory = '';
+let favoritesList = JSON.parse(localStorage.getItem('mllymed_favs') || '[]');
+let isFavoritesFilterActive = false;
+let drugsViewPage = 1;
+let drugsViewCategory = '';
+
+function isFavorite(title) {
+  return favoritesList.includes(title);
+}
+
+function toggleFavorite(title, event) {
+  if (event) event.stopPropagation();
+  if (favoritesList.includes(title)) {
+    favoritesList = favoritesList.filter(t => t !== title);
+  } else {
+    favoritesList.push(title);
+  }
+  localStorage.setItem('mllymed_favs', JSON.stringify(favoritesList));
+  updateFavBadge();
+  document.querySelectorAll(`.card-fav-btn[data-title="${CSS.escape(title)}"]`).forEach(btn => {
+    const active = isFavorite(title);
+    btn.classList.toggle('active', active);
+    const svg = btn.querySelector('svg');
+    if (svg) {
+      svg.setAttribute('fill', active ? '#ef4444' : 'none');
+      svg.setAttribute('stroke', active ? '#ef4444' : '#94a3b8');
+    }
+  });
+  if (isFavoritesFilterActive) {
+    loadDrugsView(true);
+  }
+}
+
+function updateFavBadge() {
+  const dot = $('fav-count-dot');
+  if (dot) {
+    if (favoritesList.length > 0) dot.classList.remove('hidden');
+    else dot.classList.add('hidden');
+  }
+}
 
 function setCategory(cat, el) {
   currentCategory = cat;
@@ -124,6 +163,45 @@ function renderDrugPackSvg(title, isLocal) {
   `;
 }
 
+function renderDrugCardHtml(p) {
+  const favActive = isFavorite(p.title);
+  return `
+    <div class="product-card" onclick="lookup('${esc(p.title)}')">
+      <button type="button" class="card-fav-btn ${favActive ? 'active' : ''}" data-title="${esc(p.title)}" onclick="toggleFavorite('${esc(p.title)}', event)" title="Sevimlilar">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="${favActive ? '#ef4444' : 'none'}" stroke="${favActive ? '#ef4444' : '#94a3b8'}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+        </svg>
+      </button>
+      <div class="card-media">
+        <span class="card-media-sellers">${p.sellers_count || 1} dorixona</span>
+        ${renderDrugPackSvg(p.title, p.local)}
+      </div>
+      <div class="card-body">
+        <div class="card-badges">
+          ${originBadge(p.local)}
+          <span class="badge badge-otc">Retsept: Erkin</span>
+        </div>
+        <div class="card-title">${esc(p.title)}</div>
+        ${p.canon_inn ? `<div class="card-inn">XPN: ${esc(p.canon_inn)}</div>` : ''}
+        <div class="card-manufacturer">Ishlab chiqaruvchi: <b>${esc(p.manufacturer || 'O\'zbekiston')}</b></div>
+        <div class="card-footer">
+          <div class="price-box">
+            <span class="price-label">Eng past narx</span>
+            <span class="price-val">${money(p.price_from_som)}</span>
+          </div>
+          <button class="btn-card-action" onclick="event.stopPropagation();lookup('${esc(p.title)}')">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+              <path d="M21 21l-4.35-4.35"/>
+              <circle cx="11" cy="11" r="7"/>
+            </svg>
+            <span>Tahlil qilish</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
 async function loadCatalog(reset = false) {
   if (reset) AppState.catPage = 1;
   const q = ($('q')?.value || '').trim();
@@ -143,42 +221,24 @@ async function loadCatalog(reset = false) {
     if (countEl) countEl.textContent = `${res.total} ta mahsulot topildi`;
     if (moreBtn) moreBtn.style.display = (res.page >= res.pages) ? 'none' : 'inline-block';
 
-    let html = '';
-    res.items.forEach(p => {
-      html += `
-        <div class="product-card" onclick="lookup('${esc(p.title)}')">
-          <div class="card-media">
-            <span class="card-media-sellers">${p.sellers_count || 1} dorixona</span>
-            ${renderDrugPackSvg(p.title, p.local)}
-          </div>
-          <div class="card-body">
-            <div class="card-badges">
-              ${originBadge(p.local)}
-              <span class="badge badge-otc">Retsept: Erkin</span>
-            </div>
-            <div class="card-title">${esc(p.title)}</div>
-            ${p.canon_inn ? `<div class="card-inn">XPN: ${esc(p.canon_inn)}</div>` : ''}
-            <div class="card-manufacturer">Ishlab chiqaruvchi: <b>${esc(p.manufacturer || 'O\'zbekiston')}</b></div>
-            <div class="card-footer">
-              <div class="price-box">
-                <span class="price-label">Eng past narx</span>
-                <span class="price-val">${money(p.price_from_som)}</span>
-              </div>
-              <button class="btn-card-action" onclick="event.stopPropagation();lookup('${esc(p.title)}')">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
-                  <path d="M21 21l-4.35-4.35"/>
-                  <circle cx="11" cy="11" r="7"/>
-                </svg>
-                <span>Tahlil qilish</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      `;
-    });
+    const html = res.items.map(p => renderDrugCardHtml(p)).join('');
 
-    if (reset) container.innerHTML = html;
-    else container.insertAdjacentHTML('beforeend', html);
+    if (reset) {
+      container.innerHTML = html;
+      // Mobilda Bosh sahifadagi 4 ta dori prevyusi
+      const mobHomeContainer = $('mob-home-drugs');
+      if (mobHomeContainer) {
+        const previewItems = res.items.slice(0, 4);
+        mobHomeContainer.innerHTML = previewItems.map(p => renderDrugCardHtml(p)).join('');
+      }
+    } else {
+      container.insertAdjacentHTML('beforeend', html);
+    }
+    AppState.catPage++;
+  } catch (err) {
+    container.innerHTML = `<p style="color:#ef4444;padding:20px">Xatolik: ${esc(err.message)}</p>`;
+  }
+}
     AppState.catPage++;
   } catch (err) {
     container.innerHTML = `<p style="color:#ef4444;padding:20px">Xatolik: ${esc(err.message)}</p>`;
@@ -280,3 +340,125 @@ window.renderDrugPackSvg = renderDrugPackSvg;
 window.loadCatalog = loadCatalog;
 window.lookup = lookup;
 window.closeDetailModal = closeDetailModal;
+
+/**
+ * ══════════════════════════════════════════════════════════════
+ * REAL MOBILE APP: TO'LIQ DORILAR BO'LIMI VA SEVIMLILAR TIZIMI
+ * ══════════════════════════════════════════════════════════════
+ */
+function openAllDrugsView() {
+  const view = $('all-drugs-view');
+  if (view) {
+    view.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+    updateFavBadge();
+    loadDrugsView(true);
+  }
+}
+
+function closeAllDrugsView() {
+  const view = $('all-drugs-view');
+  if (view) {
+    view.classList.add('hidden');
+    document.body.style.overflow = '';
+  }
+}
+
+let drugsViewTimer = null;
+function onDrugsViewSearchInput() {
+  const inp = $('drugs-view-search');
+  const clearBtn = $('drugs-view-clear');
+  if (clearBtn) {
+    if (inp && inp.value.trim().length > 0) clearBtn.classList.remove('hidden');
+    else clearBtn.classList.add('hidden');
+  }
+  clearTimeout(drugsViewTimer);
+  drugsViewTimer = setTimeout(() => {
+    loadDrugsView(true);
+  }, 260);
+}
+
+function clearDrugsViewSearch() {
+  const inp = $('drugs-view-search');
+  const clearBtn = $('drugs-view-clear');
+  if (inp) {
+    inp.value = '';
+    inp.focus();
+  }
+  if (clearBtn) clearBtn.classList.add('hidden');
+  loadDrugsView(true);
+}
+
+function setCategoryMob(cat, el) {
+  drugsViewCategory = cat;
+  document.querySelectorAll('.cat-pill-mob').forEach(b => b.classList.remove('active'));
+  if (el) el.classList.add('active');
+  loadDrugsView(true);
+}
+
+function toggleFavoritesFilter() {
+  isFavoritesFilterActive = !isFavoritesFilterActive;
+  const btn = $('btn-drugs-fav');
+  if (btn) btn.classList.toggle('active', isFavoritesFilterActive);
+  loadDrugsView(true);
+}
+
+async function loadDrugsView(reset = false) {
+  if (reset) drugsViewPage = 1;
+  const grid = $('drugs-view-grid');
+  const countEl = $('drugs-view-count');
+  const moreBtn = $('drugs-view-more');
+  if (!grid) return;
+
+  const q = ($('drugs-view-search')?.value || '').trim();
+  const loc = drugsViewCategory === 'local' ? 'true' : '';
+  const cat = drugsViewCategory === 'local' ? '' : drugsViewCategory;
+
+  try {
+    let url = `/api/catalog?q=${encodeURIComponent(q)}&local=${loc}&page=${drugsViewPage}&size=12`;
+    if (cat) url += `&category=${encodeURIComponent(cat)}`;
+    const res = await api(url);
+
+    let items = res.items || [];
+    if (isFavoritesFilterActive) {
+      items = items.filter(p => favoritesList.includes(p.title));
+      if (countEl) countEl.textContent = `Sevimlilar: ${items.length} ta dori`;
+      if (moreBtn) moreBtn.style.display = 'none';
+
+      if (items.length === 0) {
+        grid.innerHTML = `
+          <div style="grid-column:1/-1;text-align:center;padding:50px 20px;background:#ffffff;border-radius:20px;border:1px solid #e2e8f0;margin:10px 0">
+            <div style="font-size:44px;margin-bottom:10px">❤️</div>
+            <h4 style="font-size:16px;font-weight:800;color:#0f172a;margin-bottom:6px">Sevimlilar ro'yxati bo'sh</h4>
+            <p style="font-size:13px;color:#64748b;max-width:280px;margin:0 auto">Istalgan dori kartochkasidagi yurakcha belgisini bosib, uni sevimlilarga qo'shishingiz mumkin.</p>
+          </div>
+        `;
+        return;
+      }
+    } else {
+      if (countEl) countEl.textContent = `${res.total} ta dori vositasi mavjud`;
+      if (moreBtn) moreBtn.style.display = (res.page >= res.pages) ? 'none' : 'inline-block';
+    }
+
+    const html = items.map(p => renderDrugCardHtml(p)).join('');
+    if (reset) grid.innerHTML = html;
+    else grid.insertAdjacentHTML('beforeend', html);
+    drugsViewPage++;
+  } catch (err) {
+    grid.innerHTML = `<p style="grid-column:1/-1;color:#ef4444;padding:20px">Xatolik: ${esc(err.message)}</p>`;
+  }
+}
+
+function loadMoreDrugsView() {
+  loadDrugsView(false);
+}
+
+window.openAllDrugsView = openAllDrugsView;
+window.closeAllDrugsView = closeAllDrugsView;
+window.onDrugsViewSearchInput = onDrugsViewSearchInput;
+window.clearDrugsViewSearch = clearDrugsViewSearch;
+window.setCategoryMob = setCategoryMob;
+window.toggleFavoritesFilter = toggleFavoritesFilter;
+window.loadMoreDrugsView = loadMoreDrugsView;
+window.toggleFavorite = toggleFavorite;
+window.isFavorite = isFavorite;
