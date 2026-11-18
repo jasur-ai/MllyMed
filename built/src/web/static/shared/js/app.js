@@ -30,33 +30,101 @@ function switchMode(mode) {
 /**
  * Real Mobile App Bottom Navigation Bar boshqaruvi
  */
+/**
+ * Real Mobile App Bottom Navigation Bar boshqaruvi
+ */
 function mobileNavTab(tab) {
   document.querySelectorAll('.dock-item, .island-tab-btn, .nav-item-btn').forEach(b => b.classList.remove('active'));
   
   if (tab === 'drugs' || tab === 'home') {
     const btn = $('tab-mob-drugs') || $('tab-mob-home');
     if (btn) btn.classList.add('active');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+    // Boshqa ochiq oynalarni yopish
+    closeCalendarModal();
+    if (typeof closePatientModal === 'function') closePatientModal();
+    closeNotificationModal();
     const popup = $('agent-popup');
     if (popup && !popup.classList.contains('hidden')) {
       popup.classList.add('hidden');
     }
-  } else if (tab === 'rxs') {
+    
+    // Katalogga silliq o'tish
+    const catalog = $('drug-cards-container') || $('sec-b2c');
+    if (catalog) {
+      catalog.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  } else if (tab === 'rxs' || tab === 'calendar') {
     const btn = $('tab-mob-rxs');
     if (btn) btn.classList.add('active');
-    if (typeof openAuthModal === 'function') {
-      openAuthModal();
+    
+    if (typeof closePatientModal === 'function') closePatientModal();
+    closeNotificationModal();
+    const popup = $('agent-popup');
+    if (popup && !popup.classList.contains('hidden')) {
+      popup.classList.add('hidden');
     }
-  } else if (tab === 'auth') {
+    openCalendarModal();
+  } else if (tab === 'auth' || tab === 'profile') {
     const btn = $('tab-mob-auth');
     if (btn) btn.classList.add('active');
+    
+    closeCalendarModal();
+    closeNotificationModal();
+    const popup = $('agent-popup');
+    if (popup && !popup.classList.contains('hidden')) {
+      popup.classList.add('hidden');
+    }
     if (typeof openAuthModal === 'function') {
       openAuthModal();
     }
-  } else if (tab === 'ai') {
-    if (typeof toggleAgentPopup === 'function') {
-      toggleAgentPopup();
-    }
+  } else if (tab === 'ai' || tab === 'support') {
+    openSupportChat();
+  }
+}
+
+/**
+ * Kalendar modali
+ */
+function openCalendarModal() {
+  const modal = $('calendar-modal');
+  if (modal) modal.classList.remove('hidden');
+}
+
+function closeCalendarModal() {
+  const modal = $('calendar-modal');
+  if (modal) modal.classList.add('hidden');
+  
+  const calBtn = $('tab-mob-rxs');
+  if (calBtn && calBtn.classList.contains('active')) {
+    calBtn.classList.remove('active');
+    const drugsBtn = $('tab-mob-drugs');
+    if (drugsBtn) drugsBtn.classList.add('active');
+  }
+}
+
+/**
+ * Support (MllyMed AI) to'liq chat ochish
+ */
+function openSupportChat() {
+  closeCalendarModal();
+  if (typeof closePatientModal === 'function') closePatientModal();
+  closeNotificationModal();
+  
+  const popup = $('agent-popup');
+  if (!popup) return;
+  
+  popup.classList.remove('hidden');
+  
+  const stream = $('chat-log');
+  if (stream) {
+    setTimeout(() => { stream.scrollTop = stream.scrollHeight; }, 100);
+  }
+  const inp = $('chat-in');
+  if (inp) {
+    setTimeout(() => { inp.focus(); }, 250);
   }
 }
 

@@ -20,6 +20,13 @@ function openAuthModal() {
 function closePatientModal() {
   const modal = $('patient-modal');
   if (modal) modal.classList.add('hidden');
+  
+  const authBtn = $('tab-mob-auth');
+  if (authBtn && authBtn.classList.contains('active')) {
+    authBtn.classList.remove('active');
+    const drugsBtn = $('tab-mob-drugs');
+    if (drugsBtn) drugsBtn.classList.add('active');
+  }
 }
 
 function showLoginView() {
