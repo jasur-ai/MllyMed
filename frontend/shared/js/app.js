@@ -88,9 +88,57 @@ function mobileNavTab(tab) {
 /**
  * Kalendar modali
  */
-function openCalendarModal() {
+async function openCalendarModal() {
   const modal = $('calendar-modal');
   if (modal) modal.classList.remove('hidden');
+  loadCalendarAppointments();
+}
+
+async function loadCalendarAppointments() {
+  const container = $('cal-appointments-list');
+  if (!container) return;
+  try {
+    const res = await api('/api/b2c/calendar?sid=' + (window.AppState ? AppState.sid : 'demo'), null, 'patient');
+    if (res && res.appointments && res.appointments.length > 0) {
+      let html = '';
+      res.appointments.forEach(a => {
+        const docName = a.doctor_name || (a.doctor_id === 'd01' ? 'Dr. A. Karimova' : (a.doctor_id === 'd02' ? 'Dr. B. Toshpulatov' : 'Dr. Mutaxassis'));
+        const specName = a.specialist === 'terapevt' ? 'Terapevt shifokor' : (a.specialist || 'Shifokor');
+        const slotClean = (a.slot || '').replace('T', ' ');
+        const clinicName = a.doctor_id === 'd01' ? '1-son shahar poliklinikasi' : 'Markaziy Poliklinika';
+        const isConfirmed = a.status === 'confirmed';
+
+        html += `
+          <div class="cal-card-appt" style="margin-bottom:10px">
+            <div class="cal-appt-row">
+              <img src="https://images.unsplash.com/photo-1594824813587-08e64c239327?w=120&auto=format&fit=crop&q=80" alt="Doctor" class="cal-doctor-avatar">
+              <div class="cal-appt-meta">
+                <div style="display:flex;justify-content:space-between;align-items:center">
+                  <b style="font-size:14.5px;color:#0f172a">${esc(docName)}</b>
+                  <span class="badge ${isConfirmed ? 'badge-local' : 'badge-otc'}" style="font-size:10px">${isConfirmed ? 'Tasdiqlangan' : 'Kutilmoqda'}</span>
+                </div>
+                <div style="font-size:12px;color:#64748b;margin:2px 0">${esc(specName)}</div>
+                <div style="font-size:11.5px;color:#0b69ed;display:flex;align-items:center;gap:4px">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <polyline points="12 6 12 12 16 14"/>
+                  </svg>
+                  <b>${esc(slotClean)}</b> · ${esc(clinicName)}
+                </div>
+              </div>
+            </div>
+            <div class="cal-appt-btns">
+              <button class="cal-btn-sec" onclick="closeCalendarModal();openAuthModal()">Navbat holati</button>
+              <button class="cal-btn-prim" onclick="closeCalendarModal();lookup('Paratsetamol')">Dori retsepti</button>
+            </div>
+          </div>
+        `;
+      });
+      container.innerHTML = html;
+    }
+  } catch (err) {
+    console.log('Calendar fetch err:', err);
+  }
 }
 
 function closeCalendarModal() {
@@ -243,6 +291,34 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (tgErr) {
       console.log('TG WebApp auto-init warning:', tgErr);
     }
+  }
+
+  // URL Deep Linklar (tab=calendar, q=...)
+  try {
+    const urlParams = new URLSearchParams(window.location.search);
+    const tabParam = urlParams.get('tab');
+    if (tabParam === 'calendar' || window.location.hash === '#calendar') {
+      setTimeout(() => {
+        if (typeof mobileNavTab === 'function') mobileNavTab('calendar');
+      }, 200);
+    } else if (tabParam === 'auth' || tabParam === 'profile') {
+      setTimeout(() => {
+        if (typeof mobileNavTab === 'function') mobileNavTab('auth');
+      }, 200);
+    }
+
+    const qParam = urlParams.get('q');
+    if (qParam) {
+      const qInp = $('q');
+      if (qInp) {
+        qInp.value = qParam;
+        setTimeout(() => {
+          if (typeof loadCatalog === 'function') loadCatalog(true);
+        }, 200);
+      }
+    }
+  } catch (linkErr) {
+    console.log('URL deep link err:', linkErr);
   }
 });
 

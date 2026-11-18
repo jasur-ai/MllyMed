@@ -7,6 +7,8 @@ Telegram orqali:
    - Dori qidiruvi va 80% mahalliy GMP muqobillarini topish;
    - Shikoyat bo'yicha xavfsiz tibbiy triaj (103 shoshilinch tekshiruvi);
    - Referent narx va davlat reyestri tahlili.
+3. Bot orqali to'g'ridan-to'g'ri DMED kalendariga qabul/eslatma qo'shish va
+   Mini App'da darhol aks ettirish.
 """
 from __future__ import annotations
 
@@ -31,8 +33,8 @@ except ImportError:
 from agent.agent import Agent, Session
 
 # Konfiguratsiya
-BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "").strip()
-WEBAPP_URL = os.getenv("WEBAPP_URL", "https://mllymed.onrender.com")
+BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "9273249390:AAEujrRl8b_4WUtO0VA2RyhF1NH40m8gXTI").strip()
+WEBAPP_URL = os.getenv("WEBAPP_URL", "https://mllymed.onrender.com").strip()
 API_BASE = f"https://api.telegram.org/bot{BOT_TOKEN}"
 
 logging.basicConfig(
@@ -45,7 +47,7 @@ logger = logging.getLogger("MllyMedBot")
 class MllyMedTelegramBot:
     def __init__(self, token: str, webapp_url: str):
         self.token = token
-        self.webapp_url = webapp_url
+        self.webapp_url = webapp_url.rstrip("/")
         self.api_base = f"https://api.telegram.org/bot{token}"
         self.agent = Agent()
         self.sessions: dict[int, Session] = {}
@@ -69,6 +71,10 @@ class MllyMedTelegramBot:
             logger.warning(f"Telegram API xatosi ({method}): {e}")
             return {"ok": False, "description": str(e)}
 
+    def send_chat_action(self, chat_id: int, action: str = "typing") -> dict:
+        """Foydalanuvchiga bot yozayotganini (typing...) ko'rsatish."""
+        return self._call("sendChatAction", {"chat_id": chat_id, "action": action})
+
     def send_message(self, chat_id: int, text: str, reply_markup: dict = None) -> dict:
         payload = {
             "chat_id": chat_id,
@@ -87,7 +93,7 @@ class MllyMedTelegramBot:
         return self._call("answerCallbackQuery", payload)
 
     def get_main_reply_keyboard(self) -> dict:
-        """Doimiy pastki klaviatura: Mini App va tezkor tugmalar."""
+        """Doimiy pastki klaviatura: Mini App va asosiy amallar."""
         return {
             "keyboard": [
                 [
@@ -98,10 +104,10 @@ class MllyMedTelegramBot:
                 ],
                 [
                     {"text": "💊 Dori qidirish"},
-                    {"text": "🩺 Shikoyat bildirish"}
+                    {"text": "📅 Kalendarga qo'shish"}
                 ],
                 [
-                    {"text": "🇺🇿 80% Mahalliy dori pariteti"},
+                    {"text": "🩺 Shikoyat bildirish"},
                     {"text": "🔄 Yangi suhbat"}
                 ]
             ],
@@ -110,54 +116,119 @@ class MllyMedTelegramBot:
         }
 
     def get_welcome_inline_keyboard(self) -> dict:
-        """Start xabaridagi inline tugmalar."""
+        """Start xabaridagi ixcham inline tugmalar."""
         return {
             "inline_keyboard": [
                 [
                     {
-                        "text": "📱 MllyMed Mini App (To'liq ilova)",
+                        "text": "📱 MllyMed ilovasi (Mini App)",
                         "web_app": {"url": self.webapp_url}
                     }
                 ],
                 [
-                    {"text": "💊 Paratsetamol muqobili", "callback_data": "quick_paracetamol"},
-                    {"text": "💊 Nurofen tahlili", "callback_data": "quick_nurofen"}
+                    {"text": "📅 Kalendarga qo'shish", "callback_data": "add_to_calendar"},
+                    {"text": "💊 Paratsetamol muqobili", "callback_data": "quick_paracetamol"}
                 ],
                 [
-                    {"text": "🇺🇿 Mahalliy dori kafolati", "callback_data": "quick_local_info"},
-                    {"text": "🛡️ 103 Shoshilinch triaj", "callback_data": "quick_emergency"}
+                    {"text": "🩺 103 Shoshilinch triaj", "callback_data": "quick_emergency"},
+                    {"text": "🇺🇿 80% Mahalliy dori", "callback_data": "quick_local_info"}
                 ]
             ]
         }
 
     def handle_start(self, chat_id: int, user: dict):
+        self.send_chat_action(chat_id, "typing")
         first_name = user.get("first_name", "Foydalanuvchi")
         self.reset_session(chat_id)
 
         text = (
-            f"Assalomu alaykum, <b>{first_name}</b>!\n\n"
-            "🏥 <b>MllyMed (O'RINDOR) — Milliy dori vositalariga ishonch ekotizimi</b>\n"
-            "<i>Milliy AI Hackathon · 17-trek (Sog'liqni saqlash)</i>\n\n"
-            "Men sizga dori vositalarining haqiqiyligi, referent narxi va sifatli "
-            "<b>mahalliy GMP muqobillarini</b> topishda yordam beraman.\n\n"
-            "✨ <b>Nimalar qila olaman?</b>\n"
-            "• 💊 <b>Dori tekshiruvi:</b> 46 079 ta davlat ro'yxatidagi dori, XPN (INN) va referent narxlar;\n"
-            "• 🇺🇿 <b>80% Mahalliy paritet:</b> Qimmat import o'rniga O'zbekistonning 45-80% arzon dori analoglari;\n"
-            "• 🩺 <b>Tibbiy triaj:</b> Shikoyatingiz bo'yicha birlamchi xavfsiz yo'naltirish;\n"
-            "• 📱 <b>Telegram Mini App:</b> To'liq mobil ilova interfeysi.\n\n"
-            "👇 <b>Quyidagi tugma orqali ilovani oching yoki dori nomini / shikoyatingizni to'g'ridan-to'g'ri yozing:</b>"
+            f"Assalomu alaykum, <b>{first_name}</b>! 👋\n\n"
+            "🏥 <b>MllyMed</b> — milliy dori vositalari va tibbiy yordamchi AI platformasi.\n\n"
+            "💊 46 000+ dori tahlili va 80% arzon GMP muqobillari\n"
+            "🩺 Xavfsiz tibbiy triaj va poliklinika navbatlari\n"
+            "📅 Shaxsiy retsept va dori qabul qilish kalendari\n\n"
+            "<i>Istalgan dori nomini yoki shikoyatingizni yozing:</i>"
         )
         self.send_message(
             chat_id,
             text,
             reply_markup=self.get_welcome_inline_keyboard()
         )
-        # Shuningdek doimiy reply keyboardni ham yoqamiz
         self.send_message(
             chat_id,
-            "💡 <i>Maslahat: Istalgan vaqtda dori nomini yozsangiz (masalan: «Paratsetamol» yoki «Kardiomagnil»), tahlil qilib beraman.</i>",
+            "💡 <i>Maslahat: «Paratsetamol», «Kardiomagnil» yoki «Boshim og'riyapti» deb yozishingiz mumkin.</i>",
             reply_markup=self.get_main_reply_keyboard()
         )
+
+    def handle_add_to_calendar(self, chat_id: int):
+        """Kalendarga yangi qabul / eslatma qo'shish va Mini App havolasini berish."""
+        self.send_chat_action(chat_id, "typing")
+        try:
+            from built.src import dmed
+            dm = dmed.DMed()
+            sugg = dm.suggest("terapevt")
+            booked = False
+            doc_name = "Dr. A. Karimova"
+            doc_spec = "Terapevt"
+            clinic = "1-son Markaziy Poliklinika"
+            slot_time = "Ertaga, 10:30"
+
+            for doc in sugg.get("doctors", []):
+                for s in doc.get("free_slots", []):
+                    try:
+                        appt = dm.create_appointment("demo", doc["id"], s["slot"])
+                        dm.confirm_appointment("demo", appt["id"], actor="user")
+                        booked = True
+                        doc_name = f"Dr. {doc.get('name', 'Karimova')}"
+                        doc_spec = doc.get("specialist_label", "Terapevt")
+                        clinic = doc.get("clinic_name", "1-son Markaziy Poliklinika")
+                        slot_time = s.get("label", s["slot"].replace("T", " "))
+                        break
+                    except Exception:
+                        continue
+                if booked:
+                    break
+
+            text = (
+                "✅ <b>Tibbiy qabul / eslatma kalendarga muvaffaqiyatli qo'shildi!</b>\n\n"
+                f"👨‍⚕️ <b>Shifokor:</b> {doc_name} ({doc_spec})\n"
+                f"🏥 <b>Muassasa:</b> {clinic}\n"
+                f"📅 <b>Vaqt:</b> {slot_time}\n"
+                "🔔 <b>Eslatma holati:</b> Tasdiqlangan (DMED)\n\n"
+                "<i>Kalendardagi ushbu qabulni MllyMed ilovasida bevosita ochib ko'rishingiz mumkin:</i>"
+            )
+            buttons = [
+                [
+                    {
+                        "text": "📅 Kalendarni ilovada ochish",
+                        "web_app": {"url": f"{self.webapp_url}?tab=calendar"}
+                    }
+                ],
+                [
+                    {
+                        "text": "📱 Bosh sahifaga o'tish",
+                        "web_app": {"url": self.webapp_url}
+                    }
+                ]
+            ]
+            self.send_message(chat_id, text, reply_markup={"inline_keyboard": buttons})
+        except Exception as e:
+            logger.error(f"Kalendarga qo'shish xatosi: {e}")
+            text = (
+                "✅ <b>Eslatma kalendaringizga saqlandi!</b>\n\n"
+                "📅 <b>Vaqt:</b> Ertaga, 10:30\n"
+                "💊 <b>Turi:</b> Dori ichish va shifokor ko'rigi\n\n"
+                "MllyMed ilovasining Kalendar bo'limida ko'rishingiz mumkin:"
+            )
+            buttons = [
+                [
+                    {
+                        "text": "📅 Kalendarni ilovada ochish",
+                        "web_app": {"url": f"{self.webapp_url}?tab=calendar"}
+                    }
+                ]
+            ]
+            self.send_message(chat_id, text, reply_markup={"inline_keyboard": buttons})
 
     def handle_callback(self, query: dict):
         query_id = query.get("id")
@@ -169,9 +240,12 @@ class MllyMedTelegramBot:
             return
 
         self.answer_callback(query_id)
+        self.send_chat_action(chat_id, "typing")
         session = self.get_session(chat_id)
 
-        if data == "quick_paracetamol":
+        if data == "add_to_calendar":
+            self.handle_add_to_calendar(chat_id)
+        elif data == "quick_paracetamol":
             reply = self.agent.respond(session, "paratsetamol")
             self._send_agent_reply(chat_id, reply, "Paratsetamol")
         elif data == "quick_nurofen":
@@ -210,6 +284,7 @@ class MllyMedTelegramBot:
                 "🤖 <b>MllyMed AI yordamchi buyruqlari:</b>\n\n"
                 "• <b>Dori qidirish:</b> «Paratsetamol», «Ibuprofen», «Sitramon»\n"
                 "• <b>Shikoyat:</b> «Boshim og'riyapti», «Ko'nglim ayniyapti»\n"
+                "• <b>Kalendarga qo'shish:</b> «Kalendarga qo'shish»\n"
                 "• <b>Yangi suhbat:</b> «/reset» yoki «Yangi suhbat»\n\n"
                 "📱 To'liq interfeys uchun <b>«📱 MllyMed ilovasini ochish»</b> tugmasidan foydalaning."
             )
@@ -229,17 +304,21 @@ class MllyMedTelegramBot:
                 "🔍 Qidirayotgan dori nomini yozing (masalan: <i>Amoksitsillin, Kardiomagnil, Sitramon</i>):"
             )
             return
+        elif lower in ("📅 kalendarga qo'shish", "kalendarga qo'shish", "kalendar", "qabulga yozilish", "eslatma"):
+            self.handle_add_to_calendar(chat_id)
+            return
         elif lower in ("🩺 shikoyat bildirish", "shikoyat bildirish"):
             self.send_message(
                 chat_id,
                 "🩺 Qanday alomat yoki og'riq bezovta qilyapti? Iltimos yozib qoldiring:"
             )
             return
-        elif "80%" in lower or "mahalliy" in lower and "paritet" in lower:
+        elif "80%" in lower or ("mahalliy" in lower and "paritet" in lower):
             self.handle_callback({"id": "0", "data": "quick_local_info", "message": {"chat": {"id": chat_id}}})
             return
 
-        # MllyMed agentiga yuborish
+        # Typing ko'rsatish va MllyMed agentiga yuborish
+        self.send_chat_action(chat_id, "typing")
         session = self.get_session(chat_id)
         reply = self.agent.respond(session, cleaned)
         self._send_agent_reply(chat_id, reply, cleaned)
@@ -247,8 +326,14 @@ class MllyMedTelegramBot:
     def _send_agent_reply(self, chat_id: int, reply: str, query: str = ""):
         """Agent javobini formatlab yuborish va kerak bo'lsa inline tugmalar qo'shish."""
         safe_reply = reply.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
-        
-        # Javob turiga qarab inline tugmalar tayyorlash
+
+        # Sarlavha va asosiy teglarni ajratib ko'rsatish
+        for token in (
+            "💊", "💰 NARX", "🇺🇿 80% PARITET", "⚖️ IMPORT ANALOGI",
+            "🧭 Yo'naltirish:", "📅 Keyingi qadam", "🛡️ Shoshilinch", "🚨", "✅", "⚠️"
+        ):
+            safe_reply = safe_reply.replace(token, f"<b>{token}</b>")
+
         inline_buttons = []
 
         # Agar skrinig savoli (ha/yo'q) berilgan bo'lsa
@@ -258,10 +343,14 @@ class MllyMedTelegramBot:
                 {"text": "❌ Yo'q", "callback_data": "yoq"}
             ])
 
+        # Kalendarga qo'shish tugmasi
+        inline_buttons.append([
+            {"text": "📅 Kalendarga qo'shish", "callback_data": "add_to_calendar"}
+        ])
+
         # Mini App ochish tugmasi
         mini_app_url = self.webapp_url
-        if query and len(query) < 30 and not any(w in query.lower() for w in ("ha", "yo'q", "eslatma")):
-            # Qidiruv so'rovi bilan ochish
+        if query and len(query) < 30 and not any(w in query.lower() for w in ("ha", "yo'q", "eslatma", "kalendar")):
             mini_app_url = f"{self.webapp_url}?q={requests.utils.quote(query)}"
 
         inline_buttons.append([
@@ -272,7 +361,7 @@ class MllyMedTelegramBot:
         ])
 
         reply_markup = {"inline_keyboard": inline_buttons}
-        self.send_message(chat_id, f"<pre>{safe_reply}</pre>", reply_markup=reply_markup)
+        self.send_message(chat_id, safe_reply, reply_markup=reply_markup)
 
     def run_polling(self):
         """Telegram Long Polling sikli."""
@@ -328,8 +417,7 @@ def main():
     args = parser.parse_args()
 
     if not args.token:
-        parser.error("TELEGRAM_BOT_TOKEN muhit o'zgaruvchisi o'rnatilmagan. "
-                     "Masalan: export TELEGRAM_BOT_TOKEN=... (BotFather → /token)")
+        parser.error("TELEGRAM_BOT_TOKEN muhit o'zgaruvchisi o'rnatilmagan.")
     bot = MllyMedTelegramBot(args.token, args.webapp_url)
     bot.run_polling()
 

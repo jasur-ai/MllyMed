@@ -43,7 +43,9 @@ class MllyMedHandler(BaseHTTPRequestHandler):
         self.send_header("Content-Type", "application/json; charset=utf-8")
         self.send_header("Content-Length", str(len(body)))
         self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, HEAD")
         self.send_header("Access-Control-Allow-Headers", "Content-Type,X-Role,X-User")
+        self.send_header("Content-Security-Policy", "frame-ancestors *;")
         self.end_headers()
         self.wfile.write(body)
 
@@ -65,8 +67,29 @@ class MllyMedHandler(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header("Content-Type", ctype)
         self.send_header("Content-Length", str(len(body)))
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, HEAD")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type,X-Role,X-User")
+        self.send_header("Content-Security-Policy", "frame-ancestors *;")
         self.end_headers()
         self.wfile.write(body)
+
+    def do_OPTIONS(self) -> None:  # noqa: N802
+        self.send_response(204)
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, HEAD")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type,X-Role,X-User")
+        self.send_header("Content-Security-Policy", "frame-ancestors *;")
+        self.send_header("Content-Length", "0")
+        self.end_headers()
+
+    def do_HEAD(self) -> None:  # noqa: N802
+        u = urlparse(self.path)
+        self.send_response(200)
+        self.send_header("Content-Type", "text/html; charset=utf-8")
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("Content-Security-Policy", "frame-ancestors *;")
+        self.end_headers()
 
     def _body(self) -> dict:
         n = int(self.headers.get("Content-Length") or 0)
