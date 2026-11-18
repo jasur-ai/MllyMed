@@ -111,6 +111,48 @@ document.addEventListener('DOMContentLoaded', () => {
   if (typeof loadCatalog === 'function') {
     loadCatalog(true);
   }
+
+  // Telegram Mini App (TMA) Native Avto-Moslashuv
+  if (window.Telegram && window.Telegram.WebApp) {
+    try {
+      const tg = window.Telegram.WebApp;
+      tg.ready();
+      tg.expand();
+      if (typeof tg.enableClosingConfirmation === 'function') {
+        tg.enableClosingConfirmation();
+      }
+      if (typeof tg.setHeaderColor === 'function') tg.setHeaderColor('#ffffff');
+      if (typeof tg.setBackgroundColor === 'function') tg.setBackgroundColor('#f8fafc');
+
+      if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+        const u = tg.initDataUnsafe.user;
+        const fullName = [u.first_name, u.last_name].filter(Boolean).join(' ') || u.username || 'Foydalanuvchi';
+        window.telegramUser = {
+          id: u.id,
+          name: fullName,
+          username: u.username,
+          photo_url: u.photo_url
+        };
+        // Shaxsiy kabinetga avtomatik biriktirish
+        if (typeof isUserLoggedIn !== 'undefined' && !isUserLoggedIn) {
+          isUserLoggedIn = true;
+          loggedInUser = {
+            name: fullName + (u.username ? ` (@${u.username})` : ''),
+            id: `Telegram ID: ${u.id}`,
+            provider: 'Telegram'
+          };
+          const patientDisplay = $('patient-id-display');
+          const badge = $('patient-provider-badge');
+          if (patientDisplay) patientDisplay.textContent = loggedInUser.name;
+          if (badge) badge.textContent = 'Telegram';
+          const mobLabel = $('tab-mob-auth-label');
+          if (mobLabel) mobLabel.textContent = 'Kabinet';
+        }
+      }
+    } catch (tgErr) {
+      console.log('TG WebApp auto-init warning:', tgErr);
+    }
+  }
 });
 
 window.switchMode = switchMode;
