@@ -1,14 +1,13 @@
 [Unit]
-Description=MllyMed Telegram bot (long polling)
-After=network.target mllymed.service
-Requires=mllymed.service
+Description=MllyMed Telegram bot (develop: bot.py)
+After=network.target
 
 [Service]
 Type=simple
 User=mllymed
 WorkingDirectory=/opt/mllymed
 EnvironmentFile=/opt/mllymed/deploy/.env
-ExecStart=/usr/bin/python3 deploy/telegram_bot.py
+ExecStart=/usr/bin/python3 bot.py
 Restart=always
 RestartSec=5
 NoNewPrivileges=true

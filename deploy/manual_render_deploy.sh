@@ -17,7 +17,7 @@
 set -euo pipefail
 
 REPO_URL="${REPO_URL:-https://github.com/jasur-ai/MllyMed}"
-BRANCH="${BRANCH:-arena/bbba9f48-mllymed}"
+BRANCH="${BRANCH:-develop}"
 REGION="${REGION:-frankfurt}"
 WEB_NAME="${WEB_NAME:-mllymed}"
 BOT_NAME="${BOT_NAME:-mllymed-bot}"
@@ -83,8 +83,8 @@ else
   else
     echo "   mavjud: $BID"
   fi
-  ENV_P=$(jq -nc --arg t "$TELEGRAM_BOT_TOKEN" --arg u "$WEB_URL" \
-    '[{key:"TELEGRAM_BOT_TOKEN", value:$t}, {key:"MLLYMED_API", value:$u}]')
+  ENV_P=$(jq -nc --arg t "$TELEGRAM_BOT_TOKEN" \
+    '[{key:"TELEGRAM_BOT_TOKEN", value:$t}]')
   CODE=$(curl -sS -o /dev/null -w '%{http_code}' -X PUT -H "Authorization: Bearer $RENDER_API_KEY" \
          -H 'Content-Type: application/json' -d "$ENV_P" "$API/services/$BID/env-vars")
   [ "$CODE" -lt 300 ] || die "env-vars o‘rnatilmadi (HTTP $CODE)"

@@ -16,6 +16,7 @@ ENV PYTHONUNBUFFERED=1 \
 RUN apt-get update \
     && apt-get install -y --no-install-recommends socat \
     && rm -rf /var/lib/apt/lists/* \
+    && pip install --no-cache-dir "requests>=2.31,<3" \
     && useradd --system --uid 10001 --shell /usr/sbin/nologin mllymed
 
 WORKDIR /app

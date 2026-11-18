@@ -11,7 +11,8 @@ foydalanuvchi ──► [nginx / socat] ──► python3 -m backend.server (127
                                           ├── /api/*         (B2C/B2B)
                                           ├── built/src/*    (apteka · analytics · dmed·sqlite)
                                           └── orindor/agent  (O'RINDOR agent — triaj + karta)
-Telegram ──► deploy/telegram_bot.py ──────┘ (long polling, /api/b2c/chat)
+Telegram ──► deploy/run_bot.sh → /app/bot.py → backend/bot.py ─┘
+             (long polling; Mini App tugmasi → https://jasur-ai.github.io/MllyMed/)
 ```
 
 ---
@@ -121,46 +122,47 @@ professional emas.
 
 ---
 
-## 4. Telegram bot — @MllyMed_bot
+## 4. Telegram bot — @MllyMed_bot (develop'dagi to'liq bot)
 
-Bot kodga tegilmadi; `deploy/telegram_bot.py` — yangi, mustaqil ko'prik
-(Telegram long polling ↔ `POST /api/b2c/chat`). Token **faqat muhit o'zgaruvchisida**.
+Bot **repo ichida allaqachon bor**: `bot.py` → `backend/bot.py` — long polling,
+reply/inline keyboard, Mini App ochish tugmasi (`WEBAPP_URL`, default
+`https://jasur-ai.github.io/MllyMed/` — gh-pages), agent bilan to'g'ridan-to'g'ri
+suhbat (`/api/b2c/chat` emas, bevosita `Agent.respond`). Deploy'da `run_bot.sh`
+uni foreground'da ko'taradi + `/` ga health sahifa beradi (Render free health check).
+
+**Tuzatilgan kamchiliklar** (develop'da bor edi):
+- `Session(f"tg_{chat_id}")` → `Session()` — Session'ning birinchi pozitsiyali
+  argumenti `mode=` edi: "tg_*" mode sifatida o'rnatilib, agent intent tanlashni
+  PYTHONATLAB O'TKAZIB YUBORARDI → **dori kartalari hech qachon chiqmasdi**.
+- `TELEGRAM_BOT_TOKEN` uchun kodda **hardcoded default** bor edi (public repo!) —
+  olib tashlandi; endi faqat muhit o'zgaruvchisi, aks holda bot aniq xato bilan chiqadi.
+- `requests` imajga qo'shildi (`deploy/Dockerfile`), aks holda bot ImportError bilan yiqilardi.
+
+**TOKENNI ALBATTA ROTATSIYA QILING** — eski token public repo'da ochiq qolgan:
+t.me/BotFather → `/revoke` → yangi token. Keyin uni faqat Render dashboard'ga /
+`deploy/.env` ga yozing (hech qachon commitga).
 
 ```bash
-# 1) Lokal o'z-o'zini tekshirish (tarmoqsiz):
-python3 deploy/telegram_bot.py --selftest        # 10/10 ✅
-
-# 2) MllyMed API ishlayotganini tekshiring:
-curl -s localhost:8200/api/health
-
-# 3) Botni ishga tushuring (bitta serverda — API bilan yonma-yon):
-cp deploy/.env.example deploy/.env               # ichida TELEGRAM_BOT_TOKEN=…
-set -a; source deploy/.env; set +a
-python3 deploy/telegram_bot.py                   # «Bot ishga tushdi: @MllyMed_bot»
-
-# 4) Telegram'dan tekshiring: t.me/MllyMed_bot → /start → «paratsetamol» / «ko'kragim og'riyapti»
+# Lokal sinov (toza muhit):
+pip install "requests>=2.31,<3"
+export TELEGRAM_BOT_TOKEN="<yangi token>"
+python3 bot.py                        # «MllyMed Telegram Bot faol!»
+# Telegram → t.me/MllyMed_bot → /start → «paratsetamol» → karta ✅
 ```
 
-systemd orqali abadiy ishlash: `deploy/systemd/mllymed-bot.service` (§2 dagi kabi o'rnating).
-`EnvironmentFile=/opt/mllymed/deploy/.env` tokenni xizmatga uzatadi.
+Render'da ikkinchi servis sifatida ishlaydi: dockerCommand `bash /app/deploy/run_bot.sh`
+(health `/` + `python3 bot.py`), env: `TELEGRAM_BOT_TOKEN`. Bitta poller ishlasin —
+ikkita jarayon bir token bilan `getUpdates` qilsa xabarlar bo'linadi (409 Conflict).
+
+systemd orqali: `deploy/systemd/mllymed-bot.service` (ExecStart=`python3 bot.py`,
+EnvironmentFile bilan). `deploy/.env` ichida `TELEGRAM_BOT_TOKEN=…`.
 
 BotFather sozlamalari (bir marta, t.me/BotFather):
 - `/setdescription` — «Milliy dori vositalari reyestri: dori kartasi, narx, INN analog,
   xavfsiz yo'naltirish. Tashxis yo'q, maslahat yo'q — ma'lumot va 103.»
 - `/setabouttext` — «O'zbekiston dori vositalari reyestri asosidagi rasmiy-ma'lumot boti.»
 - `/setuserpic` — `frontend/shared/assets/logo.svg` dan eksport qilingan PNG
-- `/setcommands` — `start — Boshlash`, `help — Yordam`, `yangi — Suhbatni tozalash`
-
-Bot nima qila OLMAYDI (ataylab): tashxis qo'ymaydi, dori maslahati bermaydi,
-navbatni tasdiqlamaydi — hammasi agentning xavfsizlik chegara/validatoridan o'tadi.
-
-**Sinov haqida halollik:** botning lokal yarmi (buyruqlar tahlili, sid, kesilishi,
-`/api/b2c/chat` roundtrip — jumladan favqulodda holat → 103) AT testi bilan tasdiqlangan;
-Telegram tarmog'i bu muhitdan yopiq bo'lgani uchun jonli `getUpdates/sendMessage`
-faqat server misolida birinchi `/start` bilan tasdiqlanishi kerak. Lokal yarmi esa
-`--selftest` bilan sinovdan o'tgan (10/10).
-
----
+- `/setcommands` — `start — Boshlash`, `help — Yordam`, `reset — Suhbatni tozalash`
 
 ## 5. Tekshiruv ro'yxati (go-live checklist)
 
@@ -170,7 +172,7 @@ faqat server misolida birinchi `/start` bilan tasdiqlanishi kerak. Lokal yarmi e
 - [ ] Chat: «Qon qusdim» → ⛔ 103; «ko'kragim og'riyapti» → majburiy savol; «nurofen» → karta
 - [ ] `docker ps` / `systemctl status mllymed` — `active (running)`
 - [ ] TLS (https) — yashil qulf, `curl -I` da 301→200
-- [ ] Telegram: `/start`, «paratsetamol», favqulodda xabar → 103
+- [ ] Telegram: `/start` → salom+tugmalar; «paratsetamol» → **karta**; «ko'kragim qattiq og'riyapti» → ⛔ 103; Mini App tugmasi ochiladi
 - [ ] Monitoring: UptimeRobot/Healthchecks.io → `https://domen/api/health` har 5 daqiqa
 - [ ] Zaxira: `built/data/runtime/dmed.db` (sqlite) kunlik nusxa; `data/` R2 ga (§3.3)
 - [ ] Loglar: `docker logs` / `journalctl -u mllymed -f` — xatosiz
@@ -214,5 +216,5 @@ da — zaxiradan tiklanadi.
 | `permission denied` (runtime) | `chown -R mllymed:mllymed built/data/runtime orindor/data/runtime` |
 | 502 nginx | `systemctl status mllymed`; `journalctl -u mllymed -n 100` |
 | Health FAIL | `docker ps`; xotira yetarli emasligini `dmesg` da tekshiring |
-| Bot javob bermayapti | `systemctl status mllymed-bot`; `MLLYMED_API` to'g'riligini `curl` bilan; `--selftest` |
+| Bot javob bermayapti | `systemctl status mllymed-bot`; token rotatsiyadan keyin yangilanganini tekshiring; `python3 bot.py` lokal ishga tushirib ko'ring; poller bittami? |
 | Port band | `PUBLIC_PORT=8080` (env) yoki `docker run -p 8080:8200` |

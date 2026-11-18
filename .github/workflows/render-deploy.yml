@@ -5,7 +5,7 @@ name: render-deploy
 
 on:
   push:
-    branches: [arena/bbba9f48-mllymed]
+    branches: [develop]
     paths:
       - '.github/workflows/render-deploy.yml'
       - 'deploy/**'
@@ -17,7 +17,7 @@ permissions:
 env:
   RENDER_API: https://api.render.com/v1
   REPO_URL: https://github.com/jasur-ai/MllyMed
-  BRANCH: ${{ github.ref_name }}
+  BRANCH: develop
 
 jobs:
   render:
@@ -108,9 +108,9 @@ jobs:
           else
             echo "Mavjud bot servisi: $BID"
           fi
-          # Env varlar: TELEGRAM_BOT_TOKEN + MLLYMED_API (token logga CHIQARILMAYDI)
-          ENVPAYLOAD=$(jq -nc --arg t "$TELEGRAM_BOT_TOKEN" --arg u "$WEB_URL" \
-            '[{key:"TELEGRAM_BOT_TOKEN", value:$t}, {key:"MLLYMED_API", value:$u}]')
+          # Env var: faqat TELEGRAM_BOT_TOKEN (qiymat logga CHIQARILMAYDI)
+          ENVPAYLOAD=$(jq -nc --arg t "$TELEGRAM_BOT_TOKEN" \
+            '[{key:"TELEGRAM_BOT_TOKEN", value:$t}]')
           CODE=$(curl -sS -o /tmp/env_resp.json -w '%{http_code}' -X PUT \
                  -H "Authorization: Bearer $RENDER_API_KEY" -H 'Content-Type: application/json' \
                  -d "$ENVPAYLOAD" "$RENDER_API/services/$BID/env-vars")
@@ -118,7 +118,7 @@ jobs:
             echo "::error::Bot env-vars o‘rnatilmadi (HTTP $CODE)"
             exit 1
           fi
-          echo "Env varlar o‘rnatildi (TELEGRAM_BOT_TOKEN, MLLYMED_API=$WEB_URL)"
+          echo "Env var o‘rnatildi: TELEGRAM_BOT_TOKEN"
           curl -sS -X POST -H "Authorization: Bearer $RENDER_API_KEY" -H 'Content-Type: application/json' \
                -d '{}' "$RENDER_API/services/$BID/deploys" | jq -c '{deploy:(.deploy.id // .id), status:(.deploy.status // .status // "triggered")}'
           curl -sS -H "Authorization: Bearer $RENDER_API_KEY" "$RENDER_API/services/$BID" > /tmp/bot_service.json
